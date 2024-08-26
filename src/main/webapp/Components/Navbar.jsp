@@ -9,6 +9,13 @@
             <li class="mb-6">
                 <h2 style="font-weight:bold;font-size:20px">&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-user"></i> ${user.username}</h2>
             </li>
+            <%
+            String admin="Y";
+            if(admin=="Y"){ %>
+            <li class="mb-4">
+                <a href="User.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-plus"></i> Create User</a>
+            </li>
+            
             <li class="mb-4">
                 <a href="home.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-gauge"></i> Dashboard</a>
             </li>
@@ -21,6 +28,20 @@
             <li class="mb-4">
                 <a href="PostAnalysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-scroll"></i> Post Analysis</a>
             </li>
+            <%} else{%>
+            <li class="mb-4">
+                <a href="home.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            </li>
+            <li class="mb-4">
+                <a href="PreAnalysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-vials"></i> Pre Analysis</a>
+            </li>
+            <li class="mb-4">
+                <a href="Analysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-flask"></i> Analysis</a>
+            </li>
+            <li class="mb-4">
+                <a href="PostAnalysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-scroll"></i> Post Analysis</a>
+            </li>
+           <% }      %> 
         </ul>
     </nav>
 </div>
