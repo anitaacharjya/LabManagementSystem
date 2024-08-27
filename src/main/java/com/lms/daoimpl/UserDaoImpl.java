@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.lms.dbconnect.Dbconnect;
 import com.lms.vo.User;
+import com.lms.vo.UserAccess;
 
 
 
@@ -60,7 +61,7 @@ public class UserDaoImpl {
         	String query = "INSERT INTO user (name, dob, gender, address, city, state, country, "
                     + "marital_status, nationality, email, mobile, telephone, identity_document, "
                     + "identity_number, employment_type, joining_date, blood_group, designation, "
-                    + "username, password, `admin`, `pre-analysis`, `analysis`, `post-analysis`) "
+                    + "username, password, `admin`, pre_analysis, `analysis`, `post_analysis`) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             // Prepare the statement
             PreparedStatement  statement = conn.prepareStatement(query);
@@ -100,7 +101,7 @@ public class UserDaoImpl {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+        	System.out.println("Exception in registerUser "+e);
         }
 
         return isRegistered;
@@ -139,19 +140,45 @@ public class UserDaoImpl {
 	                us.setUsername(rs.getString("username"));
 	                us.setPassword(rs.getString("password"));
 	                us.setAdminAccess(rs.getString("admin"));
-	                us.setPreanalysisAccess(rs.getString("pre-analysis"));
+	                us.setPreanalysisAccess(rs.getString("pre_analysis"));
 	                us.setAnalysisAccess(rs.getString("analysis"));
-	                us.setPostanalysisAccess(rs.getString("post-analysis"));
+	                us.setPostanalysisAccess(rs.getString("post_analysis"));
 	                
 	                
 	                // Add the user object to the user list
 	                userList.add(us);
 	            }
 	        } catch (SQLException e) {
-	            e.printStackTrace();
+	        	System.out.println("Exception in getAllUsers "+e);
 	        }
 	        // Return the list of users
 	        return userList;
 	    }
+    /// Checking Access 
+		
+		public UserAccess chekingAcess(String username) {
+			Dbconnect dbconnect = new Dbconnect();
+			UserAccess userAccess = null;
+	        try {
+	        	Connection conn = dbconnect.getConn();
+	            String sql = "SELECT admin,pre_analysis,analysis,post_analysis FROM user WHERE username = ?";
+	            PreparedStatement ps = conn.prepareStatement(sql);
+	            System.out.println(" Sql "+sql);
+	            ps.setString(1, username);
+	            
 
+	            ResultSet rs = ps.executeQuery();
+	            while (rs.next()) {
+	            	userAccess = new UserAccess();
+	            	userAccess.setAdmin(rs.getString("admin"));
+	            	userAccess.setPre_analysis("pre_analysis");
+	            	userAccess.setAnalysis(rs.getString("analysis"));
+	            	userAccess.setPost_analysis(rs.getString("post_analysis"));
+	            }
+
+	        } catch (SQLException e) {
+	            System.out.println("Exception in chekingAcess "+e);
+	        }
+	        return userAccess;
+	    }
 }

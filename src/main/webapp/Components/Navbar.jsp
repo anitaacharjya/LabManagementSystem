@@ -1,3 +1,9 @@
+
+<%@ page import="com.lms.dbconnect.Dbconnect"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.lms.vo.UserAccess"%>
+<%@ page import="com.lms.daoimpl.UserDaoImpl"%>
+<%@ page import="java.sql.Connection"%>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -10,8 +16,23 @@
                 <h2 style="font-weight:bold;font-size:20px">&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-user"></i> ${user.username}</h2>
             </li>
             <%
-            String admin="Y";
-            if(admin=="Y"){ %>
+      
+            String adminUser="";
+            String pre_analysis="";
+            String analysis="";
+            String Post_analysis="";
+           String admin=(String)request.getSession().getAttribute("username");
+           System.out.println(" User name "+admin);
+           UserDaoImpl userdao1 = new UserDaoImpl();
+           UserAccess userAccess=userdao1.chekingAcess(admin);
+           if(userAccess!=null){
+        	   adminUser= userAccess.getAdmin();
+        	   pre_analysis= userAccess.getPre_analysis();
+        	   analysis= userAccess.getAnalysis();
+        	   Post_analysis= userAccess.getPost_analysis();
+           }
+           System.out.println("User adminUser "+adminUser+" pre_analysis "+pre_analysis+" analysis "+analysis + " Post_analysis "+Post_analysis);
+            if(adminUser.equals("Y")){ %>
             <li class="mb-4">
                 <button id="admin-dropdown-btn" class="block py-2 px-4 w-full text-left" style="font-weight:bold;font-size:15px">
                     <i class="fa-solid fa-user-shield"></i> Admin

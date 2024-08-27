@@ -33,6 +33,7 @@ public class UserLoginServlet extends HttpServlet {
             if (user != null) {
                 // Store user details in session
                 session.setAttribute("user", user);
+                session.setAttribute("username", username);
                 res.sendRedirect("home.jsp");
             } else {
                 session.setAttribute("Failed", "Username and password invalid");
