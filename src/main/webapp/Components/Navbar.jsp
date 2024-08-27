@@ -13,9 +13,28 @@
             String admin="Y";
             if(admin=="Y"){ %>
             <li class="mb-4">
-                <a href="User.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-plus"></i> Create User</a>
+                <button id="admin-dropdown-btn" class="block py-2 px-4 w-full text-left" style="font-weight:bold;font-size:15px">
+                    <i class="fa-solid fa-user-shield"></i> Admin
+                </button>
+                <ul id="admin-dropdown-menu" class="ml-4 hidden">
+                    <li class="mb-2">
+                        <a href="AllUserList.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
+                             Users
+                        </a>
+                    </li>
+                     <li class="mb-2">
+                        <a href="User.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
+                             Examination
+                        </a>
+                    </li>
+                     <li class="mb-2">
+                        <a href="User.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
+                             Test
+                        </a>
+                    </li>
+                    <!-- Add more admin-related links here -->
+                </ul>
             </li>
-            
             <li class="mb-4">
                 <a href="home.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-gauge"></i> Dashboard</a>
             </li>
@@ -41,11 +60,23 @@
             <li class="mb-4">
                 <a href="PostAnalysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-scroll"></i> Post Analysis</a>
             </li>
-           <% }      %> 
+            <% } %>
         </ul>
     </nav>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Existing code here...
 
+        // Dropdown functionality for Admin menu
+        const adminDropdownButton = document.getElementById("admin-dropdown-btn");
+        const adminDropdownMenu = document.getElementById("admin-dropdown-menu");
+
+        adminDropdownButton.addEventListener("click", function() {
+            adminDropdownMenu.classList.toggle("hidden");
+        });
+    });
+</script>
 <!-- Modal -->
 <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-4rem right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
