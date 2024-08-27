@@ -51,13 +51,6 @@ List<User> userlist = userdao.getAllUsers();
             </a>
 
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                <%-- <div class="p-4 flex justify-between items-center border-b bg-gray-100">
-                    <form action="EmployeeList.jsp" method="get">
-                        <label for="search" class="text-gray-700 font-semibold">Search:</label>
-                        <input type="text" id="search" name="searchQuery" value="<%= searchQuery != null ? searchQuery : "" %>" class="search-input border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full ml-2">Search</button>
-                    </form>
-                </div> --%>
                 <div class="overflow-x-auto">
                     <table class="min-w-full leading-normal">
                         <thead>
@@ -94,12 +87,12 @@ List<User> userlist = userdao.getAllUsers();
                         </thead>
                         <tbody class="text-gray-700 text-sm font-light">
                             <%
-                          
+                          int count=1;
                             if (userlist != null) {
                                 for (User user : userlist) {
                             %>
                             <tr class="table-row border-b border-gray-200">
-                                
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= count %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= user.getName() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= user.getDob() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= user.getGender() %></td>
@@ -123,7 +116,7 @@ List<User> userlist = userdao.getAllUsers();
                                 
                                  <td class="py-3 px-6 text-left whitespace-nowrap"><%= user.getAdminAccess()   %></td>
                                  <td class="py-3 px-6 text-left whitespace-nowrap"><%= user.getPreanalysisAccess() %>  </td>
-                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= user.getAnalysisAccess()   %></td>\
+                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= user.getAnalysisAccess()   %></td>
                                  <td class="py-3 px-6 text-left whitespace-nowrap"><%= user.getPostanalysisAccess()  %></td>
                            <%--      <td class="py-3 px-6 text-left whitespace-nowrap"><%= user.getRole() %></td> --%>
                                      <td class="py-3 px-6 text-center whitespace-nowrap">
@@ -138,12 +131,14 @@ List<User> userlist = userdao.getAllUsers();
                                 </td>
                             </tr>
                             <%
+                            count++;
                                 }
                             }
                             %>
                         </tbody>
                     </table>
                 </div>
+                
             </div>
         </div>
     </div>

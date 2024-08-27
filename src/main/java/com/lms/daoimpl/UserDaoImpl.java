@@ -120,20 +120,18 @@ public class UserDaoImpl {
 	            while (rs.next()) {
 	                User us = new User();
 	                // Set user object fields based on the result set
-	                us.setName(rs.getString(1)); // name
-	                us.setDob(rs.getString(2)); // dob
-	                us.setGender(rs.getString(3)); // gender
-	                us.setAddress(rs.getString(4)); // address
-	                us.setCity(rs.getString(5)); // city
-	                us.setState(rs.getString(6)); // state
-	                us.setCountry(rs.getString(7)); // country
-	                us.setMaritalStatus(rs.getString(8)); // maritalStatus
-	                us.setNationality(rs.getString(9)); // nationality
-	                us.setEmail(rs.getString(10)); // email
-	                us.setMobile(rs.getString(11)); // telephone
-	                
+	                us.setName(rs.getString("name")); // name
+	                us.setDob(rs.getString("dob")); // dob
+	                us.setGender(rs.getString("gender")); // gender
+	                us.setAddress(rs.getString("address")); // address
+	                us.setCity(rs.getString("city")); // city
+	                us.setState(rs.getString("state")); // state
+	                us.setCountry(rs.getString("country")); // country
+	                us.setMaritalStatus(rs.getString("marital_status")); // maritalStatus
+	                us.setNationality(rs.getString("nationality")); // nationality
+	                us.setEmail(rs.getString("email")); // email
+	                us.setMobile(rs.getString("mobile")); // telephone
 	                us.setIdentityDocument(rs.getString("identity_document")); // identityDocument
-	                
 	                us.setIdentityNumber(rs.getString("identity_number")); // identityNumber
 	                
 	                us.setBloodGroup(rs.getString("blood_group")); // bloodGroup
