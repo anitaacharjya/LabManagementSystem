@@ -48,8 +48,8 @@ public class UserDaoImpl {
             String query = "INSERT INTO user (name, dob, gender, address, city, state, country, "
                          + "marital_status, nationality, email, mobile, telephone, identity_document, "
                          + "identity_number, employment_type, joining_date, blood_group, designation, "
-                         + "username, password, admin_access, preanalysis_access, analysis_access, "
-                         + "postanalysis_access) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                         + "username, password, admin, pre-analysis, analysis, "
+                         + "post-analysis) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             // Prepare the statement
             PreparedStatement  statement = conn.prepareStatement(query);
