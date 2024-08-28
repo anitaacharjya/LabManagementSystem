@@ -102,7 +102,7 @@
     <div class="a4-container">
         <!-- Header -->
         <div class="header">
-            <h1>WESTERN DIAGNOSTIC CENTER PVT. LTD</h1>
+            <h1>ABC DIAGNOSTIC CENTER </h1>
             <p>Clinical Pathology Laboratory</p>
             <h2>RECEIPT</h2>
         </div>

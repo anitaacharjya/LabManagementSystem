@@ -1,128 +1,135 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page import="com.lms.dbconnect.Dbconnect"%>
+<%@ page import="java.util.List"%>
+<%@ page import="com.lms.vo.PreAnalysis"%>
+<%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
+<%@ page import="java.sql.Connection"%>
+
+<%
+PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
+List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
+%>
+
 <!DOCTYPE html>
-<html lang="en">
+<html class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratory Management System Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Employee</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
-        .content {
-            padding: 20px;
+    table {
+            border-collapse: collapse; /* Ensures borders don't double up */
+            width: 100%;
         }
-
-        .stats-card {
+         td {
+            border: 1px solid #ccc; /* Adds borders around table header and data cells */
+            padding: 8px;
+            text-align: left;
+        }
+        .table-header {
+            background-color: #2563eb; /* Darker color for better contrast */
+            color: #fff;
+        }
+        .table-row:hover {
+            background-color: #f3f4f6; /* Lighter hover effect */
+        }
+        .search-input {
+            border-radius: 0.375rem; /* Smooth input borders */
+            padding: 0.5rem;
+        }
+        .action-icons i {
+            transition: transform 0.2s ease-in-out;
+        }
+        .action-icons i:hover {
+            transform: scale(1.2);
+        }
+        .btn-primary {
             background-color: #2563eb;
-            color: white;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 600;
         }
-
-        .stats-card h3 {
-            font-size: 30px;
-            margin-bottom: 10px;
-        }
-
-        .stats-card p {
-            font-size: 18px;
+        .btn-primary:hover {
+            background-color: #1d4ed8;
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <!-- Sidebar -->
-    <div class="w-64 bg-blue-500 text-white p-6 h-screen fixed">
-        <nav>
-            <ul>
-                <li class="mb-6">
-                    <h2 style="font-weight:bold;font-size:20px">
-                        <i class="fa-solid fa-user"></i> ${user.username}
-                        <span class="text-green-500"><i class="fa-solid fa-circle"></i></span>
-                    </h2>
-                </li>
-                <li class="mb-4">
-                    <a href="home.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
-                        <i class="fa-solid fa-gauge"></i> Dashboard
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="PreAnalysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
-                        <i class="fa-solid fa-flask"></i> Pre Analysis
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="Analysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
-                        <i class="fa-solid fa-vials"></i> Analysis
-                    </a>
-                </li>
-                <li class="mb-4">
-                    <a href="PostAnalysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
-                        <i class="fa-solid fa-scroll"></i> Post Analysis
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+<body class="bg-gray-100 h-full">
+    <div class="flex h-full">
+        <!-- Sidebar -->
+        <%@include file="Components/Navbar.jsp"%>
 
-    <!-- Main Content -->
-    <div class="content ml-72">
-        <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
+        <!-- Main Content -->
+         <div class="flex-1 p-10 overflow-auto"style="margin-top:-30px">
+        <div class="flex-1 p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-900">Pre Analysis</h1>
+                <a href="" class="btn-primary flex items-center shadow-lg">
+                    <i class="fas fa-plus mr-2"></i> Create Recipt
+                </a>
+            </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="stats-card">
-                <h3>150</h3>
-                <p>Tests Conducted</p>
-            </div>
-            <div class="stats-card">
-                <h3>120</h3>
-                <p>Reports Generated</p>
-            </div>
-            <div class="stats-card">
-                <h3>15</h3>
-                <p>Pending Samples</p>
-            </div>
-            <div class="stats-card">
-                <h3>10</h3>
-                <p>Active Technicians</p>
+            <!-- User Table -->
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full leading-normal">
+                        <thead>
+                            <tr class="table-header text-xs uppercase tracking-wider bg-blue">
+                                <th class="py-3 px-6 text-left">SL No</th>
+                                <th class="py-3 px-6 text-left">Name</th>
+                                <th class="py-3 px-6 text-left">Age</th>
+                                <th class="py-3 px-6 text-left">Gender</th>
+                                <th class="py-3 px-6 text-left">Address</th>
+                                <th class="py-3 px-6 text-left">Phone Number</th>
+                                <th class="py-3 px-6 text-left">Create Date</th>
+                                <th class="py-3 px-6 text-left">Bill No</th>
+                                <th class="py-3 px-6 text-left">Patien Number</th>
+                                <th class="py-3 px-6 text-left">Refred By</th>
+                                <th class="py-3 px-6 text-left">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-black-700  ">
+                            <%
+                            int count = 1;
+                            if (preanalysislist != null) {
+                                for (PreAnalysis preList : preanalysislist) {
+                            %>
+                            <tr class="table-row border-b border-gray-200">
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= count %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getName() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAddress() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getPhoneNo()%></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getBillNo() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getPatientNo() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getReferredby() %></td>
+                                
+                                <td class="py-3 px-6 text-center whitespace-nowrap">
+                                    <div class="flex items-center justify-center action-icons">
+                                        <a href="updateUser.jsp?username=<%= preList.getPatientNo() %>" class="w-4 mr-2 transform hover:text-blue-600">
+                                            <i class="fas fa-edit"></i>
+                                        </a> 
+                                        <a href="deleteUser.jsp?username=<%= preList.getPatientNo()  %>" class="w-4 mr-2 transform hover:text-red-600">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <%
+                                count++;
+                                }
+                            }
+                            %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
-        <!-- Charts and Reports -->
-        <div class="mt-10">
-            <canvas id="testsChart"></canvas>
-        </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const ctx = document.getElementById('testsChart').getContext('2d');
-            const testsChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-                    datasets: [{
-                        label: 'Tests Conducted',
-                        data: [65, 59, 80, 81, 56, 55],
-                        fill: false,
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        });
-    </script>
 </body>
 </html>
