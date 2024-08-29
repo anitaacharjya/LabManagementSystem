@@ -1,12 +1,12 @@
 <%@ page import="com.lms.dbconnect.Dbconnect"%>
 <%@ page import="java.util.List"%>
-<%@ page import="com.lms.vo.PreAnalysis"%>
+<%@ page import="com.lms.vo.ExaminationDetails"%>
 <%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
 <%@ page import="java.sql.Connection"%>
 
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
-List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
+List<ExaminationDetails> examlist = preanalysis.getAllExaminationDetails();
 %>
 
 <!DOCTYPE html>
@@ -67,7 +67,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         <div class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-4xl font-bold text-gray-900">Pre Analysis</h1>
-                <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg">
+                <a href="" class="btn-primary flex items-center shadow-lg">
                     <i class="fas fa-plus mr-2"></i> Create Recipt
                 </a>
             </div>
@@ -79,44 +79,34 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                         <thead>
                             <tr class="table-header text-xs uppercase tracking-wider bg-blue">
                                 <th class="py-3 px-6 text-left">SL No</th>
-                                <th class="py-3 px-6 text-left">Name</th>
-                                <th class="py-3 px-6 text-left">Age</th>
-                                <th class="py-3 px-6 text-left">Gender</th>
-                                <th class="py-3 px-6 text-left">Address</th>
-                                <th class="py-3 px-6 text-left">Phone Number</th>
-                                <th class="py-3 px-6 text-left">Create Date</th>
-                                <th class="py-3 px-6 text-left">Bill No</th>
-                                <th class="py-3 px-6 text-left">Patien Number</th>
-                                <th class="py-3 px-6 text-left">Refred By</th>\
-                                <th class="py-3 px-6 text-left">Status</th>
+                                <th class="py-3 px-6 text-left">Exm_Code</th>
+                                <th class="py-3 px-6 text-left">Exm_Name</th>
+                                <th class="py-3 px-6 text-left">Price</th>
+                                
+                               
                                 <th class="py-3 px-6 text-left">Action</th>
                             </tr>
                         </thead>
                         <tbody class="text-black-700  ">
                             <%
                             int count = 1;
-                            if (preanalysislist != null) {
-                                for (PreAnalysis preList : preanalysislist) {
+                            if (examlist != null) {
+                                for (ExaminationDetails exList : examlist) {
                             %>
                             <tr class="table-row border-b border-gray-200">
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= count %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getName() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAddress() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getPhoneNo()%></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getBillNo() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getPatientNo() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getReferredby() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap">Panding</td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_code()   %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_name() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_price() %></td>
+                               
+                               
                                 
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">
-                                        <a href="updateUser.jsp?username=<%= preList.getPatientNo() %>" class="w-4 mr-2 transform hover:text-blue-600">
+                                        <a href="updateUser.jsp?username=<%= exList.getEx_code() %>" class="w-4 mr-2 transform hover:text-blue-600">
                                             <i class="fas fa-edit"></i>
                                         </a> 
-                                        <a href="deleteUser.jsp?username=<%= preList.getPatientNo()  %>" class="w-4 mr-2 transform hover:text-red-600">
+                                        <a href="deleteUser.jsp?username=<%= exList.getEx_code()  %>" class="w-4 mr-2 transform hover:text-red-600">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </div>

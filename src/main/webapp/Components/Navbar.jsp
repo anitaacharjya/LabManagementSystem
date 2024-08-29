@@ -22,7 +22,7 @@
             String analysis="";
             String Post_analysis="";
            String admin=(String)request.getSession().getAttribute("username");
-           System.out.println(" User name "+admin);
+           //System.out.println(" User name "+admin);
            UserDaoImpl userdao1 = new UserDaoImpl();
            UserAccess userAccess=userdao1.chekingAcess(admin);
            if(userAccess!=null){
@@ -31,7 +31,7 @@
         	   analysis= userAccess.getAnalysis();
         	   Post_analysis= userAccess.getPost_analysis();
            }
-           System.out.println("User adminUser "+adminUser+" pre_analysis "+pre_analysis+" analysis "+analysis + " Post_analysis "+Post_analysis);
+          // System.out.println("User adminUser "+adminUser+" pre_analysis "+pre_analysis+" analysis "+analysis + " Post_analysis "+Post_analysis);
             if(adminUser.equals("Y")){ %>
             <li class="mb-4">
                 <button id="admin-dropdown-btn" class="block py-2 px-4 w-full text-left" style="font-weight:bold;font-size:15px">
@@ -44,7 +44,7 @@
                         </a>
                     </li>
                      <li class="mb-2">
-                        <a href="User.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
+                        <a href="ExaminationDetails.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
                              Examination
                         </a>
                     </li>
@@ -63,6 +63,9 @@
                 <a href="PreAnalysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-vials"></i> Pre Analysis</a>
             </li>
             <li class="mb-4">
+                <a href="SampleDetails.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-vials"></i> Sample Details</a>
+            </li>
+            <li class="mb-4">
                 <a href="Analysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-flask"></i> Analysis</a>
             </li>
             <li class="mb-4">
@@ -74,6 +77,9 @@
             </li>
             <li class="mb-4">
                 <a href="PreAnalysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-vials"></i> Pre Analysis</a>
+            </li>
+            <li class="mb-4">
+                <a href="SampleDetails.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-vials"></i> Sample Details</a>
             </li>
             <li class="mb-4">
                 <a href="Analysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-flask"></i> Analysis</a>

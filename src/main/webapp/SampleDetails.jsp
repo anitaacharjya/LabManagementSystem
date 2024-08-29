@@ -66,9 +66,9 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
          <div class="flex-1 p-10 overflow-auto"style="margin-top:-30px">
         <div class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
-                <h1 class="text-4xl font-bold text-gray-900">Pre Analysis</h1>
-                <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg">
-                    <i class="fas fa-plus mr-2"></i> Create Recipt
+                <h1 class="text-4xl font-bold text-gray-900">Sample Details</h1>
+                <a href="" class="btn-primary flex items-center shadow-lg">
+                    <i class="fas fa-plus mr-2"></i> Create Sample
                 </a>
             </div>
 
@@ -87,7 +87,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <th class="py-3 px-6 text-left">Create Date</th>
                                 <th class="py-3 px-6 text-left">Bill No</th>
                                 <th class="py-3 px-6 text-left">Patien Number</th>
-                                <th class="py-3 px-6 text-left">Refred By</th>\
+                                <th class="py-3 px-6 text-left">Refred By</th>
                                 <th class="py-3 px-6 text-left">Status</th>
                                 <th class="py-3 px-6 text-left">Action</th>
                             </tr>
