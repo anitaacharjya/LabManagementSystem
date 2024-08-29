@@ -14,6 +14,14 @@
     <meta charset="UTF-8">
     <title>Examination Details</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .btn-primary {
+            @apply bg-blue-500 text-white font-semibold py-2 px-4 rounded shadow-lg hover:bg-blue-600 transition duration-300 ease-in-out;
+        }
+        .table-header {
+            @apply text-xs uppercase tracking-wider text-gray-700 bg-gray-200;
+        }
+    </style>
     <script>
         function addExaminationRow() {
             const table = document.getElementById("examinationTable");
@@ -24,15 +32,15 @@
             const cell3 = newRow.insertCell(2);
 
             // Generate the dropdown with examination names
-            let dropdownHTML = `<select name="examName[]" class="border rounded p-2 w-full">`;
+            let dropdownHTML = `<select name="examName[]" class="border rounded p-2 w-full bg-gray-50">`;
             dropdownHTML += `<option value="">Select Examination</option>`;
             <% for (ExaminationDetails examName : examNames) { %>
-                dropdownHTML += `<option value="<%= examName.getEx_name()  %>"><%= examName.getEx_name() %></option>`;
+                dropdownHTML += `<option value="<%= examName.getEx_name() %>"><%= examName.getEx_name() %></option>`;
             <% } %>
             dropdownHTML += `</select>`;
 
             cell1.innerHTML = dropdownHTML;
-            cell2.innerHTML = `<input type="text" name="examDate[]" class="border rounded p-2 w-full" placeholder="Examination Date">`;
+            cell2.innerHTML = `<input type="text" name="examDate[]" class="border rounded p-2 w-full bg-gray-50" placeholder="Examination Date">`;
             cell3.innerHTML = `<button type="button" onclick="removeExaminationRow(this)" class="btn-primary">Remove</button>`;
         }
 
@@ -43,54 +51,54 @@
     </script>
 </head>
 <body class="bg-gray-100">
-    <div class="container mx-auto p-8">
-        <h1 class="text-3xl font-bold mb-6">User and Examination Details</h1>
+    <div class="container mx-auto p-8 max-w-4xl">
+        <h1 class="text-4xl font-bold mb-8 text-gray-800">Examination Details</h1>
 
         <!-- User Information Section -->
-        <form action="SubmitDetails.jsp" method="post">
-            <h2 class="text-2xl font-semibold mb-4">User Information</h2>
-            <div class="grid grid-cols-2 gap-4 mb-6">
+        <form action="SubmitDetails.jsp" method="post" class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800">User Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div>
-                    <label class="block mb-2">Name:</label>
-                    <input type="text" name="name" class="border rounded p-2 w-full" value="<%= request.getParameter("name") %>">
+                    <label class="block mb-2 text-gray-700">Name:</label>
+                    <input type="text" name="name" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
                 </div>
                 <div>
-                    <label class="block mb-2">Email:</label>
-                    <input type="email" name="email" class="border rounded p-2 w-full" value="<%= request.getParameter("email") %>">
+                    <label class="block mb-2 text-gray-700">Email:</label>
+                    <input type="email" name="email" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("email") %>">
                 </div>
                 <!-- Add other user details as necessary -->
             </div>
 
             <!-- Examination Details Section -->
-            <h2 class="text-2xl font-semibold mb-4">Examination Details</h2>
-            <div class="mb-4">
-                <table id="examinationTable" class="min-w-full bg-white shadow-lg rounded-lg">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800">Examination Details</h2>
+            <div class="mb-6">
+                <table id="examinationTable" class="min-w-full bg-white shadow-lg rounded-lg border border-gray-300">
                     <thead>
-                        <tr class="table-header text-xs uppercase tracking-wider bg-blue">
-                            <th class="py-3 px-6 text-left">Examination Name</th>
-                            <th class="py-3 px-6 text-left">Price</th>
-                            <th class="py-3 px-6 text-left">Action</th>
+                        <tr class="table-header">
+                            <th class="py-4 px-6 text-left">Examination Name</th>
+                            <th class="py-4 px-6 text-left">Price</th>
+                            <th class="py-4 px-6 text-left">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <select name="examName[]" class="border rounded p-2 w-full">
+                                <select name="examName[]" class="border rounded p-2 w-full bg-gray-50">
                                     <option value="">Select Examination</option>
                                     <% for (ExaminationDetails examName : examNames) { %>
                                         <option value="<%= examName.getEx_name() %>"><%= examName.getEx_name() %></option>
                                     <% } %>
                                 </select>
                             </td>
-                            <td><input type="text" name="examDate[]" class="border rounded p-2 w-full" placeholder="Examination Date"></td>
+                            <td><input type="text" name="examDate[]" class="border rounded p-2 w-full bg-gray-50" placeholder="Examination Date"></td>
                             <td><button type="button" onclick="removeExaminationRow(this)" class="btn-primary">Remove</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <button type="button" onclick="addExaminationRow()" class="btn-primary mb-4">Add Examination</button>
+            <button type="button" onclick="addExaminationRow()" class="btn-primary mb-6">Add Examination</button>
 
-            <div class="mt-6">
+            <div>
                 <button type="submit" class="btn-primary">Submit</button>
             </div>
         </form>
