@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <title>Lab Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
     <style>
         body {
             background-image: url("Images/index2.jpg");
@@ -69,7 +71,8 @@
     <div class="scrolling-container">
         <div class="scrolling-text font-bold text-center">
             Welcome to the Lab Management System! Stay tuned for updates and new features.
-            <button style='font-size:15px'>Project1 <i class='fas fa-file-pdf'></i></button>
+            <button style='font-size:15px'>Project1<i class="fa-solid fa-file-circle-plus"></i></button>
+             <i class="fas fa-file-pdf" style="font-size: 20px; margin-left: 10px; color: red;"></i>
         </div>
     </div>
     <div class="content mx-auto mt-10 bg-white rounded-lg shadow-lg overflow-hidden">
