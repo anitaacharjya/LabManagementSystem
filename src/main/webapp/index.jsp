@@ -16,11 +16,63 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            margin: 0;
+            position: relative;
+        }
+
+        .scrolling-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background */
+            color: white;
+            padding: 10px 0;
+            z-index: 10; /* Ensure it's above the main content */
+        }
+
+        .scrolling-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 15s linear infinite;
+        }
+
+        .scrolling-text:hover {
+            animation-play-state: paused; /* Pause the animation on hover */
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .content {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 60px; /* Adjust based on the height of your scrolling container */
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9); /* Optional: semi-transparent background for better readability */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 5;
+            position: relative;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-    <div class="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl mx-auto mt-10 bg-white rounded-lg shadow-lg overflow-hidden">
+<body>
+    <div class="scrolling-container">
+        <div class="scrolling-text font-bold text-center">
+            Welcome to the Lab Management System! Stay tuned for updates and new features.
+            <button style='font-size:15px'>Project1 <i class='fas fa-file-pdf'></i></button>
+        </div>
+    </div>
+    <div class="content mx-auto mt-10 bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="px-6 py-8 sm:px-10">
             <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Lab Management System</h2>
             <form action="ULoginServlet" method="post">
@@ -35,7 +87,7 @@
                     </c:if>
                 </div>
                 <div class="mb-4">
-                    <label for="emp_id" class="block text-sm font-medium text-gray-700">User Name</label>
+                    <label for="username" class="block text-sm font-medium text-gray-700">User Name</label>
                     <input type="text" name="username" id="username" required
                            class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                            placeholder="User Name">
