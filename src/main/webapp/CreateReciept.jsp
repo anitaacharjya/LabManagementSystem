@@ -108,47 +108,47 @@
         <!-- User Information Section -->
         <form action="RecieptServlet" method="post" class="bg-white p-6 rounded-lg shadow-md" onsubmit="return validateExaminations();">
             <h2 class="text-2xl font-semibold mb-6 text-gray-800">User Information</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                 <div>
                     <label class="block mb-2 text-gray-700">Name:</label>
-                    <input type="text" name="name" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
+                    <input type="text" name="name" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                 <div>
                     <label class="block mb-2 text-gray-700">Age:</label>
-                    <input type="text" name="age" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
+                    <input type="text" name="age" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                 <div>
                     <label class="block mb-2 text-gray-700">Gender:</label>
-                    <input type="text" name="gender" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
+                    <input type="text" name="gender" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                 <div>
                     <label class="block mb-2 text-gray-700">Address:</label>
-                    <input type="text" name="address" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
+                    <input type="text" name="address" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                 <div>
                     <label class="block mb-2 text-gray-700">Phone Number:</label>
-                    <input type="text" name="phonenumber" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
+                    <input type="text" name="phonenumber" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                 <div>
                     <label class="block mb-2 text-gray-700">Email:</label>
-                    <input type="email" name="email" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("email") %>">
+                    <input type="email" name="email" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                 <div>
                     <label class="block mb-2 text-gray-700">Date:</label>
-                    <input type="text" name="date" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
+                    <input type="text" name="date" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                
                 <div>
                     <label class="block mb-2 text-gray-700">Bill No:</label>
-                    <input type="text" name="billno" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
+                    <input type="text" name="billno" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                 <div>
                     <label class="block mb-2 text-gray-700">Patient ID:</label>
-                    <input type="text" name="patientid" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
+                    <input type="text" name="patientid" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                 <div>
                     <label class="block mb-2 text-gray-700">Reffred By:</label>
-                    <input type="text" name="reffer" class="border rounded p-3 w-full bg-gray-50" value="<%= request.getParameter("name") %>">
+                    <input type="text" name="reffer" class="border rounded p-3 w-full bg-gray-50" value="">
                 </div>
                 <!-- Add other user details as necessary -->
             </div>
@@ -180,10 +180,11 @@
                     </tbody>
                 </table>
             </div>
-            <button type="button" onclick="addExaminationRow()" class="btn-primary mb-6">Add Examination</button>
-
             <div>
-                <button type="submit" class="btn-primary">Submit</button>
+            <button type="button" onclick="addExaminationRow()" class="bg-green-500 hover:bg-yellow-300 text-white font-bold py-2 px-4 rounded">Add Examination</button>
+            </div>
+            <div>
+                <button type="submit" class="bg-green-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Submit</button>
             </div>
         </form>
     </div>
