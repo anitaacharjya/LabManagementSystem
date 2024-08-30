@@ -13,6 +13,9 @@ import com.lms.vo.PreAnalysis;
 
 public class PreAnalysisDaoImp {
 	
+	 Dbconnect dbconnect = new Dbconnect();
+
+	
 	
 	 public List<PreAnalysis> getAllReciept() {
 	        List<PreAnalysis> recieptList = new ArrayList<>();
@@ -28,16 +31,17 @@ public class PreAnalysisDaoImp {
 	            // Loop through the result set
 	            while (rs.next()) {
 	                preanalysis = new PreAnalysis();
-
+	               
 	                preanalysis.setName(rs.getString("name")); 
 	                preanalysis.setAge(rs.getString("age"));
 	                preanalysis.setAddress(rs.getString("address"));
 	                preanalysis.setPhoneNo(rs.getString("phone_number"));
+	                preanalysis.setEmail(rs.getString("email"));
 	                preanalysis.setGender(rs.getString("gender")); 
-	                preanalysis.setReferredby(rs.getString("REC_BY"));
-	                preanalysis.setBillNo(rs.getString("BILL_NUMBER"));
-	                preanalysis.setPatientNo(rs.getString("Patient_NUMBER"));
-	                preanalysis.setDate(rs.getString("createdate"));
+	                preanalysis.setReferredby(rs.getString("reffered_by"));
+	                preanalysis.setBillNo(rs.getString("bill_no"));
+	                preanalysis.setPatientNo(rs.getString("patient_id"));
+	                preanalysis.setDate(rs.getString("date"));
 	                preanalysis.setPaymentMode(rs.getString("payment_mode"));
 
 	                
@@ -111,6 +115,69 @@ public class PreAnalysisDaoImp {
 	     return examinationNames;
 	 }
 
+//fetch exam price
+	 public double getExaminationPriceByName(String examName) {
+		 Dbconnect dbconnect = new Dbconnect();
+	        double price = 0.0;
+	        // Implement the logic to fetch the price from the database based on the examName
+	        String query = "SELECT price FROM TBL_EXAMINATION WHERE examination_name = ?";
+	        
+	        try (Connection con = dbconnect.getConn();
+	             PreparedStatement ps = con.prepareStatement(query)) {
+	            ps.setString(1, examName);
+	            ResultSet rs = ps.executeQuery();
+	            if (rs.next()) {
+	                price = rs.getDouble("price");
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        return price;
+	        
+	 }     
+	        //save reciept
+	        
+	        public void saveUser(PreAnalysis user) {
+	            String sql = "INSERT INTO TBL_RECEIPT (name, age, gender, address, phone_number, email, date, bill_no, patient_id, reffered_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	            try (
+	            	Connection conn = dbconnect.getConn();
+	                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+	                stmt.setString(1, user.getName());
+	                stmt.setString(2, user.getAge());
+	                stmt.setString(3, user.getGender());
+	                stmt.setString(4, user.getAddress());
+	                stmt.setString(5, user.getPhoneNo());
+	                stmt.setString(6, user.getEmail());
+	                stmt.setString(7, user.getDate());
+	                stmt.setString(8, user.getBillNo());
+	                stmt.setString(9, user.getPatientNo());
+	                stmt.setString(10, user.getReferredby());
+
+	                stmt.executeUpdate();
+
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	            
+	            
+	            
+	        
+	    }
+	        
+	        public void saveExaminationDetails(ExaminationDetails examDetail,String patient_id) {
+	            String sql = "INSERT INTO examination_details (patient_id,exam_name, price) VALUES (?, ?,?)";
+	            try (Connection conn = dbconnect.getConn();
+	                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	            	stmt.setString(1, patient_id);
+	                stmt.setString(2, examDetail.getEx_name());
+	                stmt.setString(3, examDetail.getEx_price());
+	                stmt.executeUpdate();
+
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
 	 
 }

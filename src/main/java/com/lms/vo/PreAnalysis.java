@@ -11,6 +11,7 @@ public class PreAnalysis {
 	public String paymentMode;
 	public String address;
 	public String date;
+	public String email;
 	public String getDate() {
 		return date;
 	}
@@ -71,6 +72,14 @@ public class PreAnalysis {
 	public void setPaymentMode(String paymentMode) {
 		this.paymentMode = paymentMode;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
 	
 
 }
