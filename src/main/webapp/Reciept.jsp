@@ -1,3 +1,9 @@
+<%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
+<%@ page import="com.lms.vo.PreAnalysis"%>
+<%@ page import="com.lms.vo.ExaminationDetails"%>
+<%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
+<%@ page import="java.util.List"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -98,6 +104,14 @@
         }
     </style>
 </head>
+<%
+PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
+PreAnalysis preanalysisData=preanalysis.getRecieptdetails("P03");  
+Date now = new Date();
+// Format the date according to your desired format
+SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy, hh:mm a"); // Example: 18/01/24, 01:20 PM
+String currentTime = sdf.format(now);
+%>
 <body>
     <div class="a4-container">
         <!-- Header -->
@@ -111,24 +125,24 @@
        
         <div style="border:1px solid black; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px">
         <div class="info-col"style="margin-left:20px;margin-top:20px;margin-bottom:20px;">
-        <div><span class="info-label">Name:</span> Miss. Rita Basu</div>
-        <div><span class="info-label">Age:</span> 43 years</div>
-        <div><span class="info-label">Bill No.:</span> I - 15548</div>
+        <div><span class="info-label">Name:</span> <%=preanalysisData.getName() %></div>
+        <div><span class="info-label">Age:</span> <%=preanalysisData.getAge() %></div>
+        <div><span class="info-label">Bill No.:</span><%=preanalysisData.getBillNo() %></div>
         <div><span class="info-label">Payee:</span> DIRECT Lab</div>
         
     
     </div>
     <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
-        <div><span class="info-label">Patient ID:</span> 8236</div>
-        <div><span class="info-label">Sex:</span> Female</div>
-        <div><span class="info-label">Phone:</span> 6289285022</div>
-        <div><span class="info-label">Address:</span> Jhargram</div>
+        <div><span class="info-label">Patient ID:</span> <%=preanalysisData.getPatientNo() %></div>
+        <div><span class="info-label">Sex:</span> <%=preanalysisData.getGender() %></div>
+        <div><span class="info-label">Phone:</span> <%=preanalysisData.getPhoneNo() %></div>
+        <div><span class="info-label">Address:</span> <%=preanalysisData.getAddress() %></div>
     </div>
     <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
-        <div><span class="info-label">Bill Date:</span> 18/01/24, 01:20 PM</div>
-        <div><span class="info-label">Referred By:</span> SELF</div>
+        <div><span class="info-label">Bill Date:</span> <%=currentTime %></div>
+        <div><span class="info-label">Referred By:</span> <%=preanalysisData.getReferredby() %></div>
         <div><span class="info-label">Collected On:</span> 18 Jan 2024</div>
-        <div><span class="info-label">Payment Mode:</span> CASH</div>
+        <div><span class="info-label">Payment Mode:</span> <%=preanalysisData.getPaymentMode()%></div>
     </div>
    
 </div>
@@ -145,42 +159,29 @@
                     </tr>
                 </thead>
                 <tbody>
+                 <%
+                     int list=1;
+                     int totalBill=0;
+                     String patientno=preanalysisData.getPatientNo();
+
+                     List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientno);
+                     for (ExaminationDetails preList1 : examList) {
+                     %>
                     <tr>
-                        <td>A203</td>
-                        <td>Serum Urea</td>
+                        <td><%=preList1.getEx_code() %></td>
+                        <td><%=preList1.getEx_name() %></td>
                         <td>Serum</td>
-                        <td>200.00</td>
+                        <td><%=preList1.getEx_price() %></td>
+                        
                     </tr>
-                    <tr>
-                        <td>A208</td>
-                        <td>Triglycerides</td>
-                        <td>Serum</td>
-                        <td>250.00</td>
-                    </tr>
-                    <tr>
-                        <td>A218</td>
-                        <td>Serum G P T (ALT)</td>
-                        <td>Serum</td>
-                        <td>200.00</td>
-                    </tr>
-                    <tr>
-                        <td>A217</td>
-                        <td>Alkaline Phosphatase</td>
-                        <td>Serum</td>
-                        <td>200.00</td>
-                    </tr>
-                    <tr>
-                        <td>A200</td>
-                        <td>Sugar (Fasting)</td>
-                        <td>Fluoride - F</td>
-                        <td>80.00</td>
-                    </tr>
-                    <tr>
-                        <td>A201</td>
-                        <td>Sugar (P P)</td>
-                        <td>Fluoride - Pp</td>
-                        <td>80.00</td>
-                    </tr>
+                    <%
+                    double price=0;
+                    String priceStr = preList1.getEx_price();
+                    if (priceStr != null && !priceStr.trim().isEmpty()) {
+                        price = Double.parseDouble(priceStr.trim());
+                    }
+                    totalBill+=price;
+                    } %>
                 </tbody>
             </table>
         </div>
@@ -194,7 +195,7 @@
             </div>
              
             <div class="right-section">
-                <div class="total">Total: 1010.00</div>
+                <div class="total">Total: <%=totalBill %></div>
                 <div class="paid">Total Paid: 0.00</div>
                 <div class="due">Due: 1010.00</div>
             </div>

@@ -99,7 +99,7 @@ public class PreAnalysisDaoImp {
 	            System.out.println(" Sql "+sql);
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	            ResultSet rs = ps.executeQuery();
-
+             
 	            // Loop through the result set
 	            while (rs.next()) {
 	            	exdetails = new ExaminationDetails();
@@ -108,6 +108,7 @@ public class PreAnalysisDaoImp {
 	            	
 	            	exdetails.setEx_price(rs.getString("price"));
 	            	exdetails.setEx_name(rs.getString("exam_name"));
+	            	exdetails.setEx_code(rs.getString("examination_code"));
 
 	                
 	                
@@ -115,7 +116,7 @@ public class PreAnalysisDaoImp {
 	                examList.add(exdetails);
 	            }
 	        } catch (SQLException e) {
-	        	System.out.println("Exception in getAllpreanalysisers "+e);
+	        	System.out.println("Exception in getExaminationDetails "+e);
 	        }
 	        // Return the list of preanalysisers
 	        return examList;
@@ -197,19 +198,56 @@ public class PreAnalysisDaoImp {
 	        
 	    }
 	        
-	        public void saveExaminationDetails(ExaminationDetails examDetail,String patient_id) {
-	            String sql = "INSERT INTO examination_details (patient_id,exam_name, price) VALUES (?, ?,?)";
+public void saveExaminationDetails(ExaminationDetails examDetail,String patient_id) {
+	            String sql = "INSERT INTO examination_details (patient_id,exam_name, price,EXAMINATION_CODE) VALUES (?, ?,?,?)";
 	            try (Connection conn = dbconnect.getConn();
 	                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
 	            	stmt.setString(1, patient_id);
 	                stmt.setString(2, examDetail.getEx_name());
 	                stmt.setString(3, examDetail.getEx_price());
+	                stmt.setString(4, examDetail.getEx_code());
 	                stmt.executeUpdate();
 
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
 	        }
+
+// Reciept details
+public PreAnalysis getRecieptdetails(String patientID) {
+    Dbconnect dbconnect = new Dbconnect();
+    PreAnalysis preanalysis=null;
+    try {
+    	Connection conn = dbconnect.getConn();
+        // SQL query to select all fields from the register table
+        String sql = "SELECT * FROM TBL_RECEIPT where patient_id ='"+patientID+"'";
+        System.out.println(" getRecieptdetails SQL "+sql);
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        // Loop through the result set
+        while (rs.next()) {
+            preanalysis = new PreAnalysis();
+           
+            preanalysis.setName(rs.getString("name")); 
+            preanalysis.setAge(rs.getString("age"));
+            preanalysis.setAddress(rs.getString("address"));
+            preanalysis.setPhoneNo(rs.getString("phone_number"));
+            preanalysis.setEmail(rs.getString("email"));
+            preanalysis.setGender(rs.getString("gender")); 
+            preanalysis.setReferredby(rs.getString("reffered_by"));
+            preanalysis.setBillNo(rs.getString("bill_no"));
+            preanalysis.setPatientNo(rs.getString("patient_id"));
+            preanalysis.setDate(rs.getString("date"));
+            preanalysis.setPaymentMode(rs.getString("payment_mode"));
+
+        }
+    } catch (SQLException e) {
+    	System.out.println("Exception in getAllpreanalysisers "+e);
+    }
+    // Return the list of preanalysisers
+    return preanalysis;
+}
 	 
 }
