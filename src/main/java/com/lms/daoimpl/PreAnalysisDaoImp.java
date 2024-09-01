@@ -89,6 +89,38 @@ public class PreAnalysisDaoImp {
 	    }
 	 
 	 //examination Details
+	 public List<ExaminationDetails> getExaminationDetails(String patientID) {
+	        List<ExaminationDetails> examList = new ArrayList<>();
+	        ExaminationDetails exdetails=null;
+	        try {
+	        	Connection conn = dbconnect.getConn();
+	            // SQL query to select all fields from the register table
+	            String sql = "SELECT * FROM examination_details where patient_id ='"+patientID+"'";
+	            System.out.println(" Sql "+sql);
+	            PreparedStatement ps = conn.prepareStatement(sql);
+	            ResultSet rs = ps.executeQuery();
+
+	            // Loop through the result set
+	            while (rs.next()) {
+	            	exdetails = new ExaminationDetails();
+
+	                
+	            	
+	            	exdetails.setEx_price(rs.getString("price"));
+	            	exdetails.setEx_name(rs.getString("exam_name"));
+
+	                
+	                
+	                // Add the preanalysiser object to the preanalysiser list
+	                examList.add(exdetails);
+	            }
+	        } catch (SQLException e) {
+	        	System.out.println("Exception in getAllpreanalysisers "+e);
+	        }
+	        // Return the list of preanalysisers
+	        return examList;
+	    }
+	 
 	// In your DAO class (e.g., ExaminationDaoImpl)
 	 public List<ExaminationDetails> getExaminationNames() {
 	     List<ExaminationDetails> examinationNames = new ArrayList<>();

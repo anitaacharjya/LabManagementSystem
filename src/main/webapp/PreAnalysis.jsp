@@ -1,6 +1,7 @@
 <%@ page import="com.lms.dbconnect.Dbconnect"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.lms.vo.PreAnalysis"%>
+<%@ page import="com.lms.vo.ExaminationDetails"%>
 <%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
 <%@ page import="java.sql.Connection"%>
 
@@ -80,6 +81,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                             <tr class="table-header text-xs uppercase tracking-wider bg-blue">
                                 <th class="py-3 px-6 text-left">SL No</th>
                                 <th class="py-3 px-6 text-left">Name</th>
+                                <th class="py-3 px-6 text-left">Examination</th>
                                 <th class="py-3 px-6 text-left">Age</th>
                                 <th class="py-3 px-6 text-left">Gender</th>
                                 <th class="py-3 px-6 text-left">Address</th>
@@ -87,20 +89,34 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <th class="py-3 px-6 text-left">Create Date</th>
                                 <th class="py-3 px-6 text-left">Bill No</th>
                                 <th class="py-3 px-6 text-left">Patien Number</th>
-                                <th class="py-3 px-6 text-left">Refred By</th>\
+                                <th class="py-3 px-6 text-left">Refred By</th>
                                 <th class="py-3 px-6 text-left">Status</th>
                                 <th class="py-3 px-6 text-left">Action</th>
                             </tr>
                         </thead>
                         <tbody class="text-black-700  ">
                             <%
+                            List<ExaminationDetails> examList=null;
                             int count = 1;
                             if (preanalysislist != null) {
                                 for (PreAnalysis preList : preanalysislist) {
+                                	
                             %>
                             <tr class="table-row border-b border-gray-200">
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= count %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getName() %></td>
+                               <td class="py-3 px-6 text-left whitespace-nowrap">
+                                <%
+                                int list=1;
+                                String patientno=preList.getPatientNo();
+
+                                examList = preanalysis.getExaminationDetails(patientno);
+                                for (ExaminationDetails preList1 : examList) {
+                                %>
+                                   <h6><%= list + ": " + preList1.getEx_name() %></h6>
+                                    <% list++; %>
+                                <% }%>
+                                </td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAddress() %></td>
@@ -113,10 +129,10 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">
-                                        <a href="updateUser.jsp?username=<%= preList.getPatientNo() %>" class="w-4 mr-2 transform hover:text-blue-600">
+                                        <a href="PreAnalysisServlet?patientNo=<%= preList.getPatientNo() %>" class="w-4 mr-2 transform hover:text-blue-600">
                                             <i class="fas fa-edit"></i>
                                         </a> 
-                                        <a href="deleteUser.jsp?username=<%= preList.getPatientNo()  %>" class="w-4 mr-2 transform hover:text-red-600">
+                                        <a href="PreAnalysisServlet?patientNo=<%= preList.getPatientNo()  %>" class="w-4 mr-2 transform hover:text-red-600">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </div>

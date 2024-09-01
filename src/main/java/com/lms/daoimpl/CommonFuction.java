@@ -29,5 +29,18 @@ public class CommonFuction {
 	        }
 	        return value;
 	    }
+	 // Delete value G
+	 public int deleteItem(String tableName,String columnName,String id) {
+	        int value=0;
+	        try {
+	        	Connection conn = dbconnect.getConn();
+	            String sql = "DELETE from "+tableName+" where "+columnName+"='"+id+"'";
+	            PreparedStatement ps = conn.prepareStatement(sql);
+	            value = ps.executeUpdate();
+	        } catch (SQLException e) {
+	        	System.out.println("Exception in getMaxid "+e);
+	        }
+	        return value;
+	    }
 
 }
