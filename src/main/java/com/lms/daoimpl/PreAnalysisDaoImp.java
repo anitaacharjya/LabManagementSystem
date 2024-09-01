@@ -168,6 +168,28 @@ public class PreAnalysisDaoImp {
 	        return price;
 	        
 	 }     
+	 
+	//fetch exam code
+		 public String getExaminationCodeByName(String examName) {
+			 Dbconnect dbconnect = new Dbconnect();
+		        String code = null;
+		        // Implement the logic to fetch the price from the database based on the examName
+		        String query = "SELECT EXAMINATION_CODE FROM TBL_EXAMINATION WHERE examination_name = ?";
+		        
+		        try (Connection con = dbconnect.getConn();
+		             PreparedStatement ps = con.prepareStatement(query)) {
+		            ps.setString(1, examName);
+		            ResultSet rs = ps.executeQuery();
+		            if (rs.next()) {
+		            	code = rs.getString("EXAMINATION_CODE");
+		            }
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		        return code;
+		        
+		 }     
+	 
 	        //save reciept
 	        
 	        public void saveUser(PreAnalysis user) {
@@ -198,7 +220,8 @@ public class PreAnalysisDaoImp {
 	        
 	    }
 	        
-public void saveExaminationDetails(ExaminationDetails examDetail,String patient_id) {
+public int saveExaminationDetails(ExaminationDetails examDetail,String patient_id) {
+	int value = 0;
 	            String sql = "INSERT INTO examination_details (patient_id,exam_name, price,EXAMINATION_CODE) VALUES (?, ?,?,?)";
 	            try (Connection conn = dbconnect.getConn();
 	                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -207,11 +230,13 @@ public void saveExaminationDetails(ExaminationDetails examDetail,String patient_
 	                stmt.setString(2, examDetail.getEx_name());
 	                stmt.setString(3, examDetail.getEx_price());
 	                stmt.setString(4, examDetail.getEx_code());
-	                stmt.executeUpdate();
+	               value = stmt.executeUpdate();
 
 	            } catch (SQLException e) {
 	                e.printStackTrace();
+	                System.out.println("exception in saveExaminationDetails : "+e);
 	            }
+				return value;
 	        }
 
 // Reciept details

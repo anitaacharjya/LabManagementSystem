@@ -129,10 +129,15 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">
-                                        <a href="PreAnalysisServlet?patientNo=<%= preList.getPatientNo() %>" class="w-4 mr-2 transform hover:text-blue-600">
-                                            <i class="fas fa-edit"></i>
+                                        
+                                        <a href="Reciept.jsp?patientNo=<%= preList.getPatientNo() %>" 
+                                          class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                                         <i class="fas fa-download mr-2"></i> View Reciept
+                                        </a>
+                                        <a href="PreAnalysisServlet?patientNo=<%= preList.getPatientNo() %>" class="w-4 mr-2 transform text-green-600"style="margin-left:20px;font-size:30px">
+                                           <i class="fas fa-edit"></i>
                                         </a> 
-                                        <a href="PreAnalysisServlet?patientNo=<%= preList.getPatientNo()  %>" class="w-4 mr-2 transform hover:text-red-600">
+                                        <a href="PreAnalysisServlet?patientNo=<%= preList.getPatientNo()  %>" class="w-4 mr-2 transform text-red-600"style="margin-left:20px;font-size:30px">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </div>

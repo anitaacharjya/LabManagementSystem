@@ -41,6 +41,7 @@
         const cell1 = newRow.insertCell(0);
         const cell2 = newRow.insertCell(1);
         const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
 
         // Generate the dropdown with examination names
         let dropdownHTML = `<select name="examName[]" class="border rounded p-2 w-full bg-gray-50" onchange="fetchPrice(this)">`;
@@ -52,7 +53,7 @@
 
         cell1.innerHTML = dropdownHTML;
         cell2.innerHTML = `<input type="text" name="examPrice[]" class="border rounded p-2 w-full bg-gray-50" placeholder="Price" readonly style="margin-left:20px">`;
-        
+        cell4.innerHTML = `<input type="hidden" name="examCode[]" class="border rounded p-2 w-full bg-gray-50" placeholder="code" readonly style="margin-left:20px">`;
         // Create the remove button with the correct event listener
         const removeButton = document.createElement('button');
         removeButton.type = "button";
@@ -77,24 +78,42 @@
         }
 
         function fetchPrice(selectElement) {
+            const row = selectElement.closest('tr'); // Get the closest row element
+            const priceInput = row.querySelector('input[name="examPrice[]"]');
+            const codeInput = row.querySelector('input[name="examCode[]"]');
+
             const examName = selectElement.value;
-            const priceInput = selectElement.parentElement.nextElementSibling.querySelector('input[name="examPrice[]"]');
 
             if (examName) {
                 const xhr = new XMLHttpRequest();
                 xhr.open('GET', 'FetchPriceServlet?examName=' + encodeURIComponent(examName), true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4 && xhr.status === 200) {
-                        priceInput.value = xhr.responseText;
+                        try {
+                            // Parse the JSON response
+                            const response = JSON.parse(xhr.responseText);
+
+                            // Set the price and code values
+                            priceInput.value = response.price || ""; // Add default empty string fallback
+                            codeInput.value = response.code || ""; // Add default empty string fallback
+                        } catch (e) {
+                            console.error("Failed to parse response JSON", e);
+                        }
                     }
                 };
                 xhr.send();
             } else {
                 priceInput.value = ""; // Clear the price field if no examination is selected
+                codeInput.value = "";  // Clear the code field if no examination is selected
             }
 
             validateExaminations();
+            console.log("Row:", row);
+            console.log("Price Input:", priceInput);
+            console.log("Code Input:", codeInput);
+
         }
+
 
         function validateExaminations() {
             const examSelectElements = document.getElementsByName('examName[]');
@@ -275,6 +294,9 @@
                                 </td>
                                 <td>
                                     <input type="text" name="examPrice[]" class="border rounded p-2 w-full bg-gray-50" placeholder="Price" readonly style="margin-left:20px">
+                                </td>
+                                <td style="display:none">
+                                    <input  type="hidden" name="examCode[]" class="border rounded p-2 w-full bg-gray-50"placeholder="Price" readonly style="margin-left:20px">
                                 </td>
                                 <td style="text-align: center; vertical-align: middle;">
                                     <button type="button" onclick="removeExaminationRow(this)" class="bg-red-500 text-white font-bold py-2 px-4 rounded">

@@ -49,17 +49,20 @@ public class RecieptServlet extends HttpServlet { protected void doPost(HttpServ
     // Extract examination details
     String[] examNames = request.getParameterValues("examName[]");
     String[] examPrices = request.getParameterValues("examPrice[]");
+    String[] examCodes = request.getParameterValues("examCode[]");
+    
 
     if (examNames != null && examPrices != null) {
         for (int i = 0; i < examNames.length; i++) {
             String examName = examNames[i];
             String examPrice = examPrices[i];
+            String examCode = examCodes[i];
 
             if (examName != null && !examName.isEmpty()) {
                 ExaminationDetails examDetail = new ExaminationDetails();
                 examDetail.setEx_name(examName);
                 examDetail.setEx_price(examPrice);
-
+                examDetail.setEx_code(examCode);
                 // Save examination details in the database
                 PreAnalysisDaoImp examDao = new PreAnalysisDaoImp();
                 examDao.saveExaminationDetails(examDetail,patientId);

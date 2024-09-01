@@ -106,7 +106,8 @@
 </head>
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
-PreAnalysis preanalysisData=preanalysis.getRecieptdetails("P03");  
+String patient_id = request.getParameter("patientNo");
+PreAnalysis preanalysisData=preanalysis.getRecieptdetails(patient_id);  
 Date now = new Date();
 // Format the date according to your desired format
 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy, hh:mm a"); // Example: 18/01/24, 01:20 PM

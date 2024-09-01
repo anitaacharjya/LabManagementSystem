@@ -20,9 +20,13 @@ public class FetchPriceServlet extends HttpServlet {
         if (examName != null && !examName.isEmpty()) {
             PreAnalysisDaoImp examDao = new PreAnalysisDaoImp();
             double price = examDao.getExaminationPriceByName(examName); // Implement this method in DAO
+            String code = examDao.getExaminationCodeByName(examName);
             
-            response.setContentType("text/plain");
-            response.getWriter().write(String.valueOf(price));
+         // Create a JSON response
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String jsonResponse = "{\"price\": \"" + price + "\", \"code\": \"" + code + "\"}";
+            response.getWriter().write(jsonResponse);
         } else {
             response.getWriter().write("0.0"); // Default value
         }
