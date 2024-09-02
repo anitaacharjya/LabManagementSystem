@@ -89,6 +89,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <th class="py-3 px-6 text-left">Create Date</th>
                                 <th class="py-3 px-6 text-left">Bill No</th>
                                 <th class="py-3 px-6 text-left">Patien Number</th>
+                                <th class="py-3 px-6 text-left">Payment Mode</th>
                                 <th class="py-3 px-6 text-left">Refred By</th>
                                 <th class="py-3 px-6 text-left">Status</th>
                                 <th class="py-3 px-6 text-left">Action</th>
@@ -124,6 +125,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getBillNo() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getPatientNo() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getPaymentMode() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getReferredby() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap">Panding</td>
                                 

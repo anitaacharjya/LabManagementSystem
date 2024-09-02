@@ -1,12 +1,23 @@
 <%@ page import="java.util.List"%>
-<%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>\
+<%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
 <%@ page import="com.lms.daoimpl.CommonFuction"%>
 <%@ page import="com.lms.vo.ExaminationDetails"%>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+
 
 <%
     // Fetch examination names from the database
     PreAnalysisDaoImp examDao = new PreAnalysisDaoImp();
     List<ExaminationDetails> examNames = examDao.getExaminationNames();
+%>
+<%
+    // Get the current date and time
+    LocalDateTime now = LocalDateTime.now();
+
+    // Format the date and time as "dd-MM-yyyy HH:mm:ss"
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    String formattedDateTime = now.format(formatter);
 %>
 
 <!DOCTYPE html>
@@ -166,13 +177,13 @@
             // Age validation (numeric and between 1-120)
             validateField(age, age.value.trim() === "" || isNaN(age.value) || age.value < 1 || age.value > 120);
 
-            // Phone number validation (10 digits)
+           /*  // Phone number validation (10 digits)
             const phonePattern = /^[0-9]{10}$/;
             validateField(phoneNumber, !phonePattern.test(phoneNumber.value));
 
             // Email validation (basic email format)
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-            validateField(email, !emailPattern.test(email.value));
+            validateField(email, !emailPattern.test(email.value)); */
 
             // Date validation (basic non-empty check)
             validateField(date, date.value.trim() === "");
@@ -197,6 +208,7 @@
      <%
      CommonFuction commonfun = new CommonFuction();
      int patientId=commonfun.getMaxid("TBL_RECEIPT", "ID_REC");
+     int billno = patientId;
       %>
 
     <!-- Main Content -->
@@ -224,10 +236,16 @@
                         <label class="block mb-2 text-black-700">Age:</label>
                         <input type="text" name="age" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"> 
                     </div>
-                    <div>
-                        <label class="block mb-2 text-black-700">Gender:</label>
-                        <input type="text" name="gender" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"> 
-                    </div>
+                   <div>
+                  <label class="block mb-2 text-black-700">Gender:</label>
+                  <select name="gender" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                  <option value="" disabled selected>Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                  </select>
+                </div>
+
                     <div>
                         <label class="block mb-2 text-black-700">Address:</label>
                         <input type="text" name="address" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
@@ -242,11 +260,21 @@
                     </div>
                     <div>
                         <label class="block mb-2 text-black-700">Date:</label>
-                        <input type="text" name="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"> 
+                        <input type="text" name="date" value="<%= formattedDateTime %>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly> 
                     </div>
                     <div>
                         <label class="block mb-2 text-black-700">Bill No:</label>
-                        <input type="text" name="billno" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <%
+					    if(billno!=0){
+					    	billno=billno+1;
+					    	%>
+					    	<input type="text" name="billno" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value="B-10<%= billno %>" readonly>
+					   <% }else{
+					    %>
+					    <input type="text" name="billno" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value="latest Patient ID">
+					    <% }
+					    %>
+                        
                     </div>
                   <div>
 					    <label class="block mb-2 text-black-700">Patient ID:</label>
@@ -261,6 +289,18 @@
 					    <% }
 					    %>
 				 </div>
+				 <div>
+    <label class="block mb-2 text-black-700">Payment Mode:</label>
+    <select name="paymentmode" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+        <option value="" disabled selected>Select Payment Mode</option>
+        <option value="cash">Cash</option>
+        <option value="credit">Credit Card</option>
+        <option value="debit">Debit Card</option>
+        <option value="online">Online Payment</option>
+        <option value="cheque">Cheque</option>
+    </select>
+</div>
+				 
                     <div>
                         <label class="block mb-2 text-black-700">Referred By:</label>
                         <input type="text" name="reffer" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">

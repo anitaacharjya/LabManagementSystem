@@ -28,6 +28,7 @@ public class RecieptServlet extends HttpServlet { protected void doPost(HttpServ
     String billNo = request.getParameter("billno");
     String patientId = request.getParameter("patientid");
     String refferedBy = request.getParameter("reffer");
+    String paymode = request.getParameter("paymentmode");
 
     // Create a new User object
     PreAnalysis user = new PreAnalysis();
@@ -41,6 +42,7 @@ public class RecieptServlet extends HttpServlet { protected void doPost(HttpServ
     user.setBillNo(billNo);
     user.setPatientNo(patientId);
     user.setReferredby(refferedBy);
+    user.setPaymentMode(paymode);
 
     // Save user details in the database
     PreAnalysisDaoImp userDao = new PreAnalysisDaoImp();

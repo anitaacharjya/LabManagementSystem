@@ -193,7 +193,7 @@ public class PreAnalysisDaoImp {
 	        //save reciept
 	        
 	        public void saveUser(PreAnalysis user) {
-	            String sql = "INSERT INTO TBL_RECEIPT (name, age, gender, address, phone_number, email, date, bill_no, patient_id, reffered_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	            String sql = "INSERT INTO TBL_RECEIPT (name, age, gender, address, phone_number, email, date, bill_no, patient_id, reffered_by,payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 	            try (
 	            	Connection conn = dbconnect.getConn();
 	                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -208,6 +208,7 @@ public class PreAnalysisDaoImp {
 	                stmt.setString(8, user.getBillNo());
 	                stmt.setString(9, user.getPatientNo());
 	                stmt.setString(10, user.getReferredby());
+	                stmt.setString(11, user.getPaymentMode());
 
 	                stmt.executeUpdate();
 
