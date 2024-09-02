@@ -106,20 +106,38 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= count %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getName() %></td>
                                <td class="py-3 px-6 text-left whitespace-nowrap">
-                                <%
-                                int list=1;
-                                String patientno=preList.getPatientNo();
+    <%
+    int list = 1;
+    String patientno = preList.getPatientNo();
 
-                                examList = preanalysis.getExaminationDetails(patientno);
-                                for (ExaminationDetails preList1 : examList) {
-                                %>
-                                   <h6><%= list + ": " + preList1.getEx_name() %>  <a href="Reciept1.jsp?patientNo=<%= preList.getPatientNo() %>" 
-                                          class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
-                                         <i class="fas fa-download mr-2"></i> Sample Collected
-                                        </a></h6>
-                                    <% list++; %>
-                                <% }%>
-                                </td>
+    examList = preanalysis.getExaminationDetails(patientno);
+    for (ExaminationDetails preList1 : examList) {
+    %>
+        <div class="flex justify-between items-center mb-3">
+            <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " + preList1.getEx_name() %></h6>
+           <%
+           if(preList1.getSample_status()!= null){
+           if(preList1.getSample_status().equals("P")){ %> <a href="Reciept1.jsp?patientNo=<%= preList.getPatientNo() %>" 
+               class="bg-red-600  text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                <i class="fas fa-vial mr-2"></i> <!-- Updated icon for sample collection -->
+                Pending
+            </a>
+            <%}else{ %>
+            <button
+               class="bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                <i class="fas fa-vial mr-2"></i> <!-- Updated icon for sample collection -->
+                Collected
+            </button>
+            
+            <%}} %>
+            
+        </div>
+        <%
+        list++;
+    }
+    %>
+</td>
+
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAddress() %></td>

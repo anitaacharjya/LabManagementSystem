@@ -75,7 +75,9 @@ public class PreAnalysisDaoImp {
 	            	exdetails.setEx_code(rs.getString("examination_code"));
 	            	exdetails.setEx_price(rs.getString("price"));
 	            	exdetails.setEx_name(rs.getString("examination_name"));
-
+	            	exdetails.setSample_id(rs.getString("sample_id"));
+	            	exdetails.setSample_status(rs.getString("sample_status"));
+	            	exdetails.setPatient_id(rs.getString("patient_id"));
 	                
 	                
 	                // Add the preanalysiser object to the preanalysiser list
@@ -109,6 +111,9 @@ public class PreAnalysisDaoImp {
 	            	exdetails.setEx_price(rs.getString("price"));
 	            	exdetails.setEx_name(rs.getString("exam_name"));
 	            	exdetails.setEx_code(rs.getString("examination_code"));
+	            	exdetails.setSample_status(rs.getString("sample_status"));
+	            	exdetails.setSample_id(rs.getNString("sample_id"));
+	            	exdetails.setPatient_id(rs.getString("patient_id"));
 
 	                
 	                
