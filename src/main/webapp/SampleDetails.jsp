@@ -1,6 +1,7 @@
 <%@ page import="com.lms.dbconnect.Dbconnect"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.lms.vo.PreAnalysis"%>
+<%@ page import="com.lms.vo.ExaminationDetails"%>
 <%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
 <%@ page import="java.sql.Connection"%>
 
@@ -13,7 +14,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
 <html class="h-full">
 <head>
     <meta charset="UTF-8">
-    <title>Employee</title>
+    <title>Sample Details</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
@@ -66,9 +67,9 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
          <div class="flex-1 p-10 overflow-auto"style="margin-top:-30px">
         <div class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
-                <h1 class="text-4xl font-bold text-gray-900">Sample Details</h1>
-                <a href="" class="btn-primary flex items-center shadow-lg">
-                    <i class="fas fa-plus mr-2"></i> Create Sample
+                <h1 class="text-4xl font-bold text-gray-900">Pre Analysis</h1>
+                <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg">
+                    <i class="fas fa-plus mr-2"></i> Create Recipt
                 </a>
             </div>
 
@@ -80,6 +81,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                             <tr class="table-header text-xs uppercase tracking-wider bg-blue">
                                 <th class="py-3 px-6 text-left">SL No</th>
                                 <th class="py-3 px-6 text-left">Name</th>
+                                <th class="py-3 px-6 text-left">Examination</th>
                                 <th class="py-3 px-6 text-left">Age</th>
                                 <th class="py-3 px-6 text-left">Gender</th>
                                 <th class="py-3 px-6 text-left">Address</th>
@@ -94,13 +96,30 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                         </thead>
                         <tbody class="text-black-700  ">
                             <%
+                            List<ExaminationDetails> examList=null;
                             int count = 1;
                             if (preanalysislist != null) {
                                 for (PreAnalysis preList : preanalysislist) {
+                                	
                             %>
                             <tr class="table-row border-b border-gray-200">
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= count %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getName() %></td>
+                               <td class="py-3 px-6 text-left whitespace-nowrap">
+                                <%
+                                int list=1;
+                                String patientno=preList.getPatientNo();
+
+                                examList = preanalysis.getExaminationDetails(patientno);
+                                for (ExaminationDetails preList1 : examList) {
+                                %>
+                                   <h6><%= list + ": " + preList1.getEx_name() %>  <a href="Reciept1.jsp?patientNo=<%= preList.getPatientNo() %>" 
+                                          class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                                         <i class="fas fa-download mr-2"></i> Sample Collected
+                                        </a></h6>
+                                    <% list++; %>
+                                <% }%>
+                                </td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAddress() %></td>
@@ -113,11 +132,10 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">
-                                        <a href="updateUser.jsp?username=<%= preList.getPatientNo() %>" class="w-4 mr-2 transform hover:text-blue-600">
-                                            <i class="fas fa-edit"></i>
-                                        </a> 
-                                        <a href="deleteUser.jsp?username=<%= preList.getPatientNo()  %>" class="w-4 mr-2 transform hover:text-red-600">
-                                            <i class="fas fa-trash-alt"></i>
+                                        
+                                        <a href="Reciept1.jsp?patientNo=<%= preList.getPatientNo() %>" 
+                                          class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                                         <i class="fas fa-download mr-2"></i> Submit Sample
                                         </a>
                                     </div>
                                 </td>
