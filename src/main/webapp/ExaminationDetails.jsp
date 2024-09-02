@@ -114,7 +114,7 @@ List<ExaminationDetails> examlist = preanalysis.getAllExaminationDetails();
                             </tr>
                             <%
                                 count++;
-                                }
+                                }  
                             }
                             %>
                         </tbody>
