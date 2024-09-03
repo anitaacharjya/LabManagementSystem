@@ -79,20 +79,20 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                     <table class="min-w-full leading-normal">
                         <thead>
                             <tr class="table-header text-xs uppercase tracking-wider bg-blue">
-                                <th class="py-3 px-6 text-left">SL No</th>
-                                <th class="py-3 px-6 text-left">Name</th>
-                                <th class="py-3 px-6 text-left">Examination</th>
-                                <th class="py-3 px-6 text-left">Age</th>
-                                <th class="py-3 px-6 text-left">Gender</th>
-                                <th class="py-3 px-6 text-left">Address</th>
-                                <th class="py-3 px-6 text-left">Phone Number</th>
-                                <th class="py-3 px-6 text-left">Create Date</th>
-                                <th class="py-3 px-6 text-left">Bill No</th>
-                                <th class="py-3 px-6 text-left">Patien Number</th>
-                                <th class="py-3 px-6 text-left">Payment Mode</th>
-                                <th class="py-3 px-6 text-left">Refred By</th>
-                                <th class="py-3 px-6 text-left">Status</th>
-                                <th class="py-3 px-6 text-left">Action</th>
+                                <th class="py-3 px-6 text-middle">SL No</th>
+                                <th class="py-3 px-6 text-middle">Name</th>
+                                <th class="py-3 px-6 text-middle">Examination</th>
+                                <th class="py-3 px-6 text-middle">Age</th>
+                                <th class="py-3 px-6 text-middle">Gender</th>
+                                <th class="py-3 px-6 text-middle">Address</th>
+                                <th class="py-3 px-6 text-middle">Phone Number</th>
+                                <th class="py-3 px-6 text-middle">Create Date</th>
+                                <th class="py-3 px-6 text-middle">Bill No</th>
+                                <th class="py-3 px-6 text-middle">Patien Number</th>
+                                <th class="py-3 px-6 text-middle">Payment Mode</th>
+                                <th class="py-3 px-6 text-middle">Refred By</th>
+                                <th class="py-3 px-6 text-middle">Status</th>
+                                <th class="py-3 px-6 text-middle">Action</th>
                             </tr>
                         </thead>
                         <tbody class="text-black-700  ">
@@ -134,14 +134,14 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                         
                                         <a href="Reciept.jsp?patientNo=<%= preList.getPatientNo() %>" 
                                           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
-                                         <i class="fas fa-download mr-2"></i> View Reciept
+                                         <i class="fa-solid fa-eye" style="margin-right:7px"></i> View Reciept
                                         </a>
-                                        <a href="PreAnalysisServlet?patientNo=<%= preList.getPatientNo() %>" class="w-4 mr-2 transform text-green-600"style="margin-left:20px;font-size:30px">
-                                           <i class="fas fa-edit"></i>
-                                        </a> 
-                                        <a href="PreAnalysisServlet?patientNo=<%= preList.getPatientNo()  %>" class="w-4 mr-2 transform text-red-600"style="margin-left:20px;font-size:30px">
-                                            <i class="fas fa-trash-alt"></i>
+                                        <div style="margin-left:12px">
+                                         <a href="Reciept.jsp?patientNo=<%= preList.getPatientNo() %>" 
+                                          class="bg-red-600  text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                                         <i class="fa-solid fa-ban" style="margin-right:7px"></i> Void
                                         </a>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

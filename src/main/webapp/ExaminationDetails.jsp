@@ -67,8 +67,8 @@ List<ExaminationDetails> examlist = preanalysis.getAllExaminationDetails();
         <div class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-4xl font-bold text-gray-900">Pre Analysis</h1>
-                <a href="" class="btn-primary flex items-center shadow-lg">
-                    <i class="fas fa-plus mr-2"></i> Create Recipt
+                <a href="AddExamination.jsp" class="btn-primary flex items-center shadow-lg">
+                    <i class="fas fa-plus mr-2"></i> Add Examination
                 </a>
             </div>
 

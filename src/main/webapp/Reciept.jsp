@@ -202,5 +202,10 @@ String currentTime = sdf.format(now);
             </div>
         </div>
     </div>
+    <form action="downloadReceipt" method="post">
+    <input type="hidden" name="patientNo" value="<%=patient_id%>">
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download PDF</button>
+</form>
+    
 </body>
 </html>

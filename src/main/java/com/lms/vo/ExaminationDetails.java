@@ -5,6 +5,7 @@ public class ExaminationDetails {
 	private String ex_code;
 	private String ex_name;
 	private String ex_price;
+	private String ex_table;
 	private String patient_id;
 	private String sample_status;
 	private String sample_id;
@@ -46,6 +47,12 @@ public class ExaminationDetails {
 	}
 	public void setSample_id(String sample_id) {
 		this.sample_id = sample_id;
+	}
+	public String getEx_table() {
+		return ex_table;
+	}
+	public void setEx_table(String ex_table) {
+		this.ex_table = ex_table;
 	}
 	
 	
