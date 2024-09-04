@@ -21,25 +21,23 @@ public class UserLoginServlet extends HttpServlet {
             String username = req.getParameter("username");
             String password = req.getParameter("password");
 
-            // Check if the credentials match an admin account
-            if ("admin".equals(username) && "adminPassword".equals(password)) {
-                session.setAttribute("role", "admin");
-                res.sendRedirect("adminHome.jsp");
-                return;
-            }
 
+            if(username!=null && password !=null) {
             // Regular user login
-            User user = dao.login(username, password);
-            if (user != null) {
+             int loging = dao.login(username, password);
+            if (loging>0) {
                 // Store user details in session
-                session.setAttribute("user", user);
+                //session.setAttribute("user", user);
                 session.setAttribute("username", username);
                 res.sendRedirect("home.jsp");
             } else {
                 session.setAttribute("Failed", "Username and password invalid");
                 res.sendRedirect("index.jsp");
             }
-            
+		    }else {
+		    	res.sendRedirect("error.jsp"); 
+		    }
+		        
         } catch (Exception e) {
             e.printStackTrace();
             res.sendRedirect("error.jsp"); // Optionally, redirect to an error page
