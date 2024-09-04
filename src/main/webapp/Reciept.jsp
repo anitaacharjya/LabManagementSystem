@@ -200,12 +200,14 @@ String currentTime = sdf.format(now);
                 <div class="paid">Total Paid: 0.00</div>
                 <div class="due">Due: 1010.00</div>
             </div>
+           
         </div>
-    </div>
-    <form action="downloadReceipt" method="post">
+         <form action="downloadReceipt" method="post">
     <input type="hidden" name="patientNo" value="<%=patient_id%>">
     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download PDF</button>
 </form>
+    </div>
+    
     
 </body>
 </html>
