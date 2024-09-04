@@ -5,13 +5,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import com.lms.dbconnect.Dbconnect;
 import com.lms.vo.ExaminationDetails;
 
 public class CommonFuction {
 	Dbconnect dbconnect = new Dbconnect();
+    private static final byte[] key = new byte[] { 
+            'T', 'h', 'i', 's', 'I', 's', 'A', 'S', 
+            'e', 'c', 'r', 'e', 't', 'K', 'e', 'y' 
+        };
 	//Finde maxId
 	 public int getMaxid(String tableName,String columnName) {
 	        ExaminationDetails exdetails=null;
@@ -39,6 +48,30 @@ public class CommonFuction {
 	            value = ps.executeUpdate();
 	        } catch (SQLException e) {
 	        	System.out.println("Exception in getMaxid "+e);
+	        }
+	        return value;
+	    }
+	 //Pasword passwordencrypt
+	    public static String passwordencryptdecrypted(String plainText, String action) throws Exception {
+	        Cipher cipher;
+	        String value = "";
+	        SecretKey secretKey = new SecretKeySpec(key, "AES"); // Use the predefined key
+	        cipher = Cipher.getInstance("AES");
+
+	        if (action.equals("ENC")) {
+	            byte[] plainTextByte = plainText.getBytes();
+	            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+	            byte[] encryptedByte = cipher.doFinal(plainTextByte);
+	            Base64.Encoder encoder = Base64.getEncoder();
+	            String encryptedText = encoder.encodeToString(encryptedByte);
+	            value = encryptedText;
+	        } else {
+	            Base64.Decoder decoder = Base64.getDecoder();
+	            byte[] encryptedTextByte = decoder.decode(plainText);
+	            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+	            byte[] decryptedByte = cipher.doFinal(encryptedTextByte);
+	            String decryptedText = new String(decryptedByte);
+	            value = decryptedText;
 	        }
 	        return value;
 	    }
