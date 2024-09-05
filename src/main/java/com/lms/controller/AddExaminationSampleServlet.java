@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lms.daoimpl.ExaminationDaoImpl;
 import com.lms.daoimpl.PreAnalysisDaoImp;
 
-@WebServlet("/AddExaminationServlet")
+@WebServlet("/AddExaminationSampleServlet")
 public class AddExaminationSampleServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -35,10 +35,10 @@ public class AddExaminationSampleServlet extends HttpServlet {
                     examDao.addExaminationSubtype(examName, examSubtype,code);
                 }
             }
-            response.sendRedirect("success.jsp"); // Redirect to success page
+            response.sendRedirect("SampleCtegory.jsp"); // Redirect to success page
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("error.jsp"); // Redirect to error page
+            response.sendRedirect("AddExaminationSample.jsp"); // Redirect to error page
         }
     }
 }

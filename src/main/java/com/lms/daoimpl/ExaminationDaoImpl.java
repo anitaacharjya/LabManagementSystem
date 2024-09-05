@@ -46,7 +46,7 @@ public class ExaminationDaoImpl {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
         	 pstmt.setString(1, code);
             pstmt.setString(2, examName);
-            pstmt.setString(2, subtype);
+            pstmt.setString(3, subtype);
             pstmt.executeUpdate();
         }
     }

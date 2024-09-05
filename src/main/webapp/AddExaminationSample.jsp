@@ -41,7 +41,7 @@
                     <c:remove var="Failed" scope="session" />
                 </c:if>
             </div>
-            <form action="AddExaminationServlet" method="post">
+            <form action="AddExaminationSampleServlet" method="post">
                 <div class="grid grid-cols-1 gap-6">
                     <div>
                         <select name="examName[]" class="border rounded p-2 w-full bg-gray-50" id="examNameDropdown" onchange="fetchExamDetails()">
