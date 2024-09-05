@@ -146,7 +146,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getBillNo() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getPatientNo() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getReferredby() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap">Panding</td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"></td>
                                 
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">

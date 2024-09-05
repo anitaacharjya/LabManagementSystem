@@ -15,30 +15,34 @@ import com.lms.vo.UserAccess;
 
 public class UserDaoImpl {
 	
-	public User login(String username, String password) {
+	public int login(String username, String password) {
 		Dbconnect dbconnect = new Dbconnect();
         User us = null;
+        int value =0;
+        
         try {
+        	CommonFuction common= new CommonFuction();
         	Connection conn = dbconnect.getConn();
-            String sql = "SELECT username,password FROM user WHERE username = ?";
+        	password=common.passwordencryptdecrypted(password, "ENC");
+        	System.out.println(" Password ENCRYPTED "+password);
+            String sql = "SELECT count(*) as count FROM user WHERE username = ? and password=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
+            ps.setString(2, password);
             
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                us = new User();
-               
-               us.setUsername(rs.getString(1));
-               us.setPassword(rs.getString(2));
-               
+              
+            	value=  Integer.parseInt(rs.getString("count")); 
 
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Exception in login function "+e);
         }
-        return us;
+        System.out.println(" Value "+value);
+        return value;
     }
 	
 	public boolean registerUser(User user) {

@@ -35,7 +35,7 @@
             if(adminUser.equals("Y")){ %>
             <li class="mb-4">
                 <button id="admin-dropdown-btn" class="block py-2 px-4 w-full text-left" style="font-weight:bold;font-size:15px">
-                    <i class="fa-solid fa-user-shield"></i> Admin
+                    <i class="fa-solid fa-user-shield"></i> Admin <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <ul id="admin-dropdown-menu" class="ml-4 hidden">
                     <li class="mb-2">
@@ -43,11 +43,29 @@
                              Users
                         </a>
                     </li>
-                     <li class="mb-2">
-                        <a href="ExaminationDetails.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
-                             Examination
-                        </a>
-                    </li>
+                    <li class="mb-4">
+    <button id="examination-dropdown-btn" class="block py-2 px-4 w-full text-left" style="font-weight:bold;font-size:15px">
+        Examination <i class="fa-solid fa-chevron-down"></i>
+    </button>
+    <ul id="examination-dropdown-menu" class="ml-4 hidden">
+        <li class="mb-2">
+            <a href="ExaminationDetails.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
+                 Examination Details
+            </a>
+        </li>
+        <li class="mb-2">
+            <a href="SampleCtegory.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
+                 Sample Category
+            </a>
+        </li>
+        <li class="mb-2">
+            <a href="#" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
+                 View Examinations
+            </a>
+        </li>
+    </ul>
+</li>
+
                      <li class="mb-2">
                         <a href="User.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
                              Test
@@ -168,6 +186,14 @@
             dropdownMenu.classList.toggle("hidden");
         });
     });
+    // Examination Dropdown
+    const examinationDropdownButton = document.getElementById("examination-dropdown-btn");
+    const examinationDropdownMenu = document.getElementById("examination-dropdown-menu");
+    if (examinationDropdownButton) {
+        examinationDropdownButton.addEventListener("click", function() {
+            examinationDropdownMenu.classList.toggle("hidden");
+        });
+    }
 </script>
 
 <style>

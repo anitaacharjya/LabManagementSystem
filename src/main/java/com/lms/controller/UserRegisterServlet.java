@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.lms.daoimpl.UserDaoImpl;
+import com.lms.daoimpl.CommonFuction;
 import com.lms.vo.User;
 
 
@@ -29,9 +30,9 @@ public class UserRegisterServlet extends HttpServlet {
 	
 	 protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 	            throws ServletException, IOException {
-		 
+		 boolean isPassword=false;
 		 HttpSession session = request.getSession();
-	        
+		 CommonFuction common =new CommonFuction();
 	        // Retrieve form data from the request object
 	        String name = request.getParameter("name");
 	        String dob = request.getParameter("dob");
@@ -57,7 +58,15 @@ public class UserRegisterServlet extends HttpServlet {
 	        String preanalysisAccess = request.getParameter("preanalysis_access");
 	        String analysisAccess = request.getParameter("analysis_access");
 	        String postanalysisAccess = request.getParameter("postanalysis_access");
+	        //Password check 
+	        try {
+	        	if(password!=null) {
+				password=common.passwordencryptdecrypted(password, "ENC");
+				isPassword=true;
+	        	}
+			} catch (Exception e) {
 
+			}
 	        // Create a new User object and set the retrieved data
 	        User user = new User();
 	        user.setName(name);
@@ -84,10 +93,12 @@ public class UserRegisterServlet extends HttpServlet {
 	        user.setPreanalysisAccess(preanalysisAccess);
 	        user.setAnalysisAccess(analysisAccess);
 	        user.setPostanalysisAccess(postanalysisAccess);
-
+	        boolean isRegistered=false;
 	        // Create an instance of UserDaoImpl to handle database operations
+	        if(isPassword) {
 	        UserDaoImpl userDao = new UserDaoImpl();
-	        boolean isRegistered = userDao.registerUser(user);
+	        isRegistered = userDao.registerUser(user);
+	        }
 
 	        // Redirect based on the registration result
 	        if (isRegistered) {

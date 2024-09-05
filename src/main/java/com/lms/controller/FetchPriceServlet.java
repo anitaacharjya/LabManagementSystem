@@ -22,6 +22,8 @@ public class FetchPriceServlet extends HttpServlet {
             double price = examDao.getExaminationPriceByName(examName); // Implement this method in DAO
             String code = examDao.getExaminationCodeByName(examName);
             
+            
+            
          // Create a JSON response
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

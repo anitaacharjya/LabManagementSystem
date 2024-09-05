@@ -37,5 +37,18 @@ public class ExaminationDaoImpl {
 		}
 					return value;
 		        }
+	
+	
+
+    public void addExaminationSubtype(String examName, String subtype,String code) throws SQLException {
+        String sql = "INSERT INTO TBL_EXAM_SUBTYPE (EXAM_CODE,EXAM_NAME, SUBTYPE) VALUES (?, ?,?)";
+        try (Connection conn = dbconnect.getConn();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        	 pstmt.setString(1, code);
+            pstmt.setString(2, examName);
+            pstmt.setString(2, subtype);
+            pstmt.executeUpdate();
+        }
+    }
 
 }
