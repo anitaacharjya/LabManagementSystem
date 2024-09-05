@@ -5,10 +5,12 @@
 <%@ page import="com.lms.vo.ExaminationDetails"%>
 <%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
 <%@ page import="java.sql.Connection"%>
+<%@ page import="com.lms.daoimpl.ExaminationDaoImpl"%>
 
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
 List<ExaminationDetails> examlist = preanalysis.getAllExaminationDetails();
+ExaminationDaoImpl subList= new ExaminationDaoImpl();
 %>
 
 <!DOCTYPE html>
@@ -100,7 +102,22 @@ List<ExaminationDetails> examlist = preanalysis.getAllExaminationDetails();
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= count %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_code()   %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_name() %></td>
-                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_name() %></td>
+                                
+                                 <td class="py-3 px-6 text-left whitespace-nowrap">
+                                 
+                                  <%
+								    int list = 1;
+								    String excCode = exList.getEx_code();
+								
+								    List<String> a =subList.showExaminationSubtype(excCode);
+								    for (String subname : a) {
+								    	%>
+								    	<h6><%= list + ": " + subname %></h6>
+								        <% list++;
+								    }
+								    %>
+                                 </td>
+                                 
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_price() %></td>
                                
                                
