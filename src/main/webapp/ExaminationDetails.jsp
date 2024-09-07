@@ -1,12 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import="com.lms.dbconnect.Dbconnect"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.lms.vo.ExaminationDetails"%>
 <%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
 <%@ page import="java.sql.Connection"%>
+<%@ page import="com.lms.daoimpl.ExaminationDaoImpl"%>
 
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
 List<ExaminationDetails> examlist = preanalysis.getAllExaminationDetails();
+ExaminationDaoImpl subList= new ExaminationDaoImpl();
 %>
 
 <!DOCTYPE html>
@@ -67,7 +71,7 @@ List<ExaminationDetails> examlist = preanalysis.getAllExaminationDetails();
         <div class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-4xl font-bold text-gray-900">Pre Analysis</h1>
-                <a href="AddExamination.jsp" class="btn-primary flex items-center shadow-lg">
+                 <a href="AddExamination.jsp" class="btn-primary flex items-center shadow-lg">
                     <i class="fas fa-plus mr-2"></i> Add Examination
                 </a>
             </div>
@@ -81,6 +85,7 @@ List<ExaminationDetails> examlist = preanalysis.getAllExaminationDetails();
                                 <th class="py-3 px-6 text-left">SL No</th>
                                 <th class="py-3 px-6 text-left">Exm_Code</th>
                                 <th class="py-3 px-6 text-left">Exm_Name</th>
+                                <th class="py-3 px-6 text-left">Sample_Category</th>
                                 <th class="py-3 px-6 text-left">Price</th>
                                 
                                
@@ -97,6 +102,22 @@ List<ExaminationDetails> examlist = preanalysis.getAllExaminationDetails();
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= count %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_code()   %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_name() %></td>
+                                
+                                 <td class="py-3 px-6 text-left whitespace-nowrap">
+                                 
+                                  <%
+								    int list = 1;
+								    String excCode = exList.getEx_code();
+								
+								    List<String> a =subList.showExaminationSubtype(excCode);
+								    for (String subname : a) {
+								    	%>
+								    	<h6><%= list + ": " + subname %></h6>
+								        <% list++;
+								    }
+								    %>
+                                 </td>
+                                 
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= exList.getEx_price() %></td>
                                
                                

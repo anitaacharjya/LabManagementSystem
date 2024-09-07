@@ -37,14 +37,33 @@ public class AddExaminationServlet extends HttpServlet {
 		ex_details.setEx_code(examcode);
 		
 		ExaminationDaoImpl dao = new ExaminationDaoImpl();
-		
-	int f =	dao.addExaminationDetails(ex_details);
+	    int f =	dao.addExaminationDetails(ex_details);
+	    
+        String[] examSubtypes = request.getParameterValues("examSubtype[]");
+        String code = request.getParameter("code");
+        System.out.println("Exam Subtype: " + examSubtypes.length);
+        ExaminationDaoImpl examDao = new ExaminationDaoImpl();
+
+        try {
+            for (int i = 0; i < examSubtypes.length; i++) {
+                
+                String examSubtype = examSubtypes[i];
+                System.out.println("examSubtype "+examSubtype );
+
+               
+                if (examSubtype != null && !examSubtype.trim().isEmpty()) {
+                	examDao.addExaminationSubtype(examname, examSubtype,examcode);
+                   System.out.println(" inside "+i);
+                }
+            }
 	
 	if(f>0) {
 		response.sendRedirect("ExaminationDetails.jsp");
+	}	
+	} catch (Exception e) {
+        e.printStackTrace();
+        response.sendRedirect("AddExaminationSample.jsp"); // Redirect to error page
+    }
+        
 	}
-		
-		
-	}
-
 }

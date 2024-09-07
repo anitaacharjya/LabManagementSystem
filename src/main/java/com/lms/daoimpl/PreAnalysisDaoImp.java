@@ -225,7 +225,7 @@ public class PreAnalysisDaoImp {
 	        
 public int saveExaminationDetails(ExaminationDetails examDetail,String patient_id) {
 	int value = 0;
-	            String sql = "INSERT INTO examination_details (patient_id,exam_name, price,EXAMINATION_CODE) VALUES (?, ?,?,?)";
+	            String sql = "INSERT INTO examination_details (patient_id,exam_name, price,EXAMINATION_CODE,sample_status) VALUES (?, ?,?,?,?)";
 	            try (Connection conn = dbconnect.getConn();
 	                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -233,6 +233,7 @@ public int saveExaminationDetails(ExaminationDetails examDetail,String patient_i
 	                stmt.setString(2, examDetail.getEx_name());
 	                stmt.setString(3, examDetail.getEx_price());
 	                stmt.setString(4, examDetail.getEx_code());
+	                stmt.setString(4, "C");
 	               value = stmt.executeUpdate();
 
 	            } catch (SQLException e) {

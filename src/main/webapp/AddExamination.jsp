@@ -61,6 +61,23 @@
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </div>
                 </div>
+                 <!-- Dynamic Subtype Input Fields -->
+                    <div id="subtypeContainer">
+                        <label for="subtype" class="block text-sm font-medium text-gray-700">Exam Subtype</label>
+                        <div class="flex items-center">
+                            <input type="text" name="examSubtype[]" class="border rounded p-2 w-full bg-gray-50 mt-1">
+                            <button type="button" onclick="removeSubtypeField(this)" class="bg-red-500 text-white font-bold py-2 px-4 ml-2 rounded mt-1">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Button to Add More Subtypes -->
+                    <div class="mt-4">
+                        <button type="button" onclick="addSubtypeField()" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">
+                            Add More Subtype
+                        </button>
+                    </div>
                 
                 <div class="mt-8 flex justify-between">
                     <button type="submit"
@@ -75,5 +92,59 @@
             </form>
         </div>
     </div>
+    <script>
+    // Function to add more subtype input fields with a remove button
+    function addSubtypeField() {
+        var subtypeContainer = document.createElement('div');
+        subtypeContainer.className = 'flex items-center mt-2';
+
+        var newSubtypeField = document.createElement('input');
+        newSubtypeField.type = 'text';
+        newSubtypeField.name = 'examSubtype[]';
+        newSubtypeField.className = 'border rounded p-2 w-full bg-gray-50';
+
+        var removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'bg-red-500 text-white font-bold py-2 px-4 ml-2 rounded';
+        removeButton.innerText = 'Remove';
+        removeButton.onclick = function() {
+            removeSubtypeField(removeButton);
+        };
+
+        subtypeContainer.appendChild(newSubtypeField);
+        subtypeContainer.appendChild(removeButton);
+
+        document.getElementById('subtypeContainer').appendChild(subtypeContainer);
+    }
+
+    // Function to remove a subtype input field
+    function removeSubtypeField(button) {
+        var fieldWrapper = button.parentElement;
+        fieldWrapper.remove();
+    }
+    function fetchExamDetails() {
+        var selectedExamName = $('#examNameDropdown').val();
+
+        if (selectedExamName) {
+            $.ajax({
+                url: 'FetchPriceServlet',
+                type: 'GET',
+                data: { examName: selectedExamName },
+                dataType: 'json',
+                success: function(response) {
+                    $('#examCode').val(response.code);
+                    $('#examPrice').val(response.price);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching exam details:', error);
+                }
+            });
+        } else {
+            $('#examCode').val('');
+            $('#examPrice').val('');
+        }
+    }
+    
+    </script>
 </body>
 </html>

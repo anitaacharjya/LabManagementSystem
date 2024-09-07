@@ -54,11 +54,6 @@
             </a>
         </li>
         <li class="mb-2">
-            <a href="SampleCtegory.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
-                 Sample Category
-            </a>
-        </li>
-        <li class="mb-2">
             <a href="#" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
                  View Examinations
             </a>
