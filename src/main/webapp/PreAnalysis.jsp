@@ -82,6 +82,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <th class="py-3 px-6 text-middle">SL No</th>
                                 <th class="py-3 px-6 text-middle">Name</th>
                                 <th class="py-3 px-6 text-middle">Examination</th>
+                                <th class="py-3 px-6 text-middle">Date</th>
                                 <th class="py-3 px-6 text-middle">Age</th>
                                 <th class="py-3 px-6 text-middle">Gender</th>
                                 <th class="py-3 px-6 text-middle">Address</th>
@@ -118,6 +119,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                     <% list++; %>
                                 <% }%>
                                 </td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAddress() %></td>
@@ -132,12 +134,12 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">
                                         
-                                        <a href="Reciept.jsp?patientNo=<%= preList.getPatientNo() %>" 
+                                        <a href="voidServlet?patientNo=<%= preList.getPatientNo() %>" 
                                           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                          <i class="fa-solid fa-eye" style="margin-right:7px"></i> View Reciept
                                         </a>
                                         <div style="margin-left:12px">
-                                         <a href="Reciept.jsp?patientNo=<%= preList.getPatientNo() %>" 
+                                         <a href="voidServlet?patientNo=<%= preList.getPatientNo() %>" 
                                           class="bg-red-600  text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                          <i class="fa-solid fa-ban" style="margin-right:7px"></i> Void
                                         </a>

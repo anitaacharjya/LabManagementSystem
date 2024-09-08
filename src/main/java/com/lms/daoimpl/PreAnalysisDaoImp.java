@@ -24,7 +24,7 @@ public class PreAnalysisDaoImp {
 	        try {
 	        	Connection conn = dbconnect.getConn();
 	            // SQL query to select all fields from the register table
-	            String sql = "SELECT * FROM TBL_RECEIPT";
+	            String sql = "SELECT * FROM TBL_RECEIPT where void!='Y'";
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	            ResultSet rs = ps.executeQuery();
 
@@ -43,6 +43,8 @@ public class PreAnalysisDaoImp {
 	                preanalysis.setPatientNo(rs.getString("patient_id"));
 	                preanalysis.setDate(rs.getString("date"));
 	                preanalysis.setPaymentMode(rs.getString("payment_mode"));
+	                preanalysis.setSampleCollectionDate(rs.getString("sample_collection_date"));
+	                
 
 	                
 	                

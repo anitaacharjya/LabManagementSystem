@@ -67,7 +67,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
          <div class="flex-1 p-10 overflow-auto"style="margin-top:-30px">
         <div class="flex-1 p-8">
             <div class="flex justify-between items-center mb-8">
-                <h1 class="text-4xl font-bold text-gray-900">Pre Analysis</h1>
+                <h1 class="text-4xl font-bold text-gray-900">Sample Details</h1>
                 <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg">
                     <i class="fas fa-plus mr-2"></i> Create Recipt
                 </a>
@@ -82,6 +82,8 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <th class="py-3 px-6 text-left">SL No</th>
                                 <th class="py-3 px-6 text-left">Name</th>
                                 <th class="py-3 px-6 text-left">Examination</th>
+                                <th class="py-3 px-6 text-left">Reciept Date</th>
+                                <th class="py-3 px-6 text-left">Collect Date</th>
                                 <th class="py-3 px-6 text-left">Age</th>
                                 <th class="py-3 px-6 text-left">Gender</th>
                                 <th class="py-3 px-6 text-left">Address</th>
@@ -90,7 +92,6 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <th class="py-3 px-6 text-left">Bill No</th>
                                 <th class="py-3 px-6 text-left">Patien Number</th>
                                 <th class="py-3 px-6 text-left">Refred By</th>
-                                <th class="py-3 px-6 text-left">Status</th>
                                 <th class="py-3 px-6 text-left">Action</th>
                             </tr>
                         </thead>
@@ -137,7 +138,8 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
     }
     %>
 </td>
-
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getSampleCollectionDate() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAddress() %></td>
@@ -146,7 +148,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getBillNo() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getPatientNo() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getReferredby() %></td>
-                                <td class="py-3 px-6 text-left whitespace-nowrap"></td>
+                              
                                 
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">

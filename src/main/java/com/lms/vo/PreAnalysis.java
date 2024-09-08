@@ -12,6 +12,14 @@ public class PreAnalysis {
 	public String address;
 	public String date;
 	public String email;
+	public String sampleCollectionDate;
+	
+	public String getSampleCollectionDate() {
+		return sampleCollectionDate;
+	}
+	public void setSampleCollectionDate(String sampleCollectionDate) {
+		this.sampleCollectionDate = sampleCollectionDate;
+	}
 	public String getDate() {
 		return date;
 	}

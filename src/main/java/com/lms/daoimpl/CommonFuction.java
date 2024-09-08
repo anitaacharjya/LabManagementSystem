@@ -75,5 +75,24 @@ public class CommonFuction {
 	        }
 	        return value;
 	    }
-
+	    
+	    
+	    //Update one column value 
+	    
+		 public int updateOneItem(String tableName,String columnName,String updateValue,String primaryId,String id) {
+		        int value=0;
+		        try {
+		        	Connection conn = dbconnect.getConn();
+		           // String sql = "DELETE from "+tableName+" where "+columnName+"='"+id+"'";
+		        	String sql="UPDATE "+tableName+" set "+columnName+"='"+updateValue+"' where "+primaryId+"='"+id+"'";
+		        	System.out.println(" update sql "+sql);
+		            PreparedStatement ps = conn.prepareStatement(sql);
+		            value = ps.executeUpdate();
+		        } catch (SQLException e) {
+		        	System.out.println("Exception in getMaxid "+e);
+		        
+		       
+		    }
+		      return value;
+		 }
 }
