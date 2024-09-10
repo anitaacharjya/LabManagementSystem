@@ -290,16 +290,16 @@
 					    %>
 				 </div>
 				 <div>
-    <label class="block mb-2 text-black-700">Payment Mode:</label>
-    <select name="paymentmode" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-        <option value="" disabled selected>Select Payment Mode</option>
-        <option value="cash">Cash</option>
-        <option value="credit">Credit Card</option>
-        <option value="debit">Debit Card</option>
-        <option value="online">Online Payment</option>
-        <option value="cheque">Cheque</option>
-    </select>
-</div>
+					    <label class="block mb-2 text-black-700">Payment Mode:</label>
+					    <select name="paymentmode" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+					        <option value="" disabled selected>Select Payment Mode</option>
+					        <option value="cash">Cash</option>
+					        <option value="credit">Credit Card</option>
+					        <option value="debit">Debit Card</option>
+					        <option value="online">Online Payment</option>
+					        <option value="cheque">Cheque</option>
+					    </select>
+					</div>
 				 
                     <div>
                         <label class="block mb-2 text-black-700">Referred By:</label>

@@ -4,10 +4,8 @@
 <%@ page import="com.lms.vo.ExaminationDetails"%>
 <%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
 <%@ page import="java.util.List"%>
-
-
-
-
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
@@ -17,6 +15,14 @@ Date now = new Date();
 // Format the date according to your desired format
 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy, hh:mm a"); // Example: 18/01/24, 01:20 PM
 String currentTime = sdf.format(now);
+%>
+<%
+    // Get the current date and time
+    LocalDateTime date = LocalDateTime.now();
+
+    // Format the date and time as "dd-MM-yyyy HH:mm:ss"
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    String formattedDateTime = date.format(formatter);
 %>
 <!DOCTYPE html>
 <html>
@@ -105,7 +111,7 @@ String currentTime = sdf.format(now);
 
         .divider {
             width: 100%;
-            height: 2px;
+            height: 1px;
             background-color: black;
             margin: 20px 0;
         }
@@ -167,64 +173,75 @@ String currentTime = sdf.format(now);
             <td style="border-left: none;"><%=preanalysisData.getAge() %></td>
         </tr>
         <tr>
-            <td style="border-right: none;"><strong>Sample Collection Date:</strong></td>
-            <td style="border-left: none;"></td>
+            <td style="border-right: none;"><strong>Reciept Date:</strong></td>
+            <td style="border-left: none;"><%=preanalysisData.getDate() %></td>
             <td style="border-right: none;"><strong>Sex:</strong></td>
             <td style="border-left: none;"><%=preanalysisData.getGender() %></td>
         </tr>
         <tr>
             <td style="border-right: none;"><strong>Sample Collection Time:</strong></td>
-            <td style="border-left: none;"></td>
-            <td style="border-right: none;"><strong>Lab ID No:</strong></td>
-            <td style="border-left: none;">567890</td>
-        </tr>
-        <tr>
-            <td style="border-right: none;"><strong>Sample Collected By:</strong></td>
-            <td style="border-left: none;"></td>
-            <td style="border-right: none;"><strong>Clinical History:</strong></td>
-            <td style="border-left: none;"></td>
+            <td style="border-left: none;"><%=formattedDateTime %></td>
+            <td style="border-right: none;"><strong>Patient Id:</strong></td>
+            <td style="border-left: none;"><%=preanalysisData.getPatientNo()%></td>
         </tr>
         <tr>
             <td style="border-right: none;"><strong>Patient’s Address:</strong></td>
             <td style="border-left: none;"><%=preanalysisData.getAddress() %></td>
-            <td style="border-right: none;"><strong>Sample Type:</strong></td>
-            <td style="border-left: none;">Blood</td>
-        </tr>
-        <tr>
-            <td style="border-right: none;"><strong>Ref. By:</strong></td>
-            <td style="border-left: none;">Dr. Smith</td>
+            <!--  <td style="border-right: none;"><strong>Sample Type:</strong></td>
+            <td style="border-left: none;">Blood</td>-->
             <td style="border-right: none;"><strong>Contact No:</strong></td>
             <td style="border-left: none;">+91 9876543210</td>
         </tr>
+        <tr>
+            <td style="border-right: none;"><strong>Ref. By:</strong></td>
+            <td style="border-left: none;"><%=preanalysisData.getReferredby() %></td>
+            <td style="border-right: none;"><strong>Sample Collected By:</strong></td>
+            <td style="border-left: none;"></td>
+            
+        </tr>
     </table>
 </div>
+  <div>
+    <div>
+    <p><strong>Clinical History:</strong> Hypertension &#x25FB; /Diabetic &#x25FB;/ TB &#x25FB; /CKD &#x25FB; /Hypothyroid &#x25FB; /Hyperthyroid &#x25FB; /Dyslipidemia &#x25FB;</p>
+    </div>
+    <div>
+    <p><strong>Addiction if any:</strong> </p>
+    </div>
+    <div>
+    <p><strong>Allergic history:</strong> </p>
+    </div>
+    <div>
+    <p><strong>Any Other:</strong> </p>
+    </div>
+    <div>
+      <br>
+    </div>
+  </div>
 
-
-
-        <div class="divider"></div>
-
-        <div class="test-parameters">
+       <div class="test-parameters">
+        <div class="divider" ></div>
             <h3>Tests/Investigation</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Test Parameter</th>
-                        <th>Result</th>
+                        <th>Test</th>
+                        <th>Sample</th>
                     </tr>
                 </thead>
                 <tbody>
+                <%
+                String patientno=preanalysisData.getPatientNo();
+
+                List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientno);
+                for (ExaminationDetails preList1 : examList) {
+                
+                %>
                     <tr>
-                        <td>Blood Sugar</td>
-                        <td>120 mg/dL</td>
+                        <td>SUGAR --></td>
+                        <td></td>
                     </tr>
-                    <tr>
-                        <td>Cholesterol</td>
-                        <td>190 mg/dL</td>
-                    </tr>
-                    <tr>
-                        <td>Hemoglobin</td>
-                        <td>14.5 g/dL</td>
-                    </tr>
+                    <%} %>
                 </tbody>
             </table>
         </div>
