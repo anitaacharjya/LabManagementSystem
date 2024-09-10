@@ -153,6 +153,10 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">
                                         
+                                        <a href="TestRequisitionForm.jsp?patientNo=<%= preList.getPatientNo() %>" 
+                                          class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                                         <i class="fas fa-download mr-2"></i> View Report
+                                        </a>
                                         <a href="Reciept1.jsp?patientNo=<%= preList.getPatientNo() %>" 
                                           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                          <i class="fas fa-download mr-2"></i> Submit Sample
