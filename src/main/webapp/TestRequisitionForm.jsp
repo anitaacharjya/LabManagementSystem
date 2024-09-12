@@ -155,6 +155,25 @@ String currentTime = sdf.format(now);
             clear: both;
         }
     </style>
+     <script>
+        // Open the modal
+        function openModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        // Function to get selected value from dropdown
+        function submitSelection() {
+            var dropdown = document.getElementById("testDropdown");
+            var selectedTest = dropdown.options[dropdown.selectedIndex].value;
+            alert("You selected: " + selectedTest); // For demonstration
+            closeModal(); // Close the modal after selection
+        }
+    </script>
 </head>
 <body>
     <div class="container">

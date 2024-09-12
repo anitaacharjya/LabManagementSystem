@@ -32,11 +32,16 @@
                 <h4 class="text-3xl font-semibold text-gray-800">Add details for Test Requisition form</h4>
                
             </div>
-            <form action="AddExaminationServlet" method="post">
+            <form action="RequisitionServlet" method="post">
                 <div class="grid grid-cols-1 gap-6">
+                <div>
+                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">ID</label>
+                        <input type="text" id="clinicalHistory" name="id" value="<%=patientno %>"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
+                    </div>
                     <div>
                         <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Name</label>
-                        <input type="text" id="clinicalHistory" name="clinicalHistory" value="<%=patientName %>"
+                        <input type="text" id="clinicalHistory" name="name" value="<%=patientName %>"
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
                     </div>
                     <div>
