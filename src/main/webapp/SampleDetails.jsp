@@ -137,6 +137,11 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         list++;
     }
     %>
+         <a href="SubmitSampal.jsp?patientNo=<%= preList.getPatientNo()%>&patientName=<%= preList.getName() %>"
+              class="bg-blue-600  text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                 <!-- Updated icon for sample collection -->
+                Submit
+            </a>
 </td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
                                 <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getSampleCollectionDate() %></td>
