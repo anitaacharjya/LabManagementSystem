@@ -6,6 +6,8 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="com.lms.daoimpl.SampleDaoImpl"%>
+<%@ page import="com.lms.vo.Prerequisition"%>
 
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
@@ -220,18 +222,23 @@ String currentTime = sdf.format(now);
         </tr>
     </table>
 </div>
+	<%
+	SampleDaoImpl sample =new SampleDaoImpl();
+	Prerequisition prereq = sample.getPreRequisitionDetails(patient_id);
+	
+	%>
   <div>
     <div>
-    <p><strong>Clinical History:</strong> Hypertension &#x25FB; /Diabetic &#x25FB;/ TB &#x25FB; /CKD &#x25FB; /Hypothyroid &#x25FB; /Hyperthyroid &#x25FB; /Dyslipidemia &#x25FB;</p>
+    <p><strong>Clinical History:- </strong> <%=prereq.getClinicalHistory() %></p>
     </div>
     <div>
-    <p><strong>Addiction if any:</strong> </p>
+    <p><strong>Addiction if any:- </strong><%=prereq.getAddiction() %> </p>
     </div>
     <div>
-    <p><strong>Allergic history:</strong> </p>
+    <p><strong>Allergic history:- </strong><%=prereq.getAllergicHistory() %>  </p>
     </div>
     <div>
-    <p><strong>Any Other:</strong> </p>
+    <p><strong>Any Other:- </strong><%=prereq.getOther() %>  </p>
     </div>
     <div>
       <br>

@@ -27,27 +27,21 @@ public class PreAnalysisDaoImp {
 	            String sql = "SELECT * FROM TBL_RECEIPT where void!='Y'";
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	            ResultSet rs = ps.executeQuery();
-
 	            // Loop through the result set
 	            while (rs.next()) {
-	                preanalysis = new PreAnalysis();
-	               
+	                preanalysis = new PreAnalysis();	               
 	                preanalysis.setName(rs.getString("name")); 
 	                preanalysis.setAge(rs.getString("age"));
 	                preanalysis.setAddress(rs.getString("address"));
 	                preanalysis.setPhoneNo(rs.getString("phone_number"));
 	                preanalysis.setEmail(rs.getString("email"));
-	                preanalysis.setGender(rs.getString("gender")); 
+	                preanalysis.setGender(rs.getString("gender"));
 	                preanalysis.setReferredby(rs.getString("reffered_by"));
 	                preanalysis.setBillNo(rs.getString("bill_no"));
 	                preanalysis.setPatientNo(rs.getString("patient_id"));
 	                preanalysis.setDate(rs.getString("date"));
 	                preanalysis.setPaymentMode(rs.getString("payment_mode"));
 	                preanalysis.setSampleCollectionDate(rs.getString("sample_collection_date"));
-	                
-
-	                
-	                
 	                // Add the preanalysiser object to the preanalysiser list
 	                recieptList.add(preanalysis);
 	            }
@@ -124,8 +118,7 @@ public class PreAnalysisDaoImp {
 	        }
 	        // Return the list of preanalysisers
 	        return examList;
-	    }
-	 
+	    }	 
 	// In your DAO class (e.g., ExaminationDaoImpl)
 	 public List<ExaminationDetails> getExaminationNames() {
 	     List<ExaminationDetails> examinationNames = new ArrayList<>();

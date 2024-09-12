@@ -3,6 +3,7 @@
 <%@ page import="com.lms.vo.PreAnalysis"%>
 <%@ page import="com.lms.vo.ExaminationDetails"%>
 <%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
+<%@ page import="com.lms.daoimpl.ExaminationDaoImpl"%>
 <%@ page import="java.sql.Connection"%>
 
 <%
@@ -185,7 +186,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                                <%
                                                if(preList1.getSample_status()!= null){
                                                if(preList1.getSample_status().equals("P")){ %> 
-                                                <button onclick="openModal('<%= preList.getPatientNo() %>', '<%= preList.getName() %>', '<%= preList.getAge() %>', '<%= preList.getAddress() %>')" 
+                                                <button onclick="openModal('<%= preList.getPatientNo() %>', '<%= preList1.getEx_name() %>', '<%= preList.getAge() %>', '<%= preList.getAddress() %>')" 
                                                     class="bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                                     <i class="fas fa-vial mr-2"></i> Pending
                                                 </button>
@@ -253,19 +254,30 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
             </div>
             <form>
                 <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Name:</label>
-                    <input type="text" id="name" name="name" class="search-input" readonly>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Test Name:</label>
+                    <input type="text" id="testname" name="testname" class="search-input" readonly>
                 </div>
-                <div class="mb-4">
-                    <label for="age" class="block text-sm font-medium text-gray-700">Age:</label>
-                    <input type="text" id="age" name="age" class="search-input" readonly>
-                </div>
+                
+                <%
+                ExaminationDaoImpl subexam= new ExaminationDaoImpl();
+                List<String> list=subexam.showExaminationSubtype("EX08");
+                %>
+               <div class="mb-4">
+			    <label for="examName" class="block text-sm font-medium text-gray-700">Select Sample:</label>
+			    <select name="examName[]" id="examName" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+			        <option value="">Select Sample</option>
+			        <% for (int i = 0; i < list.size(); i++) { %>
+			            <option value="<%= list.get(i) %>"><%= list.get(i) %></option>
+			        <% } %>
+			    </select>
+			</div>
+                
                 <div class="mb-4">
                     <label for="address" class="block text-sm font-medium text-gray-700">Address:</label>
                     <input type="text" id="address" name="address" class="search-input" readonly>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-primary" onclick="closeModal()">Close</button>
+                    <button tExaminationDaoImplype="button" class="btn-primary" onclick="closeModal()">Close</button>
                     <button type="button" class="btn-primary">Add</button>
                 </div>
             </form>
@@ -273,10 +285,10 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
     </div>
 
     <script>
-    function openModal(patientNo, name, age, address) {
+    function openModal(patientNo, testname, age, address) {
         // Populate modal fields with the data
-        document.getElementById('name').value = name;
-        document.getElementById('age').value = age;
+        document.getElementById('testname').value = testname;
+        //document.getElementById('age').value = age;
         document.getElementById('address').value = address;
 
         // Show the modal

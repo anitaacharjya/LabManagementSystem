@@ -2,8 +2,13 @@ package com.lms.daoimpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.lms.dbconnect.Dbconnect;
+import com.lms.vo.ExaminationDetails;
 import com.lms.vo.Prerequisition;
 
 public class SampleDaoImpl {
@@ -40,6 +45,36 @@ public class SampleDaoImpl {
 	        // Implement logic to get the next examination ID from the database
 	        return 1; // Placeholder
 	    }
+	    
+// Fetch Pre Requisition details	    
+		 public Prerequisition getPreRequisitionDetails(String patientID) {
+		        List<Prerequisition> list = new ArrayList<>();
+		        Prerequisition preReq=new Prerequisition();
+		        try {
+		        	Connection conn = dbconnect.getConn();
+		            // SQL query to select all fields from the register table
+		            String sql = "SELECT * FROM TBL_PREREQUISITION where patient_id ='"+patientID+"'";
+		            System.out.println(" Sql "+sql);
+		            PreparedStatement ps = conn.prepareStatement(sql);
+		            ResultSet rs = ps.executeQuery();
+	             
+		            // Loop through the result set
+		            while (rs.next()) {
+		            	preReq.setAddiction(rs.getString("addiction"));
+		            	preReq.setAllergicHistory(rs.getString("allergic_history"));
+		            	preReq.setClinicalHistory(rs.getString("clinical_history"));
+		            	preReq.setOther(rs.getString("other"));
+
+		                
+		                // Add the preanalysiser object to the preanalysiser list
+		            	
+		            }
+		        } catch (SQLException e) {
+		        	System.out.println("Exception in getExaminationDetails "+e);
+		        }
+		        // Return the list of preanalysisers
+		        return preReq;
+		    }
 	}
 
 
