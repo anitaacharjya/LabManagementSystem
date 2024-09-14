@@ -26,7 +26,7 @@ public class TestSampleDetails extends HttpServlet {
 		 String name = request.getParameter("name");
 		 String patientId = request.getParameter("patientId");
 		 String testName = request.getParameter("testname");
-		 String[] addedSample = request.getParameterValues("addedSamples");
+		 String[] addedSample = request.getParameterValues("addedSamples[]");
 		 System.out.println(" Name "+name);
 		 System.out.println(" patientId "+patientId);
 		 System.out.println(" testName "+testName);
@@ -35,7 +35,7 @@ public class TestSampleDetails extends HttpServlet {
 		 for(int i=0;i<addedSample.length;i++) {
 			 String sample=addedSample[i];
 			 System.out.println(" sample"+sample);
-			// result=sampledao.addTestSampleDetails(name,testName,patientId,sample);
+			result=sampledao.addTestSampleDetails(name,testName,patientId,sample);
 			 
 		 }
 		 if(result==true) {

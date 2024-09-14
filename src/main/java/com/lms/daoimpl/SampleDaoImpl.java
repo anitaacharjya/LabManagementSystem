@@ -85,7 +85,7 @@ public class SampleDaoImpl {
 		            String query = "INSERT INTO TBL_TESTSAMPLE_DTLS (name,test_name,patient_id,sample_name) VALUES (?, ?, ?, ?)";
 		            PreparedStatement ps = conn.prepareStatement(query);
 		            // Set parameters
-		            ps.setString(1,patientName);
+		           ps.setString(1,patientName);
 		           ps.setString(2,testName);
 		           ps.setString(3,patientId);
 		           ps.setString(4,sample);
@@ -96,6 +96,16 @@ public class SampleDaoImpl {
 		            int rowsAffected = ps.executeUpdate();
 		            if(rowsAffected>0) {
 		            	result=true;
+		            }
+		            if(result==true) {
+		            	String updatesql ="UPDATE examination_details set sample_status=? where patient_id=? and exam_name=?";
+		            	PreparedStatement psUpdate = conn.prepareStatement(updatesql);
+		            	psUpdate.setString(1,"C");
+		            	psUpdate.setString(2,patientId);
+		            	psUpdate.setString(3,testName);
+		            	int rowsupdate = psUpdate.executeUpdate();
+		            	System.out.println("rowsupdate "+rowsupdate);
+			           
 		            }
 		            
 		        } catch (Exception e) {

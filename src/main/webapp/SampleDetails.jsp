@@ -186,7 +186,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                                <%
                                                if(preList1.getSample_status()!= null){
                                                if(preList1.getSample_status().equals("P")){ %> 
-                                                <button onclick="openModal('<%= preList.getPatientNo() %>', '<%= preList1.getEx_name() %>', '<%= preList.getAge() %>', '<%= preList.getName() %>')" 
+                                                <button onclick="openModal('<%= preList.getPatientNo() %>', '<%= preList1.getEx_name() %>', '<%= preList1.getEx_code() %>', '<%= preList.getName() %>')" 
                                                     class="bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                                     <i class="fas fa-vial mr-2"></i> Pending
                                                 </button>
@@ -254,50 +254,42 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
             </div>
      <form id="sampleForm" action="SampleDetails" method="get">
     <div class="mb-4">
-        <label for="name" class="block text-sm font-medium text-gray-700">Test Name:</label>
-        <input type="text" id="testname" name="testname" class="search-input" readonly>
-    </div>
-
-    <div class="mb-4">
-        <label for="examName" class="block text-sm font-medium text-gray-700">Select Sample:</label>
-        <select name="examName[]" id="examName" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-            <option value="">Select Sample</option>
-            <%
-            
-            ExaminationDaoImpl subexam= new ExaminationDaoImpl();
-            List<String> list=subexam.showExaminationSubtype("EX08");
-            
-            
-            for (int i = 0; i < list.size(); i++) { %>
-                <option value="<%= list.get(i) %>"><%= list.get(i) %></option>
-            <% } %>
-        </select>
-    </div>
-        <div class="mb-4">
-        <button type="button" class="btn-primary" id="addSampleBtn">
-            <i class="fa-solid fa-plus"></i> Add Sample
-        </button>
-        <button type="button" class="btn-primary bg-red-600" id="removeSampleBtn">
-            <i class="fa-solid fa-minus"></i> Remove Sample
-        </button>
-    </div>
-
-    <div class="mb-4">
-        <!-- <label for="addedSamples" class="block text-sm font-medium text-gray-700">Added Samples:</label> --> <span><div class="modal-footer">
-       
-       <!--  <button type="button" class="btn-primary" id="addSampleBtn"><i class="fa-solid fa-plus"></i> Add Sample</button> -->
-    </div></span>
-        <select  id="addedSamples"  name="addedSamples[]" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" multiple>
-            <!-- Dynamically added options will appear here -->
-        </select>
-    </div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Test Name:</label>
+                <input type="text" id="testname" name="testname" class="search-input" readonly>
+     </div>
     
-    
+
+            <%-- <div class="mb-4">
+                <label for="examName" class="block text-sm font-medium text-gray-700">Select Sample:</label>
+                <select name="examName" id="examName" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <option value="">Select Sample</option>
+                    <% 
+                        ExaminationDaoImpl subexam = new ExaminationDaoImpl();
+                        List<String> list = subexam.showExaminationSubtype("EX08");
+                        for (int i = 0; i < list.size(); i++) { 
+                    %>
+                        <option value="<%= list.get(i) %>"><%= list.get(i) %></option>
+                    <% } %>
+                </select>
+            </div> --%>
+             <div class="mb-4">
+                <label for="examName" class="block text-sm font-medium text-gray-700">Select Sample:</label>
+                <select name="examName" id="examName" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <option value="">Select Sample</option>
+                    
+                </select>
+            </div>
+      
+
+    <!-- Container for dynamically added input fields -->
+            <div id="dynamicFieldsContainer" class="mb-4">
+            </div>
     
     <div class="mb-4">
         <!-- <label for="address" class="block text-sm font-medium text-gray-700">Name:</label> -->
-        <input type="text" id="name" name="name" class="search-input" readonly>
-        <input type="text" id="patientId" name="patientId" class="search-input" readonly>
+        <input type="hidden" id="name" name="name" class="search-input" readonly>
+        <input type="hidden" id="patientId" name="patientId" class="search-input" readonly>
+        <input type="hidden" id="examCoad" name="examCoad" class="search-input" readonly>
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn-primary" >Submit</button>
@@ -307,77 +299,102 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
 
         </div>
     </div>
-
+ 
     <script>
-    document.getElementById('addSampleBtn').addEventListener('click', function() {
-        // Get the selected sample
-        const sampleDropdown = document.getElementById('examName');
-        const selectedSample = sampleDropdown.options[sampleDropdown.selectedIndex].text;
-        const selectedSampleValue = sampleDropdown.value;
+    
+    document.getElementById('examName').addEventListener('change', function() {
+        const selectedSample = this.value;
 
-        // Check if a sample is selected
-        if (selectedSampleValue === "") {
-            alert("Please select a sample to add.");
+        if (selectedSample === "") {
+            alert("Please select a sample.");
             return;
         }
 
-        // Check if the sample is already added
-        const addedSamplesDropdown = document.getElementById('addedSamples');
-        const options = addedSamplesDropdown.options;
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].value === selectedSampleValue) {
-                alert("This sample has already been added.");
-                return; // Stop the function if duplicate is found
-            }
-        }
-
-        // Create a new option element if not a duplicate
-        const newOption = document.createElement('option');
-        newOption.text = selectedSample;
-        newOption.value = selectedSampleValue;
-
-        // Add the new option to the added samples dropdown
-        addedSamplesDropdown.add(newOption);
-
-        // Optionally, reset the sample selection after adding
-        sampleDropdown.selectedIndex = 0;
-    });
-    document.getElementById('removeSampleBtn').addEventListener('click', function() {
-        // Get the added samples dropdown
-        const addedSamplesDropdown = document.getElementById('addedSamples');
-
-        // Check if a sample is selected for removal
-        if (addedSamplesDropdown.selectedIndex === -1) {
-            alert("Please select a sample to remove.");
+        // Check if sample already exists in the dynamic fields
+        if (document.getElementById("input-" + selectedSample)) {
+            alert("This sample has already been added.");
             return;
         }
 
-        // Remove the selected sample
-        addedSamplesDropdown.remove(addedSamplesDropdown.selectedIndex);
-    });
-    document.getElementById('sampleForm').addEventListener('submit', function(event) {
-        const addedSamples = document.getElementById('addedSamples');
-        const selectedValues = [...addedSamples.options].map(option => option.value);
-        console.log("Samples being submitted: ", selectedValues);
+        // Get the container where new input fields will be added
+        const container = document.getElementById('dynamicFieldsContainer');
+
+        // Create a new div for each dynamic input
+        const newDiv = document.createElement('div');
+        newDiv.classList.add('flex', 'items-center', 'mb-2');
+        newDiv.id = "input-" + selectedSample;  // Assign an id for easy removal
+
+        // Create a new input element
+        const newInput = document.createElement('input');
+        newInput.type = 'text';
+        newInput.name = 'addedSamples[]';
+        newInput.value = selectedSample;
+        newInput.classList.add('search-input', 'flex-1', 'mr-2');
+        newInput.readOnly = true;  // Make the input readonly
+
+        // Create a remove button
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.classList.add('bg-red-600', 'text-white', 'font-bold', 'py-2', 'px-4', 'rounded-full', 'shadow-md');
+        removeButton.innerText = "Remove";
+        removeButton.onclick = function() {
+            container.removeChild(newDiv);  // Remove the div when the button is clicked
+        };
+
+        // Append the input and remove button to the div
+        newDiv.appendChild(newInput);
+        newDiv.appendChild(removeButton);
+
+        // Append the new div to the container
+        container.appendChild(newDiv);
+
+        // Reset the dropdown selection
+        this.selectedIndex = 0;
     });
 
-
-    function openModal(patientId, testname, age, name) {
+    function openModal(patientId, testname, examCoad, name) {
         // Populate modal fields with the data
         document.getElementById('testname').value = testname;
         document.getElementById('name').value = name;
         document.getElementById('patientId').value = patientId;
+        document.getElementById('examCoad').value = examCoad;
+        
+        
+        // Fetch subtype data based on examCoad
+        fetchExaminationSubtypes(examCoad);
 
         // Show the modal
         document.getElementById('myModal').style.display = 'block';
+    }
+    
+    function fetchExaminationSubtypes(examCoad) {
+        const selectElement = document.getElementById('examName');
+
+        // Clear existing options
+        selectElement.innerHTML = '<option value="">Select Sample</option>';
+        var exm=examCoad;
+         alert(" exam code "+exm);
+         ;
+        // Fetch new options based on examCoad
+        fetch(`GetExaminationSubtypes?examCoad=${encodeURIComponent(examCoad)}`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item;
+                    option.textContent = item;
+                    selectElement.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching examination subtypes:', error));
     }
 
     function closeModal() {
         document.getElementById('myModal').style.display = 'none';
 
-        // Clear the added samples list when closing
-        const addedSamplesDropdown = document.getElementById('addedSamples');
-        addedSamplesDropdown.innerHTML = ''; // Remove all options
+        // Clear all dynamically added fields
+        const container = document.getElementById('dynamicFieldsContainer');
+        container.innerHTML = '';
     }
 
     window.onclick = function(event) {
@@ -386,6 +403,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         }
     }
 
+    
     </script>
 </body>
 </html>
