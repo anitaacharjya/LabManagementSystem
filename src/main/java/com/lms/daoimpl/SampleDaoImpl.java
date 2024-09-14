@@ -75,6 +75,36 @@ public class SampleDaoImpl {
 		        // Return the list of preanalysisers
 		        return preReq;
 		    }
+		 
+	 public boolean addTestSampleDetails(String patientName,String testName,String patientId,String sample) {
+		        boolean result=false;
+		        try {
+		            
+
+		        	Connection conn = dbconnect.getConn();
+		            String query = "INSERT INTO TBL_TESTSAMPLE_DTLS (name,test_name,patient_id,sample_name) VALUES (?, ?, ?, ?)";
+		            PreparedStatement ps = conn.prepareStatement(query);
+		            // Set parameters
+		            ps.setString(1,patientName);
+		           ps.setString(2,testName);
+		           ps.setString(3,patientId);
+		           ps.setString(4,sample);
+		     
+		           
+
+		            // Execute query
+		            int rowsAffected = ps.executeUpdate();
+		            if(rowsAffected>0) {
+		            	result=true;
+		            }
+		            
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        } 
+		        return result;
+		    }
+		 
+		 
 	}
 
 

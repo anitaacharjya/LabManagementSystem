@@ -38,7 +38,7 @@ public class RequisitionServlet extends HttpServlet {
 
         // Redirect based on result
         if (isAdded) {
-            response.sendRedirect("SubmitSample.jsp"); 
+            response.sendRedirect("SampleDetails.jsp"); 
         } else {
             response.sendRedirect("error.jsp"); 
         }

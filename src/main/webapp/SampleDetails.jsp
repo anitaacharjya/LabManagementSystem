@@ -252,7 +252,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                 <h2>Pending Sample Details</h2>
                 <span class="close" onclick="closeModal()"><i class="fa-solid fa-rectangle-xmark" style="color: #e30202;"></i></span>
             </div>
-           <form id="sampleForm" action="" method="">
+     <form id="sampleForm" action="SampleDetails" method="get">
     <div class="mb-4">
         <label for="name" class="block text-sm font-medium text-gray-700">Test Name:</label>
         <input type="text" id="testname" name="testname" class="search-input" readonly>
@@ -273,23 +273,34 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
             <% } %>
         </select>
     </div>
+        <div class="mb-4">
+        <button type="button" class="btn-primary" id="addSampleBtn">
+            <i class="fa-solid fa-plus"></i> Add Sample
+        </button>
+        <button type="button" class="btn-primary bg-red-600" id="removeSampleBtn">
+            <i class="fa-solid fa-minus"></i> Remove Sample
+        </button>
+    </div>
 
     <div class="mb-4">
         <!-- <label for="addedSamples" class="block text-sm font-medium text-gray-700">Added Samples:</label> --> <span><div class="modal-footer">
        
-        <button type="button" class="btn-primary" id="addSampleBtn"><i class="fa-solid fa-plus"></i> Add Sample</button>
+       <!--  <button type="button" class="btn-primary" id="addSampleBtn"><i class="fa-solid fa-plus"></i> Add Sample</button> -->
     </div></span>
-        <select id="addedSamples" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" multiple>
+        <select  id="addedSamples"  name="addedSamples[]" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" multiple>
             <!-- Dynamically added options will appear here -->
         </select>
     </div>
     
+    
+    
     <div class="mb-4">
         <!-- <label for="address" class="block text-sm font-medium text-gray-700">Name:</label> -->
-        <input type="hidden" id="name" name="name" class="search-input" readonly>
+        <input type="text" id="name" name="name" class="search-input" readonly>
+        <input type="text" id="patientId" name="patientId" class="search-input" readonly>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn-primary" >Submit</button>
+        <button type="submit" class="btn-primary" >Submit</button>
         
     </div>
 </form>
@@ -331,12 +342,31 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         // Optionally, reset the sample selection after adding
         sampleDropdown.selectedIndex = 0;
     });
+    document.getElementById('removeSampleBtn').addEventListener('click', function() {
+        // Get the added samples dropdown
+        const addedSamplesDropdown = document.getElementById('addedSamples');
+
+        // Check if a sample is selected for removal
+        if (addedSamplesDropdown.selectedIndex === -1) {
+            alert("Please select a sample to remove.");
+            return;
+        }
+
+        // Remove the selected sample
+        addedSamplesDropdown.remove(addedSamplesDropdown.selectedIndex);
+    });
+    document.getElementById('sampleForm').addEventListener('submit', function(event) {
+        const addedSamples = document.getElementById('addedSamples');
+        const selectedValues = [...addedSamples.options].map(option => option.value);
+        console.log("Samples being submitted: ", selectedValues);
+    });
 
 
-    function openModal(patientNo, testname, age, name) {
+    function openModal(patientId, testname, age, name) {
         // Populate modal fields with the data
         document.getElementById('testname').value = testname;
         document.getElementById('name').value = name;
+        document.getElementById('patientId').value = patientId;
 
         // Show the modal
         document.getElementById('myModal').style.display = 'block';
