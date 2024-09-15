@@ -79,6 +79,7 @@ public class ExaminationDaoImpl {
           e.printStackTrace();
           System.out.println("exception in addExaminationSubtype : "+e);
       }
+      //System.out.println("addExaminationSubtype return list : "+listOfSubSample);
 	return listOfSubSample;
   }
 

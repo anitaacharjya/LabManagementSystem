@@ -252,31 +252,24 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                 <h2>Pending Sample Details</h2>
                 <span class="close" onclick="closeModal()"><i class="fa-solid fa-rectangle-xmark" style="color: #e30202;"></i></span>
             </div>
-     <form id="sampleForm" action="SampleDetails" method="get">
+     <form id="sampleForm" action="TestSampleDetails" method="get">
     <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Test Name:</label>
                 <input type="text" id="testname" name="testname" class="search-input" readonly>
      </div>
     
 
-            <%-- <div class="mb-4">
+            <div class="mb-4">
                 <label for="examName" class="block text-sm font-medium text-gray-700">Select Sample:</label>
                 <select name="examName" id="examName" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <option value="">Select Sample</option>
-                    <% 
+                    <%-- <% 
                         ExaminationDaoImpl subexam = new ExaminationDaoImpl();
                         List<String> list = subexam.showExaminationSubtype("EX08");
                         for (int i = 0; i < list.size(); i++) { 
-                    %>
-                        <option value="<%= list.get(i) %>"><%= list.get(i) %></option>
-                    <% } %>
-                </select>
-            </div> --%>
-             <div class="mb-4">
-                <label for="examName" class="block text-sm font-medium text-gray-700">Select Sample:</label>
-                <select name="examName" id="examName" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    <option value="">Select Sample</option>
-                    
+                    %> --%>
+                        <%-- <option value="<%= list.get(i) %>"><%= list.get(i) %></option> --%>
+                  <%--   <% } %> --%>
                 </select>
             </div>
       
@@ -289,7 +282,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         <!-- <label for="address" class="block text-sm font-medium text-gray-700">Name:</label> -->
         <input type="hidden" id="name" name="name" class="search-input" readonly>
         <input type="hidden" id="patientId" name="patientId" class="search-input" readonly>
-        <input type="hidden" id="examCoad" name="examCoad" class="search-input" readonly>
+        <input type="text" id="examCoad" name="examCoad" class="search-input" readonly>
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn-primary" >Submit</button>
@@ -358,35 +351,10 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         document.getElementById('name').value = name;
         document.getElementById('patientId').value = patientId;
         document.getElementById('examCoad').value = examCoad;
-        
-        
-        // Fetch subtype data based on examCoad
-        fetchExaminationSubtypes(examCoad);
 
         // Show the modal
         document.getElementById('myModal').style.display = 'block';
-    }
-    
-    function fetchExaminationSubtypes(examCoad) {
-        const selectElement = document.getElementById('examName');
-
-        // Clear existing options
-        selectElement.innerHTML = '<option value="">Select Sample</option>';
-        var exm=examCoad;
-         alert(" exam code "+exm);
-         ;
-        // Fetch new options based on examCoad
-        fetch(`GetExaminationSubtypes?examCoad=${encodeURIComponent(examCoad)}`)
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
-                    selectElement.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching examination subtypes:', error));
+        fetchSubtypes(examCoad);
     }
 
     function closeModal() {
@@ -401,6 +369,26 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         if (event.target == document.getElementById('myModal')) {
             closeModal();
         }
+    }
+    function fetchSubtypes(examCoad) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "GetExaminationSubtypes?examCoad=" + examCoad, true); // The servlet or JSP to handle this request
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Populate the dropdown with the response
+                const subtypes = JSON.parse(xhr.responseText);  // Assuming the server returns a JSON array
+                const selectElement = document.getElementById('examName');
+                selectElement.innerHTML = '<option value="">Select Sample</option>';  // Clear previous options
+
+                subtypes.forEach(function(subtype) {
+                    const option = document.createElement('option');
+                    option.value = subtype;
+                    option.textContent = subtype;
+                    selectElement.appendChild(option);
+                });
+            }
+        };
+        xhr.send();
     }
 
     

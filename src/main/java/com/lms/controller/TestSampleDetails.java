@@ -12,7 +12,7 @@ import com.lms.daoimpl.SampleDaoImpl;
 /**
  * Servlet implementation class SampleDetails
  */
-@WebServlet("/SampleDetails")
+@WebServlet("/TestSampleDetails")
 public class TestSampleDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

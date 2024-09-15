@@ -1,5 +1,6 @@
 package com.lms.controller;
 
+import com.lms.daoimpl.CommonFuction;
 import com.lms.daoimpl.ExaminationDaoImpl;
 import com.lms.daoimpl.SampleDaoImpl;
 import com.lms.vo.Prerequisition;
@@ -22,6 +23,8 @@ public class RequisitionServlet extends HttpServlet {
         String addiction = request.getParameter("addiction");
         String allergicHistory = request.getParameter("allergi");
         String other = request.getParameter("other");
+        String submitdateTime = request.getParameter("dateTime");
+        
         
         // Create ExaminationVO object and set properties
         Prerequisition examVO = new Prerequisition();
@@ -35,6 +38,10 @@ public class RequisitionServlet extends HttpServlet {
         // Create DAO implementation object
         SampleDaoImpl smpl = new SampleDaoImpl();
         boolean isAdded = smpl.addPrerequisitionDetails(examVO);
+        if(isAdded==true) {
+        	CommonFuction obj=new CommonFuction();
+        	int value=obj.updateOneItem("TBL_RECEIPT","sample_collection_date",submitdateTime,"patient_id",patientNo);
+        }
 
         // Redirect based on result
         if (isAdded) {

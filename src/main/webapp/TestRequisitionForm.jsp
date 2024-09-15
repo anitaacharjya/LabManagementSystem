@@ -4,6 +4,7 @@
 <%@ page import="com.lms.vo.ExaminationDetails"%>
 <%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
 <%@ page import="java.util.List"%>
+<%@ page import="java.util.Map"%>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="com.lms.daoimpl.SampleDaoImpl"%>
@@ -258,16 +259,29 @@ String currentTime = sdf.format(now);
                 <tbody>
                 <%
                 String patientno=preanalysisData.getPatientNo();
-
-                List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientno);
-                for (ExaminationDetails preList1 : examList) {
+                String patientName=preanalysisData.getName();
+                SampleDaoImpl sampledao=new SampleDaoImpl();
                 
-                %>
+                Map<String, List<String>> examList = sampledao.getSampleDetails(patientno, patientName);
+
+                for (Map.Entry<String, List<String>> entry : examList.entrySet()) {
+                    String testName = entry.getKey(); // Key is a String (test name)
+                    List<String> sampleNames = entry.getValue(); // Value is a List<String> (sample names)
+            %>
                     <tr>
-                        <td>SUGAR --></td>
-                        <td></td>
+                        <td><%= testName %> </td> <!-- Key from the map (e.g., "SUGAR") -->
+                        <td>
+                            <ul>
+                            <% for (String sample1 : sampleNames) { %>
+                                <li><%= sample1 %></li> <!-- Each sample name for the test -->
+                            <% } %>
+                            </ul>
+                        </td>
                     </tr>
-                    <%} %>
+            <%
+                }
+            %>
+
                 </tbody>
             </table>
         </div>

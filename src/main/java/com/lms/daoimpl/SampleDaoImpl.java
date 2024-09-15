@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.lms.dbconnect.Dbconnect;
 import com.lms.vo.ExaminationDetails;
@@ -75,12 +77,10 @@ public class SampleDaoImpl {
 		        // Return the list of preanalysisers
 		        return preReq;
 		    }
-		 
+	// add sample details	 
 	 public boolean addTestSampleDetails(String patientName,String testName,String patientId,String sample) {
 		        boolean result=false;
 		        try {
-		            
-
 		        	Connection conn = dbconnect.getConn();
 		            String query = "INSERT INTO TBL_TESTSAMPLE_DTLS (name,test_name,patient_id,sample_name) VALUES (?, ?, ?, ?)";
 		            PreparedStatement ps = conn.prepareStatement(query);
@@ -113,6 +113,38 @@ public class SampleDaoImpl {
 		        } 
 		        return result;
 		    }
+	 // fetch sample details 
+	// Fetch Pre Requisition details	    
+	 public Map<String, List<String>> getSampleDetails(String patientID, String name) {
+		    Map<String, List<String>> map = new HashMap<>(); // Use a map with a list of values
+		    try {
+		        Connection conn = dbconnect.getConn();
+		        // SQL query to select all fields from the register table
+		        String sql = "SELECT * FROM TBL_TESTSAMPLE_DTLS WHERE patient_id = ? AND name = ?";
+		        PreparedStatement ps = conn.prepareStatement(sql);
+		        ps.setString(1, patientID);
+		        ps.setString(2, name);
+		        ResultSet rs = ps.executeQuery();
+
+		        // Loop through the result set
+		        while (rs.next()) {
+		            String testName = rs.getString("test_name");
+		            String sampleName = rs.getString("sample_name");
+
+		            // Check if the map already contains the test name
+		            if (!map.containsKey(testName)) {
+		                map.put(testName, new ArrayList<>()); // Initialize a new list if the test name is not yet in the map
+		            }
+
+		            // Add the sample name to the list of sample names for the test name
+		            map.get(testName).add(sampleName);
+		        }
+		    } catch (SQLException e) {
+		        System.out.println("Exception in getSampleDetails: " + e);
+		    }
+		    return map; // Return the map with multiple values for each key
+		}
+
 		 
 		 
 	}

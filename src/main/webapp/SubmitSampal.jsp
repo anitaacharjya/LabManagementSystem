@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.lms.daoimpl.CommonFuction"%>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html class="h-full">
 <head>
@@ -24,24 +26,33 @@
      String patientName=request.getParameter("patientName");
      String patientno=request.getParameter("patientNo");
       %>
+      <%
+    // Get the current date and time
+    LocalDateTime now = LocalDateTime.now();
+
+    // Format the date and time as "dd-MM-yyyy HH:mm:ss"
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    String formattedDateTime = now.format(formatter);
+%>
 
     <!-- Main Content -->
     <div class="flex-1 p-10 flex justify-center items-center">
         <div class="container mx-auto bg-white p-10 rounded-lg shadow-lg w-full max-w-3xl">
             <div class="text-center mb-10">
-                <h4 class="text-3xl font-semibold text-gray-800">Add details for Test Requisition form</h4>
-               
+                <h4 class="text-3xl font-semibold text-gray-800">Add details for Test Requisition form</h4>         
             </div>
             <form action="RequisitionServlet" method="post">
-                <div class="grid grid-cols-1 gap-6">
-                <div>
-                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">ID</label>
-                        <input type="text" id="clinicalHistory" name="id" value="<%=patientno %>"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
-                    </div>
+                <div class="grid grid-cols-1 gap-2">         
                     <div>
                         <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Name</label>
                         <input type="text" id="clinicalHistory" name="name" value="<%=patientName %>"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
+                            <input type="hidden" id="clinicalHistory" name="id" value="<%=patientno %>"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
+                    </div>
+                    <div>
+                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Sampale Submit Time</label>
+                        <input type="text" id="clinicalHistory" name="dateTime" value="<%=formattedDateTime %>"
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
                     </div>
                     <div>
@@ -64,8 +75,6 @@
                         <textarea type="text" id="other" name="other" required
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
                     </div>
-                    
-                   
                 </div>
                 <div class="mt-8 flex justify-between">
                     <button type="submit"
