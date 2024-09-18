@@ -305,6 +305,14 @@
                         <label class="block mb-2 text-black-700">Referred By:</label>
                         <input type="text" name="reffer" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </div>
+                     <div>
+                        <label class="block mb-2 text-black-700">Advanced Amaount:</label>
+                        <input type="text" name="advamount" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                     <div>
+                        <label class="block mb-2 text-black-700">Discount:</label>
+                        <input type="text" name="discount" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
                 </div>
 
                 <!-- Examination Details Section -->

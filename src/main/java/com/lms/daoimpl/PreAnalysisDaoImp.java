@@ -24,6 +24,41 @@ public class PreAnalysisDaoImp {
 	        try {
 	        	Connection conn = dbconnect.getConn();
 	            // SQL query to select all fields from the register table
+	            String sql = "SELECT * FROM TBL_RECEIPT";
+	            PreparedStatement ps = conn.prepareStatement(sql);
+	            ResultSet rs = ps.executeQuery();
+	            // Loop through the result set
+	            while (rs.next()) {
+	                preanalysis = new PreAnalysis();	               
+	                preanalysis.setName(rs.getString("name")); 
+	                preanalysis.setAge(rs.getString("age"));
+	                preanalysis.setAddress(rs.getString("address"));
+	                preanalysis.setPhoneNo(rs.getString("phone_number"));
+	                preanalysis.setEmail(rs.getString("email"));
+	                preanalysis.setGender(rs.getString("gender"));
+	                preanalysis.setReferredby(rs.getString("reffered_by"));
+	                preanalysis.setBillNo(rs.getString("bill_no"));
+	                preanalysis.setPatientNo(rs.getString("patient_id"));
+	                preanalysis.setDate(rs.getString("date"));
+	                preanalysis.setPaymentMode(rs.getString("payment_mode"));
+	                preanalysis.setSampleCollectionDate(rs.getString("sample_collection_date"));
+	                // Add the preanalysiser object to the preanalysiser list
+	                recieptList.add(preanalysis);
+	            }
+	        } catch (SQLException e) {
+	        	System.out.println("Exception in getAllpreanalysisers "+e);
+	        }
+	        // Return the list of preanalysisers
+	        return recieptList;
+	    }
+
+	 public List<PreAnalysis> getSampleDetails() {
+	        List<PreAnalysis> recieptList = new ArrayList<>();
+	        Dbconnect dbconnect = new Dbconnect();
+	        PreAnalysis preanalysis=null;
+	        try {
+	        	Connection conn = dbconnect.getConn();
+	            // SQL query to select all fields from the register table
 	            String sql = "SELECT * FROM TBL_RECEIPT where void!='Y'";
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	            ResultSet rs = ps.executeQuery();
@@ -52,6 +87,8 @@ public class PreAnalysisDaoImp {
 	        return recieptList;
 	    }
 
+	 
+	 
 	 public List<ExaminationDetails> getAllExaminationDetails() {
 	        List<ExaminationDetails> examList = new ArrayList<>();
 	        Dbconnect dbconnect = new Dbconnect();
@@ -190,7 +227,7 @@ public class PreAnalysisDaoImp {
 	        //save reciept
 	        
 	        public void saveUser(PreAnalysis user) {
-	            String sql = "INSERT INTO TBL_RECEIPT (name, age, gender, address, phone_number, email, date, bill_no, patient_id, reffered_by,payment_mode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+	            String sql = "INSERT INTO TBL_RECEIPT (name, age, gender, address, phone_number, email, date, bill_no, patient_id, reffered_by,payment_mode,adv_amount,discount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 	            try (
 	            	Connection conn = dbconnect.getConn();
 	                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -206,6 +243,8 @@ public class PreAnalysisDaoImp {
 	                stmt.setString(9, user.getPatientNo());
 	                stmt.setString(10, user.getReferredby());
 	                stmt.setString(11, user.getPaymentMode());
+	                stmt.setString(12, user.getAdvanceamount());
+	                stmt.setString(13, user.getDiscount());
 
 	                stmt.executeUpdate();
 
@@ -228,7 +267,7 @@ public int saveExaminationDetails(ExaminationDetails examDetail,String patient_i
 	                stmt.setString(2, examDetail.getEx_name());
 	                stmt.setString(3, examDetail.getEx_price());
 	                stmt.setString(4, examDetail.getEx_code());
-	                stmt.setString(4, "C");
+	                stmt.setString(5, "P");
 	               value = stmt.executeUpdate();
 
 	            } catch (SQLException e) {
@@ -265,6 +304,8 @@ public PreAnalysis getRecieptdetails(String patientID) {
             preanalysis.setPatientNo(rs.getString("patient_id"));
             preanalysis.setDate(rs.getString("date"));
             preanalysis.setPaymentMode(rs.getString("payment_mode"));
+            preanalysis.setAdvanceamount(rs.getString("adv_amount"));
+            
 
         }
     } catch (SQLException e) {

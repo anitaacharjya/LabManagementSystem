@@ -163,6 +163,8 @@ String currentTime = sdf.format(now);
                  <%
                      int list=1;
                      int totalBill=0;
+                     int avanceamount = 0;
+                     int diascount = 0;
                      String patientno=preanalysisData.getPatientNo();
 
                      List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientno);
@@ -197,8 +199,18 @@ String currentTime = sdf.format(now);
              
             <div class="right-section">
                 <div class="total">Total: <%=totalBill %></div>
-                <div class="paid">Total Paid: 0.00</div>
-                <div class="due">Due: 1010.00</div>
+                <%
+                int dueprice=0;
+               String amount = preanalysisData.getAdvanceamount();
+                if (amount != null && !amount.trim().isEmpty()) {
+                	dueprice = Integer.parseInt(amount);
+                }
+                dueprice=totalBill-dueprice;
+                
+                
+                %>
+                <div class="paid">Total Paid:<%=preanalysisData.getAdvanceamount()%> </div>
+                <div class="due">Due: <%=dueprice%></div>
             </div>
            
         </div>

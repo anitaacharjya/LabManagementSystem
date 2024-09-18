@@ -8,7 +8,7 @@
 
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
-List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
+List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
 %>
 
 <!DOCTYPE html>

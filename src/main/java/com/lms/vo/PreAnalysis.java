@@ -13,6 +13,8 @@ public class PreAnalysis {
 	public String date;
 	public String email;
 	public String sampleCollectionDate;
+	public String advanceamount;
+	public String discount;
 	
 	public String getSampleCollectionDate() {
 		return sampleCollectionDate;
@@ -85,6 +87,18 @@ public class PreAnalysis {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getAdvanceamount() {
+		return advanceamount;
+	}
+	public void setAdvanceamount(String advanceamount) {
+		this.advanceamount = advanceamount;
+	}
+	public String getDiscount() {
+		return discount;
+	}
+	public void setDiscount(String discount) {
+		this.discount = discount;
 	}
 	
 	

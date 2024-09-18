@@ -134,7 +134,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">
                                         
-                                        <a href="voidServlet?patientNo=<%= preList.getPatientNo() %>" 
+                                        <a href="Reciept.jsp?patientNo=<%= preList.getPatientNo() %>" 
                                           class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                          <i class="fa-solid fa-eye" style="margin-right:7px"></i> View Reciept
                                         </a>
