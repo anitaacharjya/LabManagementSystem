@@ -22,7 +22,7 @@ public class ExaminationDaoImpl {
 		String uppercaseStr = input.toUpperCase();
         String cleanedStr = uppercaseStr.replaceAll("[^A-Z0-9 ]", "");
         String finalStr = cleanedStr.replace(" ", "_");
-		            String sql = "INSERT INTO TBL_EXAMINATION (EXAMINATION_NAME, PRICE,EXAMINATION_CODE,EXAM_TABLE) VALUES (?, ?,?,?)";
+		            String sql = "INSERT INTO TBL_EXAMINATION (EXAMINATION_NAME, PRICE,EXAMINATION_CODE,EXAM_TABLE,GROUP_NAME) VALUES (?, ?,?,?,?)";
 		            try (Connection conn = dbconnect.getConn();
 		                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 		            	
@@ -30,6 +30,7 @@ public class ExaminationDaoImpl {
 		                stmt.setString(2, examDetail.getEx_price());
 		                stmt.setString(3, examDetail.getEx_code());
 		                stmt.setString(4,finalStr );
+		                stmt.setString(5, examDetail.getGroup());
 		                
 		               value = stmt.executeUpdate();
 

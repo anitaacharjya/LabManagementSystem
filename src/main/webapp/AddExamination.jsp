@@ -42,7 +42,22 @@
                 </c:if>
             </div>
             <form action="AddExaminationServlet" method="post">
-                <div class="grid grid-cols-1 gap-6">
+                <div class="grid grid-cols-1 gap-4">
+                    <!-- <div>
+                        <label for="group" class="block text-sm font-medium text-gray-700">Dicipline / Group</label>
+                        <input type="text" id="group" name="group" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div> -->
+                     <div>
+					    <label class="block text-sm font-medium text-gray-700">Dicipline / Group</label>
+					    <select name="group" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+					        <option value="" disabled selected>Select Dicipline / Group</option>
+					        <option value="Biochemistry">BioChemistry</option>
+					        <option value="Haematology">Haematology</option>
+					        <option value="Clicalpathology">Clical Pathology</option>
+					
+					    </select>
+					</div>
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">Exam Name</label>
                         <input type="text" id="name" name="name" required

@@ -9,9 +9,16 @@ public class ExaminationDetails {
 	private String patient_id;
 	private String sample_status;
 	private String sample_id;
+	private String group;
 	
 	
 	
+	public String getGroup() {
+		return group;
+	}
+	public void setGroup(String group) {
+		this.group = group;
+	}
 	public String getEx_code() {
 		return ex_code;
 	}

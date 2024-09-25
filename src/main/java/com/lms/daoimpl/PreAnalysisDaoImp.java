@@ -305,6 +305,7 @@ public PreAnalysis getRecieptdetails(String patientID) {
             preanalysis.setDate(rs.getString("date"));
             preanalysis.setPaymentMode(rs.getString("payment_mode"));
             preanalysis.setAdvanceamount(rs.getString("adv_amount"));
+            preanalysis.setSampleCollectionDate(rs.getString("sample_collection_date"));
             
 
         }

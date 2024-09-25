@@ -193,8 +193,8 @@ String currentTime = sdf.format(now);
         <div class="grid-container">
             <div class="left-section">
                 <div>Collected By: LAB</div>
-                <div>Received By: SOMENATH DAS</div>
-                <div>Billed By: SOMENATH DAS</div>
+                <div>Received By: </div>
+                <div>Billed By: <% session.getAttribute("username");%></div>
             </div>
              
             <div class="right-section">

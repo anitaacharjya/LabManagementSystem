@@ -202,7 +202,7 @@ String currentTime = sdf.format(now);
         </tr>
         <tr>
             <td style="border-right: none;"><strong>Sample Collection Time:</strong></td>
-            <td style="border-left: none;"><%=formattedDateTime %></td>
+            <td style="border-left: none;"><%=preanalysisData.getSampleCollectionDate() %></td>
             <td style="border-right: none;"><strong>Patient Id:</strong></td>
             <td style="border-left: none;"><%=preanalysisData.getPatientNo()%></td>
         </tr>
@@ -252,8 +252,9 @@ String currentTime = sdf.format(now);
             <table>
                 <thead>
                     <tr>
-                        <th>Test</th>
-                        <th>Sample</th>
+                        
+                        <th>Primary Sample Type</th>
+                        <th>Parameter Tested</th>
                     </tr>
                 </thead>
                 <tbody>

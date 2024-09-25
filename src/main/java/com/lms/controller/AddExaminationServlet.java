@@ -30,11 +30,13 @@ public class AddExaminationServlet extends HttpServlet {
 		String examname = request.getParameter("name");
 		String examprice = request.getParameter("price");
 		String examcode = request.getParameter("code");
+		String examGroup = request.getParameter("group");
 		
 		ExaminationDetails ex_details = new ExaminationDetails();
 		ex_details.setEx_name(examname);
 		ex_details.setEx_price(examprice);
 		ex_details.setEx_code(examcode);
+		ex_details.setGroup(examGroup);
 		
 		ExaminationDaoImpl dao = new ExaminationDaoImpl();
 	    int f =	dao.addExaminationDetails(ex_details);
