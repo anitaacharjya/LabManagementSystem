@@ -41,7 +41,7 @@
                     <c:remove var="Failed" scope="session" />
                 </c:if>
             </div>
-            <form action="AddExaminationServlet" method="post">
+            <form action="AddExaminationServlet" method="post" onsubmit="return validateForm()">
                 <div class="grid grid-cols-1 gap-4">
                     <!-- <div>
                         <label for="group" class="block text-sm font-medium text-gray-700">Dicipline / Group</label>
@@ -78,13 +78,13 @@
                 </div>
                  <!-- Dynamic Subtype Input Fields -->
                     <div id="subtypeContainer">
-                        <label for="subtype" class="block text-sm font-medium text-gray-700">Exam Subtype</label>
+                        <!-- <label for="subtype" class="block text-sm font-medium text-gray-700">Exam Subtype</label>
                         <div class="flex items-center">
                             <input type="text" name="examSubtype[]" class="border rounded p-2 w-full bg-gray-50 mt-1">
                             <button type="button" onclick="removeSubtypeField(this)" class="bg-red-500 text-white font-bold py-2 px-4 ml-2 rounded mt-1">
                                 Remove
                             </button>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Button to Add More Subtypes -->
@@ -109,28 +109,72 @@
     </div>
     <script>
     // Function to add more subtype input fields with a remove button
-    function addSubtypeField() {
-        var subtypeContainer = document.createElement('div');
-        subtypeContainer.className = 'flex items-center mt-2';
+  function addSubtypeField() {
+    var subtypeContainer = document.createElement('div');
+    subtypeContainer.className = 'grid grid-cols-4 gap-2 items-center mt-2'; // 3 columns layout for the input fields
 
-        var newSubtypeField = document.createElement('input');
-        newSubtypeField.type = 'text';
-        newSubtypeField.name = 'examSubtype[]';
-        newSubtypeField.className = 'border rounded p-2 w-full bg-gray-50';
+    // SubType Name input
+    var subTypeNameField = document.createElement('input');
+    subTypeNameField.type = 'text';
+    subTypeNameField.name = 'examSubtypeName[]';
+    subTypeNameField.placeholder = 'SubType Name';
+    subTypeNameField.className = 'border rounded p-2 w-full bg-gray-50';
 
-        var removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.className = 'bg-red-500 text-white font-bold py-2 px-4 ml-2 rounded';
-        removeButton.innerText = 'Remove';
-        removeButton.onclick = function() {
-            removeSubtypeField(removeButton);
-        };
+    // Normal Range input
+    var normalRangeField = document.createElement('input');
+    normalRangeField.type = 'text';
+    normalRangeField.name = 'examNormalRange[]';
+    normalRangeField.placeholder = 'Normal Range';
+    normalRangeField.className = 'border rounded p-2 w-full bg-gray-50';
 
-        subtypeContainer.appendChild(newSubtypeField);
-        subtypeContainer.appendChild(removeButton);
+    // Unit input
+    var unitField = document.createElement('input');
+    unitField.type = 'text';
+    unitField.name = 'examUnit[]';
+    unitField.placeholder = 'Unit';
+    unitField.className = 'border rounded p-2 w-full bg-gray-50';
 
-        document.getElementById('subtypeContainer').appendChild(subtypeContainer);
-    }
+    // Remove button
+    var removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.className = 'bg-red-500 text-white font-bold py-2 px-4 ml-2 rounded';
+    removeButton.innerText = 'Remove';
+    removeButton.onclick = function() {
+        removeSubtypeField(removeButton);
+    };
+
+    // Append the inputs and button to the container
+    subtypeContainer.appendChild(subTypeNameField);
+    subtypeContainer.appendChild(normalRangeField);
+    subtypeContainer.appendChild(unitField);
+    subtypeContainer.appendChild(removeButton);
+
+    // Append the container to the subtypeContainer div
+    document.getElementById('subtypeContainer').appendChild(subtypeContainer);
+}
+    
+  function validateForm() {
+	    var isValid = true;
+	    var subTypeFields = document.getElementsByName('examSubtypeName[]');
+	    var normalRangeFields = document.getElementsByName('examNormalRange[]');
+	    var unitFields = document.getElementsByName('examUnit[]');
+
+	    // Iterate through each set of fields and check if any are empty
+	    for (var i = 0; i < subTypeFields.length; i++) {
+	        var subTypeName = subTypeFields[i].value.trim();
+	        var normalRange = normalRangeFields[i].value.trim();
+	        var unit = unitFields[i].value.trim();
+
+	        if (subTypeName === '' || normalRange === '' || unit === '') {
+	            isValid = false;
+	            alert("Please fill out all fields in row " + (i + 1) + " (SubType Name, Normal Range, and Unit).");
+	            break;
+	        }
+	    }
+
+	    return isValid;
+	}
+
 
     // Function to remove a subtype input field
     function removeSubtypeField(button) {

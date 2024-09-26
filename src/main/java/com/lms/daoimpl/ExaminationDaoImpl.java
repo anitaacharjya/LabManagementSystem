@@ -44,14 +44,16 @@ public class ExaminationDaoImpl {
 	
 	
 
-  public void addExaminationSubtype(String examName, String subtype,String code) throws SQLException {
-        String sql = "INSERT INTO TBL_EXAM_SUBTYPE (EXAM_CODE,EXAM_NAME, SUBTYPE) VALUES (?, ?,?)";
+  public void addExaminationSubtype(String examName, String subtype,String code,String nornalValue,String unit) throws SQLException {
+        String sql = "INSERT INTO TBL_EXAM_SUBTYPE (EXAM_CODE,EXAM_NAME, SUBTYPE, NORMAL_VALUE,UNIT) VALUES (?, ?,?,?,?)";
         try  {
         	Connection conn = dbconnect.getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql);
         	pstmt.setString(1, code);
             pstmt.setString(2, examName);
             pstmt.setString(3, subtype);
+            pstmt.setString(4, nornalValue);
+            pstmt.setString(5, unit);
             pstmt.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();
@@ -73,7 +75,10 @@ public class ExaminationDaoImpl {
         // Loop through the result set
         while (rs.next()) {
         	String subSampleName=rs.getString("SUBTYPE");
-        	listOfSubSample.add(subSampleName);
+        	String normalValue=rs.getString("NORMAL_VALUE");
+        	String unit=rs.getString("UNIT");
+        	String finalvalue=subSampleName+" - "+normalValue+" - "+unit;
+        	listOfSubSample.add(finalvalue);
         }
          
       }catch (SQLException e) {

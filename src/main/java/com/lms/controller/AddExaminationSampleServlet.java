@@ -34,7 +34,7 @@ public class AddExaminationSampleServlet extends HttpServlet {
 
                
                 if (examSubtype != null && !examSubtype.trim().isEmpty()) {
-                	examDao.addExaminationSubtype(examName, examSubtype,code);
+                	//examDao.addExaminationSubtype(examName, examSubtype,code);
                    System.out.println(" inside "+i);
                 }
             }

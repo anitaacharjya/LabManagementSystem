@@ -10,9 +10,17 @@ public class ExaminationDetails {
 	private String sample_status;
 	private String sample_id;
 	private String group;
+	private String normalValue;
+	private String unit;
 	
 	
 	
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
 	public String getGroup() {
 		return group;
 	}

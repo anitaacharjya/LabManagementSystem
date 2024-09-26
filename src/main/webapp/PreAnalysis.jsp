@@ -56,6 +56,34 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         .btn-primary:hover {
             background-color: #1d4ed8;
         }
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        .pagination button {
+            background-color: #2563eb;
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+        }
+        .pagination button.disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .disabled {
+		    background-color: #ccc;
+		    cursor: not-allowed;
+		}
+		
+		.bg-blue-500 {
+		    background-color: #2563eb;
+		    color: white;
+		    font-weight: bold;
+		}
     </style>
 </head>
 <body class="bg-gray-100 h-full">
@@ -96,7 +124,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                                 <th class="py-3 px-6 text-middle">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="text-black-700  ">
+                       <tbody id="preAnalysisBody" class="text-black-700">
                             <%
                             List<ExaminationDetails> examList=null;
                             int count = 1;
@@ -155,8 +183,84 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                         </tbody>
                     </table>
                 </div>
+                 <!-- Pagination Controls -->
+                    <div class="pagination" id="paginationControls"></div>
             </div>
         </div>
     </div>
+    <script>
+    const rowsPerPage = 5;
+    let currentPage = 1;
+
+    function displayTablePage(page) {
+        const tableBody = document.getElementById("preAnalysisBody");
+        const rows = tableBody.getElementsByTagName("tr");
+        const totalRows = rows.length;
+
+        const startRow = (page - 1) * rowsPerPage;
+        const endRow = Math.min(startRow + rowsPerPage, totalRows);
+
+        // Hide all rows first
+        for (let i = 0; i < totalRows; i++) {
+            rows[i].style.display = "none";
+        }
+
+        // Show the rows for the current page
+        for (let i = startRow; i < endRow; i++) {
+            rows[i].style.display = "";
+        }
+
+        updatePaginationControls(page, totalRows);
+    }
+
+    function updatePaginationControls(page, totalRows) {
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+        const paginationControls = document.getElementById("paginationControls");
+
+        paginationControls.innerHTML = "";
+
+        // Previous button
+        const prevButton = document.createElement("button");
+        prevButton.innerText = "Previous";
+        prevButton.disabled = page === 1;
+        prevButton.classList.add(page === 1 ? "disabled" : "");
+        prevButton.onclick = () => displayTablePage(page - 1);
+        paginationControls.appendChild(prevButton);
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement("button");
+            pageButton.innerText = i;
+            
+            // Highlight the current page
+            if (i === page) {
+                pageButton.classList.add("disabled", "bg-blue-500"); // Add a class for the active page
+                pageButton.disabled = true; // Disable the button for the current page
+            } else {
+                pageButton.onclick = () => displayTablePage(i);
+            }
+            paginationControls.appendChild(pageButton);
+        }
+
+        // Next button
+        const nextButton = document.createElement("button");
+        nextButton.innerText = "Next";
+        nextButton.disabled = page === totalPages;
+        nextButton.classList.add(page === totalPages ? "disabled" : "");
+        nextButton.onclick = () => displayTablePage(page + 1);
+        paginationControls.appendChild(nextButton);
+    }
+
+    // Initial load
+    displayTablePage(currentPage);
+
+    </script>
+    <script >
+    if (i === page) {
+        pageButton.classList.add("disabled", "bg-blue-500");
+        pageButton.disabled = true;
+    }
+    </script>
 </body>
+
 </html>
