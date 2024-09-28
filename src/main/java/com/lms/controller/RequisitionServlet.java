@@ -1,6 +1,6 @@
 package com.lms.controller;
 
-import com.lms.daoimpl.CommonFuction;
+import com.lms.daoimpl.CommonFunction;
 import com.lms.daoimpl.ExaminationDaoImpl;
 import com.lms.daoimpl.SampleDaoImpl;
 import com.lms.vo.Prerequisition;
@@ -39,7 +39,7 @@ public class RequisitionServlet extends HttpServlet {
         SampleDaoImpl smpl = new SampleDaoImpl();
         boolean isAdded = smpl.addPrerequisitionDetails(examVO);
         if(isAdded==true) {
-        	CommonFuction obj=new CommonFuction();
+        	CommonFunction obj=new CommonFunction();
         	int value=obj.updateOneItem("TBL_RECEIPT","sample_collection_date",submitdateTime,"patient_id",patientNo);
         }
 

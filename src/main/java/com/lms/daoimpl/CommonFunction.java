@@ -15,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
 import com.lms.dbconnect.Dbconnect;
 import com.lms.vo.ExaminationDetails;
 
-public class CommonFuction {
+public class CommonFunction {
 	Dbconnect dbconnect = new Dbconnect();
     private static final byte[] key = new byte[] { 
             'T', 'h', 'i', 's', 'I', 's', 'A', 'S', 
@@ -44,10 +44,11 @@ public class CommonFuction {
 	        try {
 	        	Connection conn = dbconnect.getConn();
 	            String sql = "DELETE from "+tableName+" where "+columnName+"='"+id+"'";
+	            System.out.println(" Sql "+sql);
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	            value = ps.executeUpdate();
 	        } catch (SQLException e) {
-	        	System.out.println("Exception in getMaxid "+e);
+	        	System.out.println("Exception in deleteItem "+e);
 	        }
 	        return value;
 	    }

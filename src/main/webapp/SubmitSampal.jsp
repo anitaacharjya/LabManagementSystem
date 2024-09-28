@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.lms.daoimpl.CommonFuction"%>
+<%@ page import="com.lms.daoimpl.CommonFunction"%>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
@@ -20,12 +20,14 @@
     <!-- Sidebar -->
     <%@include file="Components/Navbar.jsp" %>
     <%
-     CommonFuction commonfun = new CommonFuction();
-     int examCode=commonfun.getMaxid("TBL_EXAMINATION", "ID_EXAMINATION");
-     examCode=examCode+1;
-     String patientName=request.getParameter("patientName");
-     String patientno=request.getParameter("patientNo");
-      %>
+    
+
+         CommonFunction commonfun = new CommonFunction();
+         int examCode=commonfun.getMaxid("TBL_EXAMINATION", "ID_EXAMINATION");
+         examCode=examCode+1;
+         String patientName=request.getParameter("patientName");
+         String patientno=request.getParameter("patientNo");
+    %>
       <%
     // Get the current date and time
     LocalDateTime now = LocalDateTime.now();

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.lms.daoimpl.CommonFuction"%>
+<%@ page import="com.lms.daoimpl.CommonFunction"%>
 <!DOCTYPE html>
 <html class="h-full">
 <head>
@@ -18,11 +18,10 @@
     <!-- Sidebar -->
     <%@include file="Components/Navbar.jsp" %>
     <%
-     CommonFuction commonfun = new CommonFuction();
-     int examCode=commonfun.getMaxid("TBL_EXAMINATION", "ID_EXAMINATION");
-     examCode=examCode+1;
-     
-      %>
+    CommonFunction commonfun = new CommonFunction();
+         int examCode=commonfun.getMaxid("TBL_EXAMINATION", "ID_EXAMINATION");
+         examCode=examCode+1;
+    %>
 
     <!-- Main Content -->
     <div class="flex-1 p-10 flex justify-center items-center">

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.lms.daoimpl.CommonFuction;
+import com.lms.daoimpl.CommonFunction;
 
 /**
  * Servlet implementation class PreAnalysisServlet
@@ -23,7 +23,7 @@ public class PreAnalysisServlet extends HttpServlet {
 		
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		String patientno = request.getParameter("patientNo");
-		CommonFuction common= new CommonFuction();
+		CommonFunction common= new CommonFunction();
 		int deleteValue=0;
 		int value=common.deleteItem("TBL_RECEIPT", "patient_id", patientno);
 		if(value>0)

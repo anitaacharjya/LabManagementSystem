@@ -21,7 +21,7 @@ public class UserDaoImpl {
         int value =0;
         
         try {
-        	CommonFuction common= new CommonFuction();
+        	CommonFunction common= new CommonFunction();
         	Connection conn = dbconnect.getConn();
         	password=common.passwordencryptdecrypted(password, "ENC");
         	System.out.println(" Password ENCRYPTED "+password);

@@ -124,7 +124,7 @@ ExaminationDaoImpl subList= new ExaminationDaoImpl();
                                 
                                 <td class="py-3 px-6 text-center whitespace-nowrap">
                                     <div class="flex items-center justify-center action-icons">
-                                        <a href="updateUser.jsp?username=<%= exList.getEx_code() %>" class="w-4 mr-2 transform hover:text-blue-600">
+                                        <a href="EditExamination.jsp?examCode=<%= exList.getEx_code() %>" class="w-4 mr-2 transform hover:text-blue-600">
                                             <i class="fas fa-edit"></i>
                                         </a> 
                                         <a href="deleteUser.jsp?username=<%= exList.getEx_code()  %>" class="w-4 mr-2 transform hover:text-red-600">

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.lms.daoimpl.UserDaoImpl;
-import com.lms.daoimpl.CommonFuction;
+import com.lms.daoimpl.CommonFunction;
 import com.lms.vo.User;
 
 
@@ -32,7 +32,7 @@ public class UserRegisterServlet extends HttpServlet {
 	            throws ServletException, IOException {
 		 boolean isPassword=false;
 		 HttpSession session = request.getSession();
-		 CommonFuction common =new CommonFuction();
+		 CommonFunction common =new CommonFunction();
 	        // Retrieve form data from the request object
 	        String name = request.getParameter("name");
 	        String dob = request.getParameter("dob");

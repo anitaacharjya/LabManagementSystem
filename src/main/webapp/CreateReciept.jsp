@@ -1,18 +1,18 @@
 <%@ page import="java.util.List"%>
 <%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
-<%@ page import="com.lms.daoimpl.CommonFuction"%>
+<%@ page import="com.lms.daoimpl.CommonFunction"%>
 <%@ page import="com.lms.vo.ExaminationDetails"%>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 
 
 <%
-    // Fetch examination names from the database
+// Fetch examination names from the database
     PreAnalysisDaoImp examDao = new PreAnalysisDaoImp();
     List<ExaminationDetails> examNames = examDao.getExaminationNames();
 %>
 <%
-    // Get the current date and time
+// Get the current date and time
     LocalDateTime now = LocalDateTime.now();
 
     // Format the date and time as "dd-MM-yyyy HH:mm:ss"
@@ -57,9 +57,9 @@
         // Generate the dropdown with examination names
         let dropdownHTML = `<select name="examName[]" class="border rounded p-2 w-full bg-gray-50" onchange="fetchPrice(this)">`;
         dropdownHTML += `<option value="">Select Examination</option>`;
-        <% for (ExaminationDetails examName : examNames) { %>
-            dropdownHTML += `<option value="<%= examName.getEx_name() %>"><%= examName.getEx_name() %></option>`;
-        <% } %>
+        <%for (ExaminationDetails examName : examNames) {%>
+            dropdownHTML += `<option value="<%= examName.getEx_name() %>"><%=examName.getEx_name()%></option>`;
+        <%}%>
         dropdownHTML += `</select>`;
 
         cell1.innerHTML = dropdownHTML;
@@ -206,10 +206,10 @@
     <!-- Sidebar -->
     <%@include file="Components/Navbar.jsp" %>
      <%
-     CommonFuction commonfun = new CommonFuction();
-     int patientId=commonfun.getMaxid("TBL_RECEIPT", "ID_REC");
-     int billno = patientId;
-      %>
+     CommonFunction commonfun = new CommonFunction();
+          int patientId=commonfun.getMaxid("TBL_RECEIPT", "ID_REC");
+          int billno = patientId;
+     %>
 
     <!-- Main Content -->
     <div class="flex-1 p-10 flex justify-center items-center" style="margin-top:-40px">
