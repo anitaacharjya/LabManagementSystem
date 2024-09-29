@@ -176,6 +176,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                                        <td class="py-3 px-6 text-left whitespace-nowrap">
                                         <%
                                         int list = 1;
+                                        boolean submitFlag=true;
                                         String patientno = preList.getPatientNo();
 
                                         examList = preanalysis.getExaminationDetails(patientno);
@@ -190,7 +191,9 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                                                     class="bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                                     <i class="fas fa-vial mr-2"></i> Pending
                                                 </button>
-                                                <%} else { %>
+                                                <%
+                                                submitFlag=false;
+                                               } else { %>
                                                 <button
                                                    class="bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                                     <i class="fas fa-vial mr-2"></i> Collected
@@ -201,11 +204,19 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                                             list++;
                                         }
                                         %>
+                                        <%if(submitFlag==true){ %>
                                          <a href="SubmitSampal.jsp?patientNo=<%= preList.getPatientNo()%>&patientName=<%= preList.getName() %>"
                                               class="bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                              <!-- Updated icon for sample collection -->
                                             Submit
                                         </a>
+                                        <%}else{ %>
+                                              <a href="#"
+                                              class="bg-blue-300 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center"  disabled>
+                                             <!-- Updated icon for sample collection -->
+                                            Submit
+                                        </a>
+                                        <%} %>
                                     </td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getSampleCollectionDate() %></td>

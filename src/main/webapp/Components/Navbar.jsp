@@ -9,14 +9,14 @@
 	integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<%
-	
+	 String username=(String)request.getSession().getAttribute("username");
 	%>
 
 <div class="w-64 bg-blue-500 text-white p-6 h-screen overflow-y-auto">
     <nav>
         <ul>
             <li class="mb-6">
-                <h2 style="font-weight:bold;font-size:20px">&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-user"></i> <% session.getAttribute("username");%></h2>
+                <h2 style="font-weight:bold;font-size:20px">&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-user"></i> <%= username%></h2>
             </li>
             <%
       
