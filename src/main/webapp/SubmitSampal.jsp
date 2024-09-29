@@ -58,6 +58,11 @@
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
                     </div>
                     <div>
+                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Sample Collected By:</label>
+                        <input type="text" id="sampleCollectedBy" name="sampleCollectedBy" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
                         <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Clinical History</label>
                         <input type="text" id="clinicalHistory" name="clinicalHistory" required
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">

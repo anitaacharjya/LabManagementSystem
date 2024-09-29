@@ -24,6 +24,7 @@ public class RequisitionServlet extends HttpServlet {
         String allergicHistory = request.getParameter("allergi");
         String other = request.getParameter("other");
         String submitdateTime = request.getParameter("dateTime");
+        String sampleCollectedBy = request.getParameter("sampleCollectedBy");
         
         
         // Create ExaminationVO object and set properties
@@ -34,6 +35,7 @@ public class RequisitionServlet extends HttpServlet {
         examVO.setOther(other);
         examVO.setPatientNo(patientNo);
         examVO.setPatientName(patientName);
+        examVO.setSampleCollectedBy(sampleCollectedBy);
 
         // Create DAO implementation object
         SampleDaoImpl smpl = new SampleDaoImpl();

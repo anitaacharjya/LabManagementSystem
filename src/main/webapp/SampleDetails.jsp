@@ -265,13 +265,13 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
             </div>
      <form id="sampleForm" action="TestSampleDetails" method="get">
     <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700">Test Name:</label>
+                <label for="name" class="block text-sm font-medium text-gray-700">Primary Sample Type</label>
                 <input type="text" id="testname" name="testname" class="search-input" readonly>
      </div>
     
 
             <div class="mb-4">
-                <label for="examName" class="block text-sm font-medium text-gray-700">Select Sample:</label>
+                <label for="examName" class="block text-sm font-medium text-gray-700">Examination Name</label>
                 <select name="examName" id="examName" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <option value="">Select Sample</option>
                     <%-- <% 
@@ -389,7 +389,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                 // Populate the dropdown with the response
                 const subtypes = JSON.parse(xhr.responseText);  // Assuming the server returns a JSON array
                 const selectElement = document.getElementById('examName');
-                selectElement.innerHTML = '<option value="">Select Sample</option>';  // Clear previous options
+                selectElement.innerHTML = '<option value="">Examination Name</option>';  // Clear previous options
 
                 subtypes.forEach(function(subtype) {
                     const option = document.createElement('option');

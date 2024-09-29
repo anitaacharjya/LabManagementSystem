@@ -177,13 +177,13 @@
             // Age validation (numeric and between 1-120)
             validateField(age, age.value.trim() === "" || isNaN(age.value) || age.value < 1 || age.value > 120);
 
-           /*  // Phone number validation (10 digits)
+            // Phone number validation (10 digits)
             const phonePattern = /^[0-9]{10}$/;
             validateField(phoneNumber, !phonePattern.test(phoneNumber.value));
 
             // Email validation (basic email format)
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-            validateField(email, !emailPattern.test(email.value)); */
+            validateField(email, !emailPattern.test(email.value)); 
 
             // Date validation (basic non-empty check)
             validateField(date, date.value.trim() === "");

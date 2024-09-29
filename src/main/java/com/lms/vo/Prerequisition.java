@@ -8,10 +8,19 @@ public class Prerequisition {
 	    private String other;
 	    private String patientNo;
 	    private String patientName;
+	    private String sampleCollectedBy;
 
 	    // Getters and Setters
 
-	    public String getClinicalHistory() {
+	    public String getSampleCollectedBy() {
+			return sampleCollectedBy;
+		}
+
+		public void setSampleCollectedBy(String sampleCollectedBy) {
+			this.sampleCollectedBy = sampleCollectedBy;
+		}
+
+		public String getClinicalHistory() {
 	        return clinicalHistory;
 	    }
 
