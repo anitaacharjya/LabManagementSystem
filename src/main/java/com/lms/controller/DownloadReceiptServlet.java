@@ -83,8 +83,10 @@ public class DownloadReceiptServlet extends HttpServlet {
         List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientNo);
         double totalBill = 0;
         for (ExaminationDetails preList1 : examList) {
+        	 String name=preList1.getEx_name();
+        	 String examName=preanalysis.getExaminationName(name);
             examinationTable.addCell(preList1.getEx_code());
-            examinationTable.addCell(preList1.getEx_name());
+            examinationTable.addCell(examName);
             examinationTable.addCell("Serum");
             examinationTable.addCell(preList1.getEx_price());
             totalBill += Double.parseDouble(preList1.getEx_price());

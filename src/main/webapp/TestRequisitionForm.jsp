@@ -253,8 +253,9 @@ String currentTime = sdf.format(now);
                 <thead>
                     <tr>
                         
-                        <th>Primary Sample Type</th>
-                        <th>Parameter Tested</th>
+                        <th>Sample Type</th>
+                        <th>Parameter To Test</th>
+                        <th>Test Value</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -263,24 +264,29 @@ String currentTime = sdf.format(now);
                 String patientName=preanalysisData.getName();
                 SampleDaoImpl sampledao=new SampleDaoImpl();
                 
-                Map<String, List<String>> examList = sampledao.getSampleDetails(patientno, patientName);
+                List<String> examList = sampledao.getSampleDetails(patientno);
 
-                for (Map.Entry<String, List<String>> entry : examList.entrySet()) {
-                    String testName = entry.getKey(); // Key is a String (test name)
-                    List<String> sampleNames = entry.getValue(); // Value is a List<String> (sample names)
+                for (String value : examList) {
+                    String[] testName = value.split("~"); // Key is a String (test name)
+                    if(testName!=null){
+                    
             %>
                     <tr>
-                        <td><%= testName %> </td> <!-- Key from the map (e.g., "SUGAR") -->
-                        <td>
+                        <td><%= testName[0] %> </td> <!-- Key from the map (e.g., "SUGAR") -->
+                        <%-- <td>
                             <ul>
                             <% for (String sample1 : sampleNames) { %>
                                 <li><%= sample1 %></li> <!-- Each sample name for the test -->
                             <% } %>
                             </ul>
-                        </td>
+                        </td> --%>
+                         <td><%= testName[1] %> </td>
+                         <td> </td>
+                         
+                         
                     </tr>
             <%
-                }
+                    }}
             %>
 
                 </tbody>

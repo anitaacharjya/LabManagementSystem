@@ -169,10 +169,12 @@ String currentTime = sdf.format(now);
 
                      List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientno);
                      for (ExaminationDetails preList1 : examList) {
+                    	 String name=preList1.getEx_name();
+                    	 String examName=preanalysis.getExaminationName(name);
                      %>
                     <tr>
                         <td><%=preList1.getEx_code() %></td>
-                        <td><%=preList1.getEx_name() %></td>
+                        <td><%=examName %></td>
                         <td>Serum</td>
                         <td><%=preList1.getEx_price() %></td>
                         
@@ -198,7 +200,7 @@ String currentTime = sdf.format(now);
             </div>
              
             <div class="right-section">
-                <div class="total">Total: <%=totalBill %></div>
+                <div class="total">Total bill: <%=totalBill %></div>
                 <%
                 int dueprice=0;
                String amount = preanalysisData.getAdvanceamount();
@@ -209,8 +211,8 @@ String currentTime = sdf.format(now);
                 
                 
                 %>
-                <div class="paid">Total Paid:<%=preanalysisData.getAdvanceamount()%> </div>
-                <div class="due">Due: <%=dueprice%></div>
+                <div class="paid">Advance:<%=preanalysisData.getAdvanceamount()%> </div>
+                <div class="due">Due bill: <%=dueprice%></div>
             </div>
            
         </div>

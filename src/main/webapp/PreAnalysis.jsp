@@ -142,8 +142,10 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
 
                                 examList = preanalysis.getExaminationDetails(patientno);
                                 for (ExaminationDetails preList1 : examList) {
+                                	 String name=preList1.getEx_name();
+                                	 String examName=preanalysis.getExaminationName(name);
                                 %>
-                                   <h6><%= list + ": " + preList1.getEx_name() %></h6>
+                                   <h6><%= list + ": " + examName %></h6>
                                     <% list++; %>
                                 <% }%>
                                 </td>
@@ -185,82 +187,99 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                 </div>
                  <!-- Pagination Controls -->
                     <div class="pagination" id="paginationControls"></div>
+                    
             </div>
         </div>
     </div>
     <script>
-    const rowsPerPage = 5;
+    const rowsPerPage = 2;
     let currentPage = 1;
 
+    // Function to display the table rows for the current page
     function displayTablePage(page) {
         const tableBody = document.getElementById("preAnalysisBody");
         const rows = tableBody.getElementsByTagName("tr");
         const totalRows = rows.length;
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
 
-        const startRow = (page - 1) * rowsPerPage;
+        // Ensure the page number is within valid range
+        if (page < 1) page = 1;
+        if (page > totalPages) page = totalPages;
+
+        // Update current page
+        currentPage = page;
+
+        // Calculate the start and end row indices
+        const startRow = (currentPage - 1) * rowsPerPage;
         const endRow = Math.min(startRow + rowsPerPage, totalRows);
 
-        // Hide all rows first
+        // Hide all rows initially
         for (let i = 0; i < totalRows; i++) {
             rows[i].style.display = "none";
         }
 
-        // Show the rows for the current page
+        // Display only the rows for the current page
         for (let i = startRow; i < endRow; i++) {
             rows[i].style.display = "";
         }
 
-        updatePaginationControls(page, totalRows);
+        // Update the pagination controls
+        updatePaginationControls(totalPages);
     }
 
-    function updatePaginationControls(page, totalRows) {
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
+    // Function to update the pagination controls
+    function updatePaginationControls(totalPages) {
         const paginationControls = document.getElementById("paginationControls");
-
         paginationControls.innerHTML = "";
 
-        // Previous button
+        // Create Previous button
         const prevButton = document.createElement("button");
         prevButton.innerText = "Previous";
-        prevButton.disabled = page === 1;
-        prevButton.classList.add(page === 1 ? "disabled" : "");
-        prevButton.onclick = () => displayTablePage(page - 1);
+        prevButton.disabled = currentPage === 1;
+        prevButton.classList.add(currentPage === 1 ? "disabled" : "enabled");
+        prevButton.onclick = () => {
+            if (currentPage > 1) {
+                displayTablePage(currentPage - 1);
+            }
+        };
         paginationControls.appendChild(prevButton);
 
-        // Page numbers
+        // Create page number buttons
         for (let i = 1; i <= totalPages; i++) {
             const pageButton = document.createElement("button");
             pageButton.innerText = i;
-            
+
             // Highlight the current page
-            if (i === page) {
-                pageButton.classList.add("disabled", "bg-blue-500"); // Add a class for the active page
-                pageButton.disabled = true; // Disable the button for the current page
+            if (i === currentPage) {
+                pageButton.classList.add("disabled", "bg-blue-500");
+                pageButton.disabled = true;
             } else {
+                pageButton.classList.add("enabled");
                 pageButton.onclick = () => displayTablePage(i);
             }
             paginationControls.appendChild(pageButton);
         }
 
-        // Next button
+        // Create Next button
         const nextButton = document.createElement("button");
         nextButton.innerText = "Next";
-        nextButton.disabled = page === totalPages;
-        nextButton.classList.add(page === totalPages ? "disabled" : "");
-        nextButton.onclick = () => displayTablePage(page + 1);
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.classList.add(currentPage === totalPages ? "disabled" : "enabled");
+        nextButton.onclick = () => {
+            if (currentPage < totalPages) {
+                displayTablePage(currentPage + 1);
+            }
+        };
         paginationControls.appendChild(nextButton);
     }
 
-    // Initial load
-    displayTablePage(currentPage);
-
-    </script>
-    <script >
-    if (i === page) {
-        pageButton.classList.add("disabled", "bg-blue-500");
-        pageButton.disabled = true;
-    }
-    </script>
+    // Initialize the table with the first page
+    document.addEventListener("DOMContentLoaded", () => {
+        displayTablePage(currentPage);
+    });
+</script>
+    
+    
 </body>
 
 </html>

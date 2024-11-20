@@ -23,21 +23,19 @@ public class TestSampleDetails extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		boolean result=false;
-		 String name = request.getParameter("name");
-		 String patientId = request.getParameter("patientId");
-		 String testName = request.getParameter("testname");
-		 String[] addedSample = request.getParameterValues("addedSamples[]");
-		 System.out.println(" Name "+name);
-		 System.out.println(" patientId "+patientId);
-		 System.out.println(" testName "+testName);
-		 System.out.println(" examNames "+addedSample.length);
+		 String collectionTime = request.getParameter("collectionTime");
+		 String Id = request.getParameter("Id");
+			/*
+			 * String testName = request.getParameter("testname"); String[] addedSample =
+			 * request.getParameterValues("addedSamples[]");
+			 */
+		 System.out.println(" collectionTime "+collectionTime);
+		 System.out.println(" Id "+Id);
+		
+		 
+		 
 		 SampleDaoImpl sampledao= new SampleDaoImpl();
-		 for(int i=0;i<addedSample.length;i++) {
-			 String sample=addedSample[i];
-			 System.out.println(" sample"+sample);
-			result=sampledao.addTestSampleDetails(name,testName,patientId,sample);
-			 
-		 }
+		 result=sampledao.addTestSampleDetails(Id,collectionTime);
 		 if(result==true) {
 			 response.sendRedirect("SampleDetails.jsp");
 		 }

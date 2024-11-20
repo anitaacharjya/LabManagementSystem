@@ -78,11 +78,13 @@
                             String subtypeName = subtypeData[0];
                             String normalRange = subtypeData[1];
                             String unit = subtypeData[2]; 
+                            String price = subtypeData[3];
                     %>
                     <div class="grid grid-cols-4 gap-2 items-center mt-2">
                          <input type="text" name="examSubtypeName[]" value="<%= subtypeName %>" class="border rounded p-2 w-full bg-gray-50" placeholder="SubType Name">
                         <input type="text" name="examNormalRange[]" value="<%= normalRange %>" class="border rounded p-2 w-full bg-gray-50" placeholder="Normal Range">
                         <input type="text" name="examUnit[]" value="<%= unit %>" class="border rounded p-2 w-full bg-gray-50" placeholder="Unit">
+                        <input type="text" name="examPrice[]" value="<%= price %>" class="border rounded p-2 w-full bg-gray-50" placeholder="Price">
                         <button type="button" onclick="removeSubtypeField(this)" class="bg-red-500 text-white font-bold py-2 px-4 ml-2 rounded">Remove</button>
                     </div>
                     <% } %>
@@ -132,6 +134,12 @@
         unitField.name = 'examUnit[]';
         unitField.placeholder = 'Unit';
         unitField.className = 'border rounded p-2 w-full bg-gray-50';
+        
+        var priceField = document.createElement('input');
+        priceField.type = 'text';
+        priceField.name = 'examPrice[]';
+        priceField.placeholder = 'Price';
+        priceField.className = 'border rounded p-2 w-full bg-gray-50';
 
         var removeButton = document.createElement('button');
         removeButton.type = 'button';
@@ -144,6 +152,7 @@
         subtypeContainer.appendChild(subTypeNameField);
         subtypeContainer.appendChild(normalRangeField);
         subtypeContainer.appendChild(unitField);
+        subtypeContainer.appendChild(priceField);
         subtypeContainer.appendChild(removeButton);
 
         document.getElementById('subtypeContainer').appendChild(subtypeContainer);

@@ -58,7 +58,7 @@
         let dropdownHTML = `<select name="examName[]" class="border rounded p-2 w-full bg-gray-50" onchange="fetchPrice(this)">`;
         dropdownHTML += `<option value="">Select Examination</option>`;
         <%for (ExaminationDetails examName : examNames) {%>
-            dropdownHTML += `<option value="<%= examName.getEx_name() %>"><%=examName.getEx_name()%></option>`;
+            dropdownHTML += `<option value="<%= examName.getId() %>"><%=examName.getEx_name()%></option>`;
         <%}%>
         dropdownHTML += `</select>`;
 
@@ -94,6 +94,7 @@
             const codeInput = row.querySelector('input[name="examCode[]"]');
 
             const examName = selectElement.value;
+            alert("examName "+examName);
 
             if (examName) {
                 const xhr = new XMLHttpRequest();
@@ -336,7 +337,7 @@
                                     <select name="examName[]" class="border rounded p-2 w-full bg-gray-50" onchange="fetchPrice(this)">
                                         <option value="">Select Examination</option>
                                         <% for (ExaminationDetails examName : examNames) { %>
-                                            <option value="<%= examName.getEx_name() %>"><%= examName.getEx_name() %></option>
+                                            <option value="<%= examName.getId() %>"><%= examName.getEx_name() %></option>
                                         <% } %>
                                     </select>
                                 </td>

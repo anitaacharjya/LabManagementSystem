@@ -144,6 +144,9 @@ public class PreAnalysisDaoImp {
 	            	exdetails.setSample_status(rs.getString("sample_status"));
 	            	exdetails.setSample_id(rs.getNString("sample_id"));
 	            	exdetails.setPatient_id(rs.getString("patient_id"));
+	            	exdetails.setId(rs.getString("id"));
+	            	exdetails.setSampleCollectionTime(rs.getString("SMPL_COLLECTION_TIME"));
+	            	
 
 	                
 	                
@@ -161,7 +164,7 @@ public class PreAnalysisDaoImp {
 	     List<ExaminationDetails> examinationNames = new ArrayList<>();
 	     Dbconnect dbconnect = new Dbconnect();
 	     ExaminationDetails exdetails=null;
-	     String query = "SELECT examination_name,examination_code FROM TBL_EXAMINATION"; // Example table name and column
+	     String query = "SELECT ID,EXAM_NAME,EXAM_CODE,SUBTYPE,PRICE FROM TBL_EXAM_SUBTYPE"; // Example table name and column
 
 	     try (Connection conn = dbconnect.getConn();
 	          PreparedStatement stmt = conn.prepareStatement(query);
@@ -170,8 +173,10 @@ public class PreAnalysisDaoImp {
 	         while (rs.next()) {
 	        	 exdetails = new ExaminationDetails();
 	        	 
-	        	 exdetails.setEx_name(rs.getString("examination_name")); 
-	        	 rs.getString("examination_code");
+	        	 exdetails.setEx_name(rs.getString("SUBTYPE"));
+	        	 exdetails.setId(rs.getString("ID"));
+	        	 
+	        	
 	        	 examinationNames.add(exdetails);
 	            
 	         }
@@ -187,7 +192,7 @@ public class PreAnalysisDaoImp {
 		 Dbconnect dbconnect = new Dbconnect();
 	        double price = 0.0;
 	        // Implement the logic to fetch the price from the database based on the examName
-	        String query = "SELECT price FROM TBL_EXAMINATION WHERE examination_name = ?";
+	        String query = "SELECT price FROM TBL_EXAM_SUBTYPE WHERE ID = ?";
 	        
 	        try (Connection con = dbconnect.getConn();
 	             PreparedStatement ps = con.prepareStatement(query)) {
@@ -208,14 +213,17 @@ public class PreAnalysisDaoImp {
 			 Dbconnect dbconnect = new Dbconnect();
 		        String code = null;
 		        // Implement the logic to fetch the price from the database based on the examName
-		        String query = "SELECT EXAMINATION_CODE FROM TBL_EXAMINATION WHERE examination_name = ?";
+		        String query = "SELECT ID FROM TBL_EXAM_SUBTYPE WHERE ID = ?";
 		        
 		        try (Connection con = dbconnect.getConn();
 		             PreparedStatement ps = con.prepareStatement(query)) {
 		            ps.setString(1, examName);
 		            ResultSet rs = ps.executeQuery();
 		            if (rs.next()) {
-		            	code = rs.getString("EXAMINATION_CODE");
+		            	code = rs.getString("ID");
+		            	if(code!=null) {
+		            		code="EX0"+code;
+		            	}
 		            }
 		        } catch (SQLException e) {
 		            e.printStackTrace();
@@ -315,6 +323,50 @@ public PreAnalysis getRecieptdetails(String patientID) {
     }
     // Return the list of preanalysisers
     return preanalysis;
+}
+//Exam name
+//fetch exam code
+public String getExaminationName(String examName) {
+	 Dbconnect dbconnect = new Dbconnect();
+       String subtype = null;
+       // Implement the logic to fetch the price from the database based on the examName
+       String query = "SELECT SUBTYPE FROM TBL_EXAM_SUBTYPE WHERE ID = ?";
+       
+       try (Connection con = dbconnect.getConn();
+            PreparedStatement ps = con.prepareStatement(query)) {
+           ps.setString(1, examName);
+           ResultSet rs = ps.executeQuery();
+           if (rs.next()) {
+        	   subtype = rs.getString("SUBTYPE");
+           
+           }
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+       return subtype;
+       
+}
+
+//fetch exam code
+public String getSampleType(String examName) {
+	 Dbconnect dbconnect = new Dbconnect();
+     String subtype = null;
+     // Implement the logic to fetch the price from the database based on the examName
+     String query = "SELECT EXAM_NAME FROM TBL_EXAM_SUBTYPE WHERE ID = ?";
+     
+     try (Connection con = dbconnect.getConn();
+          PreparedStatement ps = con.prepareStatement(query)) {
+         ps.setString(1, examName);
+         ResultSet rs = ps.executeQuery();
+         if (rs.next()) {
+      	   subtype = rs.getString("EXAM_NAME");
+         
+         }
+     } catch (SQLException e) {
+         e.printStackTrace();
+     }
+     return subtype;
+     
 }
 	
 

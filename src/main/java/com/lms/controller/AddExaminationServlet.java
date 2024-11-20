@@ -44,6 +44,7 @@ public class AddExaminationServlet extends HttpServlet {
         String[] examSubtypes = request.getParameterValues("examSubtypeName[]");
         String[] examSubRanges = request.getParameterValues("examNormalRange[]");
         String[] examSubUnits = request.getParameterValues("examUnit[]");
+        String[] examSubPrices = request.getParameterValues("examPrice[]");
         String code = request.getParameter("code");
         System.out.println("Exam Subtype: " + examSubtypes.length);
         ExaminationDaoImpl examDao = new ExaminationDaoImpl();
@@ -54,11 +55,12 @@ public class AddExaminationServlet extends HttpServlet {
                 String examSubtype = examSubtypes[i];
                 String examSubRange=examSubRanges[i];
                 String examSubUnit=examSubUnits[i];
+                String examSubPrice=examSubPrices[i];
                 
 
                
                 if (examSubtype != null && !examSubtype.trim().isEmpty()) {
-                	examDao.addExaminationSubtype(examname, examSubtype,examcode,examSubRange,examSubUnit);
+                	examDao.addExaminationSubtype(examname, examSubtype,examcode,examSubRange,examSubUnit,examSubPrice);
                    System.out.println(" inside "+i);
                 }
             }

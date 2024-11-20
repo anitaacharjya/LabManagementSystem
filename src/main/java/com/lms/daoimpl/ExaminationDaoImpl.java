@@ -44,8 +44,8 @@ public class ExaminationDaoImpl {
 	
 	
 
-  public void addExaminationSubtype(String examName, String subtype,String code,String nornalValue,String unit) throws SQLException {
-        String sql = "INSERT INTO TBL_EXAM_SUBTYPE (EXAM_CODE,EXAM_NAME, SUBTYPE, NORMAL_VALUE,UNIT) VALUES (?, ?,?,?,?)";
+  public void addExaminationSubtype(String examName, String subtype,String code,String nornalValue,String unit,String price) throws SQLException {
+        String sql = "INSERT INTO TBL_EXAM_SUBTYPE (EXAM_CODE,EXAM_NAME, SUBTYPE, NORMAL_VALUE,UNIT,PRICE) VALUES (?, ?,?,?,?,?)";
         try  {
         	Connection conn = dbconnect.getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -54,6 +54,7 @@ public class ExaminationDaoImpl {
             pstmt.setString(3, subtype);
             pstmt.setString(4, nornalValue);
             pstmt.setString(5, unit);
+            pstmt.setString(6, price);
             pstmt.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();
@@ -77,7 +78,39 @@ public class ExaminationDaoImpl {
         	String subSampleName=rs.getString("SUBTYPE");
         	String normalValue=rs.getString("NORMAL_VALUE");
         	String unit=rs.getString("UNIT");
-        	String finalvalue=subSampleName+" - "+normalValue+" - "+unit;
+        	String price=rs.getString("PRICE");
+        	price=price+".00 rs";
+        	String finalvalue=subSampleName+" - "+normalValue+" - "+unit+" - "+price;
+        	listOfSubSample.add(finalvalue);
+        }
+         
+      }catch (SQLException e) {
+          e.printStackTrace();
+          System.out.println("exception in addExaminationSubtype : "+e);
+      }
+      //System.out.println("addExaminationSubtype return list : "+listOfSubSample);
+	return listOfSubSample;
+  }
+  
+  // show sublist of sample de for modal
+  public List<String> showExaminationSubtypeModal(String code) throws SQLException {
+      //String sql = "INSERT INTO TBL_EXAM_SUBTYPE (EXAM_CODE,EXAM_NAME, SUBTYPE) VALUES (?, ?,?)";
+	  List<String> listOfSubSample= new ArrayList<String>();
+      String sql="SELECT * FROM TBL_EXAM_SUBTYPE Where ID=?";
+      try  {
+      	Connection conn = dbconnect.getConn();
+          PreparedStatement pstmt = conn.prepareStatement(sql);
+      	  pstmt.setString(1, code);
+      	  ResultSet rs = pstmt.executeQuery();
+        
+        // Loop through the result set
+        while (rs.next()) {
+        	String subSampleName=rs.getString("SUBTYPE");
+        	String normalValue=rs.getString("NORMAL_VALUE");
+        	String unit=rs.getString("UNIT");
+        	String price=rs.getString("PRICE");
+        	price=price+".00 rs";
+        	String finalvalue=subSampleName+" - "+normalValue+" - "+unit+" - "+price;
         	listOfSubSample.add(finalvalue);
         }
          
@@ -132,7 +165,8 @@ public class ExaminationDaoImpl {
 	        	String subType=rs.getString("SUBTYPE");
 	        	String normalValue=rs.getString("NORMAL_VALUE");
 	        	String unit=rs.getString("UNIT");
-	        	String finalvalue=subType+","+normalValue+","+unit;
+	        	String price=rs.getString("PRICE");
+	        	String finalvalue=subType+","+normalValue+","+unit+","+price;
 	        	list.add(finalvalue);
 	        	
 	        }

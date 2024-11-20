@@ -79,35 +79,22 @@ public class SampleDaoImpl {
 		        return preReq;
 		    }
 	// add sample details	 
-	 public boolean addTestSampleDetails(String patientName,String testName,String patientId,String sample) {
+	 public boolean addTestSampleDetails(String Id,String collectionDate) {
 		        boolean result=false;
 		        try {
 		        	Connection conn = dbconnect.getConn();
-		            String query = "INSERT INTO TBL_TESTSAMPLE_DTLS (name,test_name,patient_id,sample_name) VALUES (?, ?, ?, ?)";
-		            PreparedStatement ps = conn.prepareStatement(query);
-		            // Set parameters
-		           ps.setString(1,patientName);
-		           ps.setString(2,testName);
-		           ps.setString(3,patientId);
-		           ps.setString(4,sample);
-		     
-		           
 
-		            // Execute query
-		            int rowsAffected = ps.executeUpdate();
-		            if(rowsAffected>0) {
-		            	result=true;
-		            }
-		            if(result==true) {
-		            	String updatesql ="UPDATE examination_details set sample_status=? where patient_id=? and exam_name=?";
+		            	String updatesql ="UPDATE examination_details set sample_status=?,SMPL_COLLECTION_TIME=? where id=?";
 		            	PreparedStatement psUpdate = conn.prepareStatement(updatesql);
 		            	psUpdate.setString(1,"C");
-		            	psUpdate.setString(2,patientId);
-		            	psUpdate.setString(3,testName);
+		            	psUpdate.setString(2,collectionDate);
+		            	psUpdate.setString(3,Id);
 		            	int rowsupdate = psUpdate.executeUpdate();
 		            	System.out.println("rowsupdate "+rowsupdate);
-			           
-		            }
+			           if(rowsupdate>0) {
+			        	   result=true;
+			           }
+		            
 		            
 		        } catch (Exception e) {
 		            e.printStackTrace();
@@ -116,34 +103,47 @@ public class SampleDaoImpl {
 		    }
 	 // fetch sample details 
 	// Fetch Pre Requisition details	    
-	 public Map<String, List<String>> getSampleDetails(String patientID, String name) {
-		    Map<String, List<String>> map = new HashMap<>(); // Use a map with a list of values
+	 public List<String> getSampleDetails(String patientID) {
+		    List<String> list = new ArrayList<String>(); // Use a map with a list of values
 		    try {
 		        Connection conn = dbconnect.getConn();
 		        // SQL query to select all fields from the register table
-		        String sql = "SELECT * FROM TBL_TESTSAMPLE_DTLS WHERE patient_id = ? AND name = ?";
+		        String sql = "SELECT exam_name FROM examination_details WHERE patient_id = ?";
 		        PreparedStatement ps = conn.prepareStatement(sql);
 		        ps.setString(1, patientID);
-		        ps.setString(2, name);
+		       // ps.setString(2, name);
 		        ResultSet rs = ps.executeQuery();
 
 		        // Loop through the result set
 		        while (rs.next()) {
-		            String testName = rs.getString("test_name");
-		            String sampleName = rs.getString("sample_name");
-
-		            // Check if the map already contains the test name
-		            if (!map.containsKey(testName)) {
-		                map.put(testName, new ArrayList<>()); // Initialize a new list if the test name is not yet in the map
+		            String testName = rs.getString("exam_name");
+		            
+		            if(testName!=null)
+		            {
+		            	String sqlTastDetails = "SELECT * FROM TBL_EXAM_SUBTYPE WHERE id = ?";
+				        PreparedStatement psTest = conn.prepareStatement(sqlTastDetails);
+				        psTest.setString(1, testName);
+				       
+				        ResultSet rsTest = psTest.executeQuery();
+				        while (rsTest.next())
+				        {
+				        	String examName=rsTest.getString("EXAM_NAME");
+				        	String parameter=rsTest.getString("SUBTYPE");
+				        	String value=examName+"~"+parameter;
+				        	
+				        	list.add(value);
+				        }
+				        
+		            	
 		            }
+		           
 
-		            // Add the sample name to the list of sample names for the test name
-		            map.get(testName).add(sampleName);
+		            
 		        }
 		    } catch (SQLException e) {
 		        System.out.println("Exception in getSampleDetails: " + e);
 		    }
-		    return map; // Return the map with multiple values for each key
+		    return list; // Return the map with multiple values for each key
 		}
 
 		 

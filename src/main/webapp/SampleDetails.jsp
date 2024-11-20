@@ -5,10 +5,18 @@
 <%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
 <%@ page import="com.lms.daoimpl.ExaminationDaoImpl"%>
 <%@ page import="java.sql.Connection"%>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
 List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
+
+LocalDateTime now = LocalDateTime.now();
+
+// Format the date and time as "dd-MM-yyyy HH:mm:ss"
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+String formattedDateTime = now.format(formatter);
 %>
 
 <!DOCTYPE html>
@@ -124,6 +132,37 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
     .modal-footer .btn-primary:hover {
         background-color: #1d4ed8;
     }
+   
+    </style>
+    <style>
+    .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        .pagination button {
+            background-color: #2563eb;
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+        }
+        .pagination button.disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .disabled {
+		    background-color: #ccc;
+		    cursor: not-allowed;
+		}
+		
+		.bg-blue-500 {
+		    background-color: #2563eb;
+		    color: white;
+		    font-weight: bold;
+		}
     </style>
 </head>
 <body class="bg-gray-100 h-full">
@@ -151,7 +190,8 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                                     <th class="py-3 px-6 text-left">Name</th>
                                     <th class="py-3 px-6 text-left">Examination</th>
                                     <th class="py-3 px-6 text-left">Reciept Date</th>
-                                    <th class="py-3 px-6 text-left">Collect Date</th>
+                                    <th class="py-3 px-6 text-left"> Sample Collection Date</th>
+                                    <th class="py-3 px-6 text-left">TRF Date</th>
                                     <th class="py-3 px-6 text-left">Age</th>
                                     <th class="py-3 px-6 text-left">Gender</th>
                                     <th class="py-3 px-6 text-left">Address</th>
@@ -163,7 +203,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                                     <th class="py-3 px-6 text-left">Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-black-700">
+                            <tbody class="text-black-700" id="sampalDetailsBody" >
                                 <%
                                 List<ExaminationDetails> examList=null;
                                 int count = 1;
@@ -178,16 +218,21 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                                         int list = 1;
                                         boolean submitFlag=true;
                                         String patientno = preList.getPatientNo();
+                                        String sampleCollectionTime="";
 
                                         examList = preanalysis.getExaminationDetails(patientno);
                                         for (ExaminationDetails preList1 : examList) {
+                                        	 String name=preList1.getEx_name();
+                                        	 String examName=preanalysis.getExaminationName(name);
+                                        	 String examsample=preanalysis.getSampleType(name);
+                                        	 sampleCollectionTime=examName+" - "+preList1.getSampleCollectionTime();
                                         %>
                                             <div class="flex justify-between items-center mb-3">
-                                                <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " + preList1.getEx_name() %></h6>
+                                                <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " +examName %></h6>
                                                <%
                                                if(preList1.getSample_status()!= null){
                                                if(preList1.getSample_status().equals("P")){ %> 
-                                                <button onclick="openModal('<%= preList.getPatientNo() %>', '<%= preList1.getEx_name() %>', '<%= preList1.getEx_code() %>', '<%= preList.getName() %>')" 
+                                                <button onclick="openModal('<%= preList1.getId() %>', '<%= examsample %>', '<%= preList1.getEx_code() %>', '<%= formattedDateTime %>')" 
                                                     class="bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                                     <i class="fas fa-vial mr-2"></i> Pending
                                                 </button>
@@ -208,17 +253,18 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                                          <a href="SubmitSampal.jsp?patientNo=<%= preList.getPatientNo()%>&patientName=<%= preList.getName() %>"
                                               class="bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                              <!-- Updated icon for sample collection -->
-                                            Submit
+                                            TRF submit
                                         </a>
                                         <%}else{ %>
                                               <a href="#"
                                               class="bg-blue-300 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center"  disabled>
                                              <!-- Updated icon for sample collection -->
-                                            Submit
+                                            TRF submited
                                         </a>
                                         <%} %>
                                     </td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
+                                        <td class="py-3 px-6 text-left whitespace-nowrap"><%= sampleCollectionTime %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getSampleCollectionDate() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
@@ -233,12 +279,12 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                                             <div class="flex items-center justify-center action-icons">
                                                 <a href="TestRequisitionForm.jsp?patientNo=<%= preList.getPatientNo() %>" 
                                                   class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
-                                                 <i class="fas fa-download mr-2"></i> View Report
+                                                 <i class="fas fa-download mr-2"></i> View TRF Report
                                                 </a>
-                                                <a href="Reciept1.jsp?patientNo=<%= preList.getPatientNo() %>" 
+                                               <%--  <a href="Reciept1.jsp?patientNo=<%= preList.getPatientNo() %>" 
                                                   class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
                                                  <i class="fas fa-download mr-2"></i> Submit Sample
-                                                </a>
+                                                </a> --%>
                                             </div>
                                         </td>
                                     </tr>
@@ -250,6 +296,8 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Pagination Controls -->
+                        <div class="pagination" id="paginationControls"></div>
                     </div>
                 </div>
             </div>
@@ -265,24 +313,29 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
             </div>
      <form id="sampleForm" action="TestSampleDetails" method="get">
     <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700">Primary Sample Type</label>
+                <label for="name" class="block text-sm font-medium text-gray-700">Sample Type</label>
                 <input type="text" id="testname" name="testname" class="search-input" readonly>
+     </div>
+     
+      <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Collection time</label>
+                <input type="text" id="collectionTime" name="collectionTime" class="search-input" readonly>
      </div>
     
 
-            <div class="mb-4">
+           <%--  <div class="mb-4">
                 <label for="examName" class="block text-sm font-medium text-gray-700">Examination Name</label>
                 <select name="examName" id="examName" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     <option value="">Select Sample</option>
-                    <%-- <% 
+                    <% 
                         ExaminationDaoImpl subexam = new ExaminationDaoImpl();
                         List<String> list = subexam.showExaminationSubtype("EX08");
                         for (int i = 0; i < list.size(); i++) { 
-                    %> --%>
-                        <%-- <option value="<%= list.get(i) %>"><%= list.get(i) %></option> --%>
-                  <%--   <% } %> --%>
+                    %>
+                        <option value="<%= list.get(i) %>"><%= list.get(i) %></option>
+                    <% } %>
                 </select>
-            </div>
+            </div> --%>
       
 
     <!-- Container for dynamically added input fields -->
@@ -291,9 +344,9 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
     
     <div class="mb-4">
         <!-- <label for="address" class="block text-sm font-medium text-gray-700">Name:</label> -->
-        <input type="hidden" id="name" name="name" class="search-input" readonly>
-        <input type="hidden" id="patientId" name="patientId" class="search-input" readonly>
-        <input type="text" id="examCoad" name="examCoad" class="search-input" readonly>
+        
+        <input type="hidden" id="Id" name="Id" class="search-input" readonly>
+        <input type="hidden" id="examCoad" name="examCoad" class="search-input" readonly>
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn-primary" >Submit</button>
@@ -356,16 +409,16 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
         this.selectedIndex = 0;
     });
 
-    function openModal(patientId, testname, examCoad, name) {
+    function openModal(Id, testname, examCoad, collectionTime) {
         // Populate modal fields with the data
         document.getElementById('testname').value = testname;
-        document.getElementById('name').value = name;
-        document.getElementById('patientId').value = patientId;
+        document.getElementById('collectionTime').value = collectionTime;
+        document.getElementById('Id').value = Id;
         document.getElementById('examCoad').value = examCoad;
 
         // Show the modal
         document.getElementById('myModal').style.display = 'block';
-        fetchSubtypes(examCoad);
+        fetchSubtypes(testname);
     }
 
     function closeModal() {
@@ -404,5 +457,93 @@ List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
 
     
     </script>
+    
+        <script>
+    const rowsPerPage = 2;
+    let currentPage = 1;
+
+    // Function to display the table rows for the current page
+    function displayTablePage(page) {
+        const tableBody = document.getElementById("sampalDetailsBody");
+        const rows = tableBody.getElementsByTagName("tr");
+        const totalRows = rows.length;
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+        // Ensure the page number is within valid range
+        if (page < 1) page = 1;
+        if (page > totalPages) page = totalPages;
+
+        // Update current page
+        currentPage = page;
+
+        // Calculate the start and end row indices
+        const startRow = (currentPage - 1) * rowsPerPage;
+        const endRow = Math.min(startRow + rowsPerPage, totalRows);
+
+        // Hide all rows initially
+        for (let i = 0; i < totalRows; i++) {
+            rows[i].style.display = "none";
+        }
+
+        // Display only the rows for the current page
+        for (let i = startRow; i < endRow; i++) {
+            rows[i].style.display = "";
+        }
+
+        // Update the pagination controls
+        updatePaginationControls(totalPages);
+    }
+
+    // Function to update the pagination controls
+    function updatePaginationControls(totalPages) {
+        const paginationControls = document.getElementById("paginationControls");
+        paginationControls.innerHTML = "";
+
+        // Create Previous button
+        const prevButton = document.createElement("button");
+        prevButton.innerText = "Previous";
+        prevButton.disabled = currentPage === 1;
+        prevButton.classList.add(currentPage === 1 ? "disabled" : "enabled");
+        prevButton.onclick = () => {
+            if (currentPage > 1) {
+                displayTablePage(currentPage - 1);
+            }
+        };
+        paginationControls.appendChild(prevButton);
+
+        // Create page number buttons
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement("button");
+            pageButton.innerText = i;
+
+            // Highlight the current page
+            if (i === currentPage) {
+                pageButton.classList.add("disabled", "bg-blue-500");
+                pageButton.disabled = true;
+            } else {
+                pageButton.classList.add("enabled");
+                pageButton.onclick = () => displayTablePage(i);
+            }
+            paginationControls.appendChild(pageButton);
+        }
+
+        // Create Next button
+        const nextButton = document.createElement("button");
+        nextButton.innerText = "Next";
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.classList.add(currentPage === totalPages ? "disabled" : "enabled");
+        nextButton.onclick = () => {
+            if (currentPage < totalPages) {
+                displayTablePage(currentPage + 1);
+            }
+        };
+        paginationControls.appendChild(nextButton);
+    }
+
+    // Initialize the table with the first page
+    document.addEventListener("DOMContentLoaded", () => {
+        displayTablePage(currentPage);
+    });
+</script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.lms.vo;
 
 public class ExaminationDetails {
 	
+	private String id;
 	private String ex_code;
 	private String ex_name;
 	private String ex_price;
@@ -12,9 +13,15 @@ public class ExaminationDetails {
 	private String group;
 	private String normalValue;
 	private String unit;
+	private String sampleCollectionTime;
 	
-	
-	
+
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getUnit() {
 		return unit;
 	}
@@ -69,7 +76,12 @@ public class ExaminationDetails {
 	public void setEx_table(String ex_table) {
 		this.ex_table = ex_table;
 	}
-	
+	public String getSampleCollectionTime() {
+		return sampleCollectionTime;
+	}
+	public void setSampleCollectionTime(String sampleCollectionTime) {
+		this.sampleCollectionTime = sampleCollectionTime;
+	}
 	
 	
 

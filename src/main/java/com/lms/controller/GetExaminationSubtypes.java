@@ -36,8 +36,8 @@ public class GetExaminationSubtypes extends HttpServlet {
 	        ExaminationDaoImpl subexam = new ExaminationDaoImpl();
 	        List<String> subtypes;
 			try {
-				subtypes = subexam.showExaminationSubtype(examCoad);
-				//System.out.println("subtypes "+subtypes);
+				subtypes = subexam.showExaminationSubtypeModal(examCoad);
+				System.out.println("subtypes "+subtypes);
 				 // Convert the list to JSON and send it back to the client
 		        response.setContentType("application/json");
 		        response.setCharacterEncoding("UTF-8");
