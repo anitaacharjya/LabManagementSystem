@@ -79,16 +79,25 @@ public class SampleDaoImpl {
 		        return preReq;
 		    }
 	// add sample details	 
-	 public boolean addTestSampleDetails(String Id,String collectionDate) {
+	 public boolean addTestSampleDetails(String Id,String collectionDate,String modalFrom) {
 		        boolean result=false;
 		        try {
 		        	Connection conn = dbconnect.getConn();
-
-		            	String updatesql ="UPDATE examination_details set sample_status=?,SMPL_COLLECTION_TIME=? where id=?";
-		            	PreparedStatement psUpdate = conn.prepareStatement(updatesql);
-		            	psUpdate.setString(1,"C");
-		            	psUpdate.setString(2,collectionDate);
-		            	psUpdate.setString(3,Id);
+		        	PreparedStatement psUpdate=null;
+                       if(modalFrom.equals("Analysis")) {
+                    	String updatesql ="UPDATE examination_details set sample_status=?,SMPL_RECEIVED_TIME=? where id=?";
+   		            	psUpdate = conn.prepareStatement(updatesql);
+   		            	psUpdate.setString(1,"R");
+   		            	psUpdate.setString(2,collectionDate);
+   		            	psUpdate.setString(3,Id);
+		            	
+                       }else {
+                    	String updatesql ="UPDATE examination_details set sample_status=?,SMPL_COLLECTION_TIME=? where id=?";
+   		            	psUpdate = conn.prepareStatement(updatesql);
+   		            	psUpdate.setString(1,"C");
+   		            	psUpdate.setString(2,collectionDate);
+   		            	psUpdate.setString(3,Id);
+                       }
 		            	int rowsupdate = psUpdate.executeUpdate();
 		            	System.out.println("rowsupdate "+rowsupdate);
 			           if(rowsupdate>0) {
@@ -108,7 +117,7 @@ public class SampleDaoImpl {
 		    try {
 		        Connection conn = dbconnect.getConn();
 		        // SQL query to select all fields from the register table
-		        String sql = "SELECT exam_name FROM examination_details WHERE patient_id = ?";
+		        String sql = "SELECT * FROM examination_details WHERE patient_id = ?";
 		        PreparedStatement ps = conn.prepareStatement(sql);
 		        ps.setString(1, patientID);
 		       // ps.setString(2, name);
@@ -117,6 +126,8 @@ public class SampleDaoImpl {
 		        // Loop through the result set
 		        while (rs.next()) {
 		            String testName = rs.getString("exam_name");
+		            String collectTime=rs.getString("SMPL_COLLECTION_TIME");
+		        	String recivedTime=rs.getString("SMPL_RECEIVED_TIME");
 		            
 		            if(testName!=null)
 		            {
@@ -129,7 +140,8 @@ public class SampleDaoImpl {
 				        {
 				        	String examName=rsTest.getString("EXAM_NAME");
 				        	String parameter=rsTest.getString("SUBTYPE");
-				        	String value=examName+"~"+parameter;
+				        	
+				        	String value=examName+"~"+parameter+"~"+collectTime+"~"+recivedTime;
 				        	
 				        	list.add(value);
 				        }
@@ -145,6 +157,32 @@ public class SampleDaoImpl {
 		    }
 		    return list; // Return the map with multiple values for each key
 		}
+	 
+	 //Add Tast value 
+		// add sample details	 
+	 public boolean addTestValue(String Id,String testCompletionTime,String testValue) {
+		        boolean result=false;
+		        try {
+		        	Connection conn = dbconnect.getConn();
+		        	PreparedStatement psUpdate=null;
+		        	String updatesql ="UPDATE examination_details set sample_status=?,TEST_COMPLETION_TIME=?,TEST_VALUE=? where id=?";
+		            	psUpdate = conn.prepareStatement(updatesql);
+		            	psUpdate.setString(1,"STV");
+		            	psUpdate.setString(2,testCompletionTime);
+		            	psUpdate.setString(3,testValue);
+		            	psUpdate.setString(4,Id);
+		            	int rowsupdate = psUpdate.executeUpdate();
+		            	System.out.println("rowsupdate "+rowsupdate);
+			           if(rowsupdate>0) {
+			        	   result=true;
+			           }
+		            
+		            
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        } 
+		        return result;
+		    }
 
 		 
 		 

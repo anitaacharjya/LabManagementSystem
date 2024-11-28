@@ -15,7 +15,7 @@ public class PreAnalysis {
 	public String sampleCollectionDate;
 	public String advanceamount;
 	public String discount;
-	
+
 	public String getSampleCollectionDate() {
 		return sampleCollectionDate;
 	}

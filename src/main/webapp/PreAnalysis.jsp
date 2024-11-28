@@ -192,7 +192,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         </div>
     </div>
     <script>
-    const rowsPerPage = 2;
+    const rowsPerPage = 10;
     let currentPage = 1;
 
     // Function to display the table rows for the current page

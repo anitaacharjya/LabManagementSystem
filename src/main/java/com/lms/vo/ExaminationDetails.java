@@ -14,6 +14,14 @@ public class ExaminationDetails {
 	private String normalValue;
 	private String unit;
 	private String sampleCollectionTime;
+	public String recivedDate;
+	
+	public String getRecivedDate() {
+		return recivedDate;
+	}
+	public void setRecivedDate(String recivedDate) {
+		this.recivedDate = recivedDate;
+	}
 	
 
 	public String getId() {

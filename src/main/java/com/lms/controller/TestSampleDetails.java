@@ -25,19 +25,25 @@ public class TestSampleDetails extends HttpServlet {
 		boolean result=false;
 		 String collectionTime = request.getParameter("collectionTime");
 		 String Id = request.getParameter("Id");
+		 String modalFrom=request.getParameter("modalFrom");
 			/*
 			 * String testName = request.getParameter("testname"); String[] addedSample =
 			 * request.getParameterValues("addedSamples[]");
 			 */
 		 System.out.println(" collectionTime "+collectionTime);
 		 System.out.println(" Id "+Id);
+		 System.out.println(" modalFrom "+modalFrom);
 		
 		 
 		 
 		 SampleDaoImpl sampledao= new SampleDaoImpl();
-		 result=sampledao.addTestSampleDetails(Id,collectionTime);
+		 result=sampledao.addTestSampleDetails(Id,collectionTime,modalFrom);
 		 if(result==true) {
-			 response.sendRedirect("SampleDetails.jsp");
+			 if(modalFrom.equals("Analysis")) {
+			 response.sendRedirect("Analysis.jsp");
+			 }else {
+				 response.sendRedirect("SampleDetails.jsp");
+			 }
 		 }
 		 
 		 

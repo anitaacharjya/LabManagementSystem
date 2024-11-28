@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.lms.dbconnect.Dbconnect;
 import com.lms.vo.ExaminationDetails;
@@ -77,6 +79,7 @@ public class PreAnalysisDaoImp {
 	                preanalysis.setDate(rs.getString("date"));
 	                preanalysis.setPaymentMode(rs.getString("payment_mode"));
 	                preanalysis.setSampleCollectionDate(rs.getString("sample_collection_date"));
+	                //preanalysis.setRecivedDate(rs.getString("SMPL_RECEIVED_TIME"));
 	                // Add the preanalysiser object to the preanalysiser list
 	                recieptList.add(preanalysis);
 	            }
@@ -146,6 +149,7 @@ public class PreAnalysisDaoImp {
 	            	exdetails.setPatient_id(rs.getString("patient_id"));
 	            	exdetails.setId(rs.getString("id"));
 	            	exdetails.setSampleCollectionTime(rs.getString("SMPL_COLLECTION_TIME"));
+	            	exdetails.setRecivedDate(rs.getString("SMPL_RECEIVED_TIME"));
 	            	
 
 	                
@@ -158,7 +162,35 @@ public class PreAnalysisDaoImp {
 	        }
 	        // Return the list of preanalysisers
 	        return examList;
-	    }	 
+	    }	
+	 //TRF Detsils
+	 public Map<String,String> getTRFDetails(String patientID) {
+	        Map<String,String> trmMap = new HashMap<>();
+	        
+	        try {
+	        	Connection conn = dbconnect.getConn();
+	            // SQL query to select all fields from the register table
+	            String sql = "SELECT * FROM TBL_PREREQUISITION where patient_id ='"+patientID+"'";
+	            System.out.println(" Sql "+sql);
+	            PreparedStatement ps = conn.prepareStatement(sql);
+	            ResultSet rs = ps.executeQuery();
+          
+	            // Loop through the result set
+	            while (rs.next()) {
+	            
+	            	trmMap.put("Other", rs.getString("other"));
+	            	trmMap.put("Allergic History", rs.getString("allergic_history"));
+	            	trmMap.put("Addiction", rs.getString("addiction"));
+	            	trmMap.put("Clinical History", rs.getString("clinical_history"));
+	      
+	            	
+	            }
+	        } catch (SQLException e) {
+	        	System.out.println("Exception in getExaminationDetails "+e);
+	        }
+	        // Return the list of preanalysisers
+	        return trmMap;
+	    }
 	// In your DAO class (e.g., ExaminationDaoImpl)
 	 public List<ExaminationDetails> getExaminationNames() {
 	     List<ExaminationDetails> examinationNames = new ArrayList<>();

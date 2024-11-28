@@ -201,24 +201,25 @@ String currentTime = sdf.format(now);
             <td style="border-left: none;"><%=preanalysisData.getGender() %></td>
         </tr>
         <tr>
-            <td style="border-right: none;"><strong>Sample Collection Time:</strong></td>
-            <td style="border-left: none;"><%=preanalysisData.getSampleCollectionDate() %></td>
+           <%--  <td style="border-right: none;"><strong>Sample Collection Time:</strong></td>
+            <td style="border-left: none;"><%=preanalysisData.getSampleCollectionDate() %></td> --%>
             <td style="border-right: none;"><strong>Patient Id:</strong></td>
             <td style="border-left: none;"><%=preanalysisData.getPatientNo()%></td>
+            <td style="border-right: none;"><strong>Contact No:</strong></td>
+            <td style="border-left: none;">+91 9876543210</td>
         </tr>
         <tr>
             <td style="border-right: none;"><strong>Patient’s Address:</strong></td>
             <td style="border-left: none;"><%=preanalysisData.getAddress() %></td>
             <!--  <td style="border-right: none;"><strong>Sample Type:</strong></td>
             <td style="border-left: none;">Blood</td>-->
-            <td style="border-right: none;"><strong>Contact No:</strong></td>
-            <td style="border-left: none;">+91 9876543210</td>
+            <td style="border-right: none;"><strong>Sample Collected By:</strong></td>
+            <td style="border-left: none;"></td>
         </tr>
         <tr>
             <td style="border-right: none;"><strong>Ref. By:</strong></td>
             <td style="border-left: none;"><%=preanalysisData.getReferredby() %></td>
-            <td style="border-right: none;"><strong>Sample Collected By:</strong></td>
-            <td style="border-left: none;"></td>
+            
             
         </tr>
     </table>
@@ -255,7 +256,8 @@ String currentTime = sdf.format(now);
                         
                         <th>Sample Type</th>
                         <th>Parameter To Test</th>
-                        <th>Test Value</th>
+                        <th>Sample collect time</th>
+                        <th>Sample Recived time</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -281,7 +283,9 @@ String currentTime = sdf.format(now);
                             </ul>
                         </td> --%>
                          <td><%= testName[1] %> </td>
-                         <td> </td>
+                         <td> <%= testName[2] %></td>
+                         <td> <%= testName[3] %></td>
+                         
                          
                          
                     </tr>
@@ -299,6 +303,11 @@ String currentTime = sdf.format(now);
                 <p>______________________</p>
                 <p>Technician A</p>
             </div>
+        </div>
+        <div>
+        <p>Sample Transportation Box/Cool Box Temperature Receiving:  </p>
+        <p>Frozen (< 2 ° C)  :</p>
+        <p>Temp (18 - 22° C) :</p>
         </div>
     </div>
 </body>

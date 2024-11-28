@@ -47,22 +47,22 @@
                         </a>
                     </li>
                     <li class="mb-4">
-    <button id="examination-dropdown-btn" class="block py-2 px-4 w-full text-left" style="font-weight:bold;font-size:15px">
-        Examination <i class="fa-solid fa-chevron-down"></i>
-    </button>
-    <ul id="examination-dropdown-menu" class="ml-4 hidden">
-        <li class="mb-2">
-            <a href="ExaminationDetails.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
-                 Examination Details
-            </a>
-        </li>
-        <li class="mb-2">
-            <a href="#" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
-                 View Examinations
-            </a>
-        </li>
-    </ul>
-</li>
+					    <button id="examination-dropdown-btn" class="block py-2 px-4 w-full text-left" style="font-weight:bold;font-size:15px">
+					        Examination <i class="fa-solid fa-chevron-down"></i>
+					    </button>
+					    <ul id="examination-dropdown-menu" class="ml-4 hidden">
+					        <li class="mb-2">
+					            <a href="ExaminationDetails.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
+					                 Examination Details
+					            </a>
+					        </li>
+					        <li class="mb-2">
+					            <a href="#" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
+					                 View Examinations
+					            </a>
+					        </li>
+					    </ul>
+					</li>
 
                      <li class="mb-2">
                         <a href="User.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px">
@@ -95,7 +95,7 @@
                 <a href="PreAnalysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-vials"></i> Pre Analysis</a>
             </li>
             <li class="mb-4">
-                <a href="SampleDetails.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-vials"></i> Sample Details</a>
+                <a href="SampleDetails.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-vials"></i> Sample Collection Details</a>
             </li>
             <li class="mb-4">
                 <a href="Analysis.jsp" class="block py-2 px-4" style="font-weight:bold;font-size:15px"><i class="fa-solid fa-flask"></i> Analysis</a>

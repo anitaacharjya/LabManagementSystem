@@ -7,13 +7,13 @@
 <%@ page import="java.sql.Connection"%>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.*"%>
 
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
 List<PreAnalysis> preanalysislist = preanalysis.getSampleDetails();
 
 LocalDateTime now = LocalDateTime.now();
-
 // Format the date and time as "dd-MM-yyyy HH:mm:ss"
 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 String formattedDateTime = now.format(formatter);
@@ -215,6 +215,7 @@ String formattedDateTime = now.format(formatter);
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getName() %></td>
                                        <td class="py-3 px-6 text-left whitespace-nowrap">
                                         <%
+                                        List<String> submitDate= new ArrayList<String>();
                                         int list = 1;
                                         boolean submitFlag=true;
                                         String patientno = preList.getPatientNo();
@@ -226,6 +227,7 @@ String formattedDateTime = now.format(formatter);
                                         	 String examName=preanalysis.getExaminationName(name);
                                         	 String examsample=preanalysis.getSampleType(name);
                                         	 sampleCollectionTime=examName+" - "+preList1.getSampleCollectionTime();
+                                        	 submitDate.add(sampleCollectionTime);
                                         %>
                                             <div class="flex justify-between items-center mb-3">
                                                 <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " +examName %></h6>
@@ -233,14 +235,14 @@ String formattedDateTime = now.format(formatter);
                                                if(preList1.getSample_status()!= null){
                                                if(preList1.getSample_status().equals("P")){ %> 
                                                 <button onclick="openModal('<%= preList1.getId() %>', '<%= examsample %>', '<%= preList1.getEx_code() %>', '<%= formattedDateTime %>')" 
-                                                    class="bg-red-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                                                    class="bg-red-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
                                                     <i class="fas fa-vial mr-2"></i> Pending
                                                 </button>
                                                 <%
                                                 submitFlag=false;
                                                } else { %>
                                                 <button
-                                                   class="bg-green-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                                                   class="bg-green-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
                                                     <i class="fas fa-vial mr-2"></i> Collected
                                                 </button>
                                                 <%}} %>
@@ -251,20 +253,28 @@ String formattedDateTime = now.format(formatter);
                                         %>
                                         <%if(submitFlag==true){ %>
                                          <a href="SubmitSampal.jsp?patientNo=<%= preList.getPatientNo()%>&patientName=<%= preList.getName() %>"
-                                              class="bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                                              class="bg-blue-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
                                              <!-- Updated icon for sample collection -->
                                             TRF submit
                                         </a>
                                         <%}else{ %>
                                               <a href="#"
-                                              class="bg-blue-300 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center"  disabled>
+                                              class="bg-blue-300 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center"  disabled>
                                              <!-- Updated icon for sample collection -->
                                             TRF submited
                                         </a>
                                         <%} %>
                                     </td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
-                                        <td class="py-3 px-6 text-left whitespace-nowrap"><%= sampleCollectionTime %></td>
+                                        <td class="py-3 px-6 text-left whitespace-nowrap">
+                                        <%
+                                        int listdate=1;
+                                        for(String date: submitDate){%>
+                                        	<%= listdate + ": " + date %></br>
+                                        <%
+                                        listdate++;
+                                        }%>
+                                        </td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getSampleCollectionDate() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
@@ -410,9 +420,22 @@ String formattedDateTime = now.format(formatter);
     });
 
     function openModal(Id, testname, examCoad, collectionTime) {
+
+    	/* LocalDateTime now1= LocalDateTime.now();
+    	// Format the date and time as "dd-MM-yyyy HH:mm:ss"
+    	DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    	String formattedDateTime1 = now1.format(formatter1); */
+
         // Populate modal fields with the data
+     var currentdate = new Date();
+     var datetime = currentdate.getDate() + "-"
+                + (currentdate.getMonth()+1)  + "-" 
+                + currentdate.getFullYear() + "  "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
         document.getElementById('testname').value = testname;
-        document.getElementById('collectionTime').value = collectionTime;
+        document.getElementById('collectionTime').value = datetime;
         document.getElementById('Id').value = Id;
         document.getElementById('examCoad').value = examCoad;
 
@@ -459,7 +482,7 @@ String formattedDateTime = now.format(formatter);
     </script>
     
         <script>
-    const rowsPerPage = 2;
+    const rowsPerPage = 10;
     let currentPage = 1;
 
     // Function to display the table rows for the current page
