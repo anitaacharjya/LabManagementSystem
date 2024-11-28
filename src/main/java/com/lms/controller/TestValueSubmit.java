@@ -31,7 +31,6 @@ public class TestValueSubmit extends HttpServlet {
 		 SampleDaoImpl sampledao= new SampleDaoImpl();
 		 result=sampledao.addTestValue(Id, testCompletionTime, testValue);
 		 if(result==true) {
-			
 			 response.sendRedirect("Analysis.jsp");
 			 
 		 }
