@@ -23,7 +23,7 @@ String formattedDateTime = now.format(formatter);
 <html class="h-full">
 <head>
     <meta charset="UTF-8">
-    <title>Analysis</title>
+    <title>Post Analysis</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
@@ -177,10 +177,7 @@ String formattedDateTime = now.format(formatter);
          <div class="flex-1 p-10 overflow-auto" style="margin-top:-60px">
             <div class="flex-4 p-7">
                 <div class="flex justify-between items-center mb-8">
-                    <h1 class="text-2xl font-bold text-gray-900">Sample Details</h1>
-                    <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg">
-                        <i class="fas fa-plus mr-2"></i> Create Recipt
-                    </a>
+                    <h1 class="text-2xl font-bold text-gray-900">Post Analysis</h1>
                 </div>
 
                 <!-- User Table -->
@@ -335,7 +332,12 @@ String formattedDateTime = now.format(formatter);
                                             list++;
                                         }
                                         %>
-                                      
+                                         <div class="flex items-center justify-center action-icons">
+                                                <a href="TestRequisitionForm.jsp?patientNo=<%= preList.getPatientNo() %>" 
+                                                  class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
+                                                 <i class="fas fa-download mr-2"></i> View TRF Report
+                                                </a>
+                                         </div>
                                     </td>
                                     </tr>
                                     <%

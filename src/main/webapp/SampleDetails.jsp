@@ -27,9 +27,13 @@ String formattedDateTime = now.format(formatter);
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <style>
+    .mb-8 {
+    margin-bottom: 1rem;
+    }
     table {
         border-collapse: collapse; /* Ensures borders don't double up */
         width: 100%;
+        hight: 100%;
     }
     td {
         border: 1px solid #ccc; /* Adds borders around table header and data cells */
@@ -138,7 +142,7 @@ String formattedDateTime = now.format(formatter);
     .pagination {
             margin-top: 20px;
             display: flex;
-            justify-content: center;
+            justify-content: RIGHT;
             gap: 8px;
         }
         .pagination button {
@@ -171,13 +175,10 @@ String formattedDateTime = now.format(formatter);
         <%@include file="Components/Navbar.jsp"%>
 
         <!-- Main Content -->
-         <div class="flex-1 p-10 overflow-auto" style="margin-top:-30px">
-            <div class="flex-1 p-8">
+         <div class="flex-1 p-10 overflow-auto" style="margin-top:-60px">
+            <div class="flex-4 p-7">
                 <div class="flex justify-between items-center mb-8">
-                    <h1 class="text-4xl font-bold text-gray-900">Sample Details</h1>
-                    <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg">
-                        <i class="fas fa-plus mr-2"></i> Create Recipt
-                    </a>
+                    <h1 class="text-2xl font-bold text-gray-900">Sample Details</h1>
                 </div>
 
                 <!-- User Table -->
@@ -481,9 +482,10 @@ String formattedDateTime = now.format(formatter);
     
     </script>
     
-        <script>
-    const rowsPerPage = 10;
+       <script>
+    const rowsPerPage = 6;
     let currentPage = 1;
+    const pageGroupSize = 3; // Number of page numbers to display at once
 
     // Function to display the table rows for the current page
     function displayTablePage(page) {
@@ -522,20 +524,25 @@ String formattedDateTime = now.format(formatter);
         const paginationControls = document.getElementById("paginationControls");
         paginationControls.innerHTML = "";
 
-        // Create Previous button
-        const prevButton = document.createElement("button");
-        prevButton.innerText = "Previous";
-        prevButton.disabled = currentPage === 1;
-        prevButton.classList.add(currentPage === 1 ? "disabled" : "enabled");
-        prevButton.onclick = () => {
-            if (currentPage > 1) {
-                displayTablePage(currentPage - 1);
-            }
-        };
-        paginationControls.appendChild(prevButton);
+        const currentPageGroup = Math.ceil(currentPage / pageGroupSize);
+
+        const startPage = (currentPageGroup - 1) * pageGroupSize + 1;
+        const endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+
+        // Create Previous group button
+        if (currentPageGroup > 1) {
+            const prevGroupButton = document.createElement("button");
+            prevGroupButton.innerText = "<";
+            prevGroupButton.classList.add("enabled");
+            prevGroupButton.onclick = () => {
+                const prevGroupStartPage = startPage - pageGroupSize;
+                displayTablePage(prevGroupStartPage);
+            };
+            paginationControls.appendChild(prevGroupButton);
+        }
 
         // Create page number buttons
-        for (let i = 1; i <= totalPages; i++) {
+        for (let i = startPage; i <= endPage; i++) {
             const pageButton = document.createElement("button");
             pageButton.innerText = i;
 
@@ -550,17 +557,17 @@ String formattedDateTime = now.format(formatter);
             paginationControls.appendChild(pageButton);
         }
 
-        // Create Next button
-        const nextButton = document.createElement("button");
-        nextButton.innerText = "Next";
-        nextButton.disabled = currentPage === totalPages;
-        nextButton.classList.add(currentPage === totalPages ? "disabled" : "enabled");
-        nextButton.onclick = () => {
-            if (currentPage < totalPages) {
-                displayTablePage(currentPage + 1);
-            }
-        };
-        paginationControls.appendChild(nextButton);
+        // Create Next group button
+        if (endPage < totalPages) {
+            const nextGroupButton = document.createElement("button");
+            nextGroupButton.innerText = ">";
+            nextGroupButton.classList.add("enabled");
+            nextGroupButton.onclick = () => {
+                const nextGroupStartPage = endPage + 1;
+                displayTablePage(nextGroupStartPage);
+            };
+            paginationControls.appendChild(nextGroupButton);
+        }
     }
 
     // Initialize the table with the first page
