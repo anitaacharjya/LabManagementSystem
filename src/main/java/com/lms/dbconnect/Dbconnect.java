@@ -8,7 +8,14 @@ public class Dbconnect {
     public static Connection getConn() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://lms.chkg6o8wakuj.eu-north-1.rds.amazonaws.com/LMS","admin","Pallab2024");
+			/*
+			 * conn = DriverManager.getConnection(
+			 * "jdbc:mysql://lms.chkg6o8wakuj.eu-north-1.rds.amazonaws.com/LMS","admin",
+			 * "Pallab2024");
+			 */
+            
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms ","root","root");
+
 
         } catch (Exception e) {
             e.printStackTrace();

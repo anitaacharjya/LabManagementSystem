@@ -34,6 +34,10 @@ public class TestSampleDetails extends HttpServlet {
 		 System.out.println(" Id "+Id);
 		 System.out.println(" modalFrom "+modalFrom);
 		
+		 if(modalFrom == null) {
+			 
+			 modalFrom="Not Analysis";
+		 }
 		 
 		 
 		 SampleDaoImpl sampledao= new SampleDaoImpl();

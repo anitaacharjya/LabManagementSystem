@@ -27,6 +27,12 @@ String currentTime = sdf.format(now);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     String formattedDateTime = date.format(formatter);
 %>
+
+<%
+	SampleDaoImpl sample =new SampleDaoImpl();
+	Prerequisition prereq = sample.getPreRequisitionDetails(patient_id);
+	
+	%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -213,8 +219,10 @@ String currentTime = sdf.format(now);
             <td style="border-left: none;"><%=preanalysisData.getAddress() %></td>
             <!--  <td style="border-right: none;"><strong>Sample Type:</strong></td>
             <td style="border-left: none;">Blood</td>-->
+            
+            
             <td style="border-right: none;"><strong>Sample Collected By:</strong></td>
-            <td style="border-left: none;"></td>
+            <td style="border-left: none;"><%=prereq.getSampleCollectedBy() %></td>
         </tr>
         <tr>
             <td style="border-right: none;"><strong>Ref. By:</strong></td>
@@ -224,11 +232,7 @@ String currentTime = sdf.format(now);
         </tr>
     </table>
 </div>
-	<%
-	SampleDaoImpl sample =new SampleDaoImpl();
-	Prerequisition prereq = sample.getPreRequisitionDetails(patient_id);
 	
-	%>
   <div>
     <div>
     <p><strong>Clinical History:- </strong> <%=prereq.getClinicalHistory() %></p>

@@ -167,6 +167,11 @@ String formattedDateTime = now.format(formatter);
 		    color: white;
 		    font-weight: bold;
 		}
+		.search-input {
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    border: 1px solid blue;
+}
     </style>
 </head>
 <body class="bg-gray-100 h-full">
@@ -175,11 +180,24 @@ String formattedDateTime = now.format(formatter);
         <%@include file="Components/Navbar.jsp"%>
 
         <!-- Main Content -->
-         <div class="flex-1 p-10 overflow-auto" style="margin-top:-60px">
-            <div class="flex-4 p-7">
-                <div class="flex justify-between items-center mb-8">
-                    <h1 class="text-2xl font-bold text-gray-900">Sample Details</h1>
-                </div>
+         <div class="flex-1 p-10 overflow-auto"style="margin-top:-60px">
+        <div class="flex-1 p-7">
+            <div class="flex items-center mb-2">
+			    <h1 class="text-2xl font-bold text-gray-900 mr-4">Sample Details</h1>
+			
+			    <!-- Single Search Bar -->
+			    <!-- <input type="text" id="searchInput" placeholder="Search by Name or Patient Number"
+       class="search-input border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 ml-2"
+       style="width: 350px;"> -->
+       
+       <!-- Single Search Bar -->
+			    <input type="text" id="searchInput" placeholder="Search by Name or Patient Number"
+			           class="search-input border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 w-1/3" style="margin-left:20px;width:350px">
+			
+			    
+         </div>
+
+
 
                 <!-- User Table -->
                 <div class="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -313,7 +331,7 @@ String formattedDateTime = now.format(formatter);
                 </div>
             </div>
         </div>
-    </div>
+   
 
     <!-- Modal HTML -->
     <div id="myModal" class="modal">
@@ -575,5 +593,34 @@ String formattedDateTime = now.format(formatter);
         displayTablePage(currentPage);
     });
 </script>
+
+
+<script>
+    // Function to filter rows based on a single search input
+    function filterTable() {
+        const searchInput = document.getElementById("searchInput").value.toLowerCase();
+        const tableBody = document.getElementById("sampalDetailsBody");
+        const rows = tableBody.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            const nameCell = row.cells[1].textContent.toLowerCase(); // Column for Name
+            const patientNoCell = row.cells[12].textContent.toLowerCase(); // Column for Patient Number
+
+            // Check if search input matches either Name or Patient Number
+            if (
+                nameCell.includes(searchInput) || 
+                patientNoCell.includes(searchInput)
+            ) {
+                row.style.display = ""; // Show row if matches
+            } else {
+                row.style.display = "none"; // Hide row if no match
+            }
+        }
+    }
+
+    // Attach input event listener to the search field
+    document.getElementById("searchInput").addEventListener("input", filterTable);
+</script>
+
 </body>
 </html>

@@ -67,6 +67,7 @@ public class SampleDaoImpl {
 		            	preReq.setAllergicHistory(rs.getString("allergic_history"));
 		            	preReq.setClinicalHistory(rs.getString("clinical_history"));
 		            	preReq.setOther(rs.getString("other"));
+		            	preReq.setSampleCollectedBy(rs.getString("sample_collected_by"));
 
 		                
 		                // Add the preanalysiser object to the preanalysiser list

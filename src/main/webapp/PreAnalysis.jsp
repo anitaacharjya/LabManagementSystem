@@ -87,6 +87,11 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
 		    color: white;
 		    font-weight: bold;
 		}
+		.search-input {
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    border: 1px solid blue;
+}
     </style>
 </head>
 <body class="bg-gray-100 h-full">
@@ -96,14 +101,21 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
 
         <!-- Main Content -->
          <div class="flex-1 p-10 overflow-auto"style="margin-top:-60px">
-        <div class="flex-4 p-7">
-            <div class="flex justify-between items-center mb-8">
-                <h1 class="text-2xl font-bold text-gray-900">Pre Analysis</h1>
-                <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg">
-                    <i class="fas fa-plus mr-2"></i> Create Recipt
-                </a>
-            </div>
+        <div class="flex-1 p-7">
+            <div class="flex items-center mb-2">
+			    <h1 class="text-2xl font-bold text-gray-900 mr-4">Pre Analysis</h1>
+			
+			    <!-- Single Search Bar -->
+			    <input type="text" id="searchInput" placeholder="Search by Name or Patient Number"
+			           class="search-input border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 w-1/3">
+			
+			    <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg ml-auto">
+			        <i class="fas fa-plus mr-2"></i> Create Recipt
+			    </a>
+         </div>
 
+            
+         
 
             <!-- User Table -->
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -194,6 +206,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
                     
             </div>
         </div>
+    </div>
     </div>
 <script>
     const rowsPerPage = 6;
@@ -288,6 +301,35 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
         displayTablePage(currentPage);
     });
 </script>
+
+<script>
+    // Function to filter rows based on a single search input
+    function filterTable() {
+        const searchInput = document.getElementById("searchInput").value.toLowerCase();
+        const tableBody = document.getElementById("preAnalysisBody");
+        const rows = tableBody.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            const nameCell = row.cells[1].textContent.toLowerCase(); // Column for Name
+            const patientNoCell = row.cells[10].textContent.toLowerCase(); // Column for Patient Number
+
+            // Check if search input matches either Name or Patient Number
+            if (
+                nameCell.includes(searchInput) || 
+                patientNoCell.includes(searchInput)
+            ) {
+                row.style.display = ""; // Show row if matches
+            } else {
+                row.style.display = "none"; // Hide row if no match
+            }
+        }
+    }
+
+    // Attach input event listener to the search field
+    document.getElementById("searchInput").addEventListener("input", filterTable);
+</script>
+
+
     
     
 </body>
