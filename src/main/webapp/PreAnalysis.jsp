@@ -114,8 +114,6 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
 			    </a>
          </div>
 
-            
-         
 
             <!-- User Table -->
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">

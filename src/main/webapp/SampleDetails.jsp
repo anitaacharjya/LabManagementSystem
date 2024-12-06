@@ -251,28 +251,44 @@ String formattedDateTime = now.format(formatter);
                                         	 sampleCollectionTime=examName+" - "+preList1.getSampleCollectionTime();
                                         	 submitDate.add(sampleCollectionTime);
                                         %>
-                                            <div class="flex justify-between items-center mb-3">
-                                                <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " +examName %></h6>
-                                               <%
-                                               if(preList1.getSample_status()!= null){
-                                               if(preList1.getSample_status().equals("P")){ %> 
-                                                <button onclick="openModal('<%= preList1.getId() %>', '<%= examsample %>', '<%= preList1.getEx_code() %>', '<%= formattedDateTime %>')" 
-                                                    class="bg-red-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
-                                                    <i class="fas fa-vial mr-2"></i> Pending
-                                                </button>
-                                                <%
-                                                submitFlag=false;
-                                               } else { %>
-                                                <button
-                                                   class="bg-green-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
-                                                    <i class="fas fa-vial mr-2"></i> Collected
-                                                </button>
-                                                <%}} %>
-                                            </div>
+											<div class="flex justify-between items-center mb-3">
+											    <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " + examName %></h6>
+											    <%
+											    if (preList1.getSample_status() != null) {
+											        if (preList1.getSample_status().equals("P")) { 
+											    %>
+											        <!-- Added a checkbox before the Pending button -->
+											        <div class="flex items-center">
+											            <input type="checkbox" id="checkbox-<%= preList1.getId() %>" 
+											                   name="sampleCheckbox" 
+											                   value="<%= preList1.getId() %>" 
+											                   class="sample-checkbox mr-2" 
+											                   onchange="toggleSubmitButton()">
+											            <button 
+											                onclick="openModal('<%= preList1.getId() %>', '<%= examsample %>', '<%= preList1.getEx_code() %>', '<%= formattedDateTime %>')" 
+											                class="bg-red-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
+											                <i class="fas fa-vial mr-2"></i> Pending
+											            </button>
+											        </div>
+											    <%
+											            submitFlag = false;
+											        } else { 
+											    %>
+											        <button
+											            class="bg-green-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
+											            <i class="fas fa-vial mr-2"></i> Collected
+											        </button>
+											    <%
+											        }
+											    }
+											    %>
+											</div>
                                             <%
                                             list++;
                                         }
                                         %>
+                                        
+
                                         <%if(submitFlag==true){ %>
                                          <a href="SubmitSampal.jsp?patientNo=<%= preList.getPatientNo()%>&patientName=<%= preList.getName() %>"
                                               class="bg-blue-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
@@ -286,6 +302,16 @@ String formattedDateTime = now.format(formatter);
                                             TRF submited
                                         </a>
                                         <%} %>
+                                        
+                                        <!-- Submit Button -->
+											<div id="submit-container" class="mt-4 hidden">
+											    <button 
+											        id="submit-button" 
+											        class="bg-blue-600 text-white font-bold py-2 px-4 rounded shadow-md"
+											        onclick="submitSamples()">
+											        Submit
+											    </button>
+											</div>
                                     </td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getDate() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -502,6 +528,45 @@ String formattedDateTime = now.format(formatter);
 
     
     </script>
+    
+    <script>
+    // Toggle the visibility of the "Submit" button
+    function toggleSubmitButton() {
+        const checkboxes = document.querySelectorAll('.sample-checkbox');
+        const submitContainer = document.getElementById('submit-container');
+        let isChecked = false;
+
+        // Check if any checkbox is checked
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                isChecked = true;
+            }
+        });
+
+        // Show or hide the submit button container
+        if (isChecked) {
+            submitContainer.classList.remove('hidden');
+        } else {
+            submitContainer.classList.add('hidden');
+        }
+    }
+
+    // Handle submit action (example logic, replace with actual submission logic)
+    function submitSamples() {
+        const selectedSamples = [];
+        const checkboxes = document.querySelectorAll('.sample-checkbox');
+
+        // Collect selected sample IDs
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedSamples.push(checkbox.value);
+            }
+        });
+
+        alert('Selected samples: ' + selectedSamples.join(', '));
+        // Replace alert with actual submission logic (e.g., AJAX request)
+    }
+</script>
     
        <script>
     const rowsPerPage = 6;
