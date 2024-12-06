@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkboxes with One Submit Button</title>
+    <title>Checkboxes with Dynamic Submit Buttons</title>
     <style>
         .hidden {
             display: none;
@@ -33,54 +33,55 @@
             cursor: pointer;
             border-radius: 5px;
         }
+        .disabled-checkbox {
+            opacity: 0.5;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Row 1 -->
-    <div class="row" id="row-1">
+    <!-- Dynamic Row Structure -->
+    <div class="row" >
         <h4>Row 1</h4>
         <div class="checkbox-container">
-            <label><input type="checkbox" class="sample-checkbox" value="1" onchange="toggleSubmitButton()"> Pending 1</label>
-            <label><input type="checkbox" class="sample-checkbox" value="2" onchange="toggleSubmitButton()"> Pending 2</label>
-            <label><input type="checkbox" class="sample-checkbox" value="3" onchange="toggleSubmitButton()"> Pending 3</label>
-            <label><input type="checkbox" class="sample-checkbox" value="4" onchange="toggleSubmitButton()"> Pending 4</label>
-            <label><input type="checkbox" class="sample-checkbox" value="5" onchange="toggleSubmitButton()"> Pending 5</label>
-            <label><input type="checkbox" class="sample-checkbox" value="6" onchange="toggleSubmitButton()"> Pending 6</label>
-            <label><input type="checkbox" class="sample-checkbox" value="7" onchange="toggleSubmitButton()"> Pending 7</label>
-            <label><input type="checkbox" class="sample-checkbox" value="8" onchange="toggleSubmitButton()"> Pending 8</label>
-            <label><input type="checkbox" class="sample-checkbox" value="9" onchange="toggleSubmitButton()"> Pending 9</label>
-            <label><input type="checkbox" class="sample-checkbox" value="10" onchange="toggleSubmitButton()"> Pending 10</label>
+            <label><input type="checkbox" class="sample-checkbox" value="1" onchange="toggleSubmitButton(this)"> Pending 1</label>
+            <label><input type="checkbox" class="sample-checkbox" value="2" onchange="toggleSubmitButton(this)"> Pending 2</label>
+            <label><input type="checkbox" class="sample-checkbox" value="3" onchange="toggleSubmitButton(this)"> Pending 3</label>
+            <label><input type="checkbox" class="sample-checkbox" value="4" onchange="toggleSubmitButton(this)"> Pending 4</label>
+            <label><input type="checkbox" class="sample-checkbox" value="5" onchange="toggleSubmitButton(this)"> Pending 5</label>
+        </div>
+        <div class="submit-container hidden">
+            <button class="submit-btn" onclick="submitSamples(this)">Submit</button>
         </div>
     </div>
+    
+    
 
-    <!-- Row 2 -->
-    <div class="row" id="row-2">
+    <div class="row" >
         <h4>Row 2</h4>
         <div class="checkbox-container">
-            <label><input type="checkbox" class="sample-checkbox" value="11" onchange="toggleSubmitButton()"> Pending 11</label>
-            <label><input type="checkbox" class="sample-checkbox" value="12" onchange="toggleSubmitButton()"> Pending 12</label>
-            <label><input type="checkbox" class="sample-checkbox" value="13" onchange="toggleSubmitButton()"> Pending 13</label>
-            <label><input type="checkbox" class="sample-checkbox" value="14" onchange="toggleSubmitButton()"> Pending 14</label>
-            <label><input type="checkbox" class="sample-checkbox" value="15" onchange="toggleSubmitButton()"> Pending 15</label>
-            <label><input type="checkbox" class="sample-checkbox" value="16" onchange="toggleSubmitButton()"> Pending 16</label>
-            <label><input type="checkbox" class="sample-checkbox" value="17" onchange="toggleSubmitButton()"> Pending 17</label>
-            <label><input type="checkbox" class="sample-checkbox" value="18" onchange="toggleSubmitButton()"> Pending 18</label>
-            <label><input type="checkbox" class="sample-checkbox" value="19" onchange="toggleSubmitButton()"> Pending 19</label>
-            <label><input type="checkbox" class="sample-checkbox" value="20" onchange="toggleSubmitButton()"> Pending 20</label>
+            <label><input type="checkbox" class="sample-checkbox" value="6" onchange="toggleSubmitButton(this)"> Pending 6</label>
+            <label><input type="checkbox" class="sample-checkbox" value="7" onchange="toggleSubmitButton(this)"> Pending 7</label>
+            <label><input type="checkbox" class="sample-checkbox" value="8" onchange="toggleSubmitButton(this)"> Pending 8</label>
+            <label><input type="checkbox" class="sample-checkbox" value="9" onchange="toggleSubmitButton(this)"> Pending 9</label>
+            <label><input type="checkbox" class="sample-checkbox" value="10" onchange="toggleSubmitButton(this)"> Pending 10</label>
+        </div>
+        <div class="submit-container hidden">
+            <button class="submit-btn" onclick="submitSamples(this)">Submit Row</button>
         </div>
     </div>
 
-    <!-- Submit Button for All Rows -->
-    <div id="submit-container" class="submit-container hidden">
-        <button class="submit-btn" onclick="submitSamples()">Submit</button>
-    </div>
+    <!-- Additional rows can be added here dynamically -->
 
     <script>
-        // Function to check if any checkbox is selected
-        function toggleSubmitButton() {
-            const checkboxes = document.querySelectorAll('.sample-checkbox');
-            const submitContainer = document.getElementById('submit-container');
+        // Function to check if any checkbox is selected in the specific row
+        function toggleSubmitButton(checkbox) {
+        	alert("A");
+            const row = checkbox.closest('.row');
+            const submitContainer = row.querySelector('.submit-container');
+            const checkboxes = row.querySelectorAll('.sample-checkbox');
+            
             let isChecked = false;
 
             // Check if any checkbox is checked
@@ -90,18 +91,36 @@
                 }
             });
 
-            // Show or hide the submit button
+            // Show or hide the submit button for the row
             if (isChecked) {
                 submitContainer.classList.remove('hidden');
+                disableOtherRows(row, true);
             } else {
                 submitContainer.classList.add('hidden');
+                disableOtherRows(row, false);
             }
         }
 
-        // Function to collect and submit the selected checkbox values
-        function submitSamples() {
+        // Function to disable checkboxes in other rows
+        function disableOtherRows(selectedRow, disable) {
+            const allRows = document.querySelectorAll('.row');
+            
+            allRows.forEach(row => {
+                if (row !== selectedRow) {
+                    const checkboxes = row.querySelectorAll('.sample-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.disabled = disable;
+                        checkbox.classList.toggle('disabled-checkbox', disable);
+                    });
+                }
+            });
+        }
+
+        // Function to collect and submit the selected checkbox values for the specific row
+        function submitSamples(button) {
+            const row = button.closest('.row');
             const selectedSamples = [];
-            const checkboxes = document.querySelectorAll('.sample-checkbox');
+            const checkboxes = row.querySelectorAll('.sample-checkbox');
 
             // Collect selected checkboxes' values
             checkboxes.forEach(checkbox => {
@@ -111,7 +130,7 @@
             });
 
             // Display the selected sample values (replace with actual logic)
-            alert('Submitting selected samples: ' + selectedSamples.join(', '));
+            alert('Submitting selected samples from this row: ' + selectedSamples.join(', '));
 
             // Here you can add your actual submission logic (e.g., AJAX call to the server)
         }
@@ -119,5 +138,3 @@
 
 </body>
 </html>
-
-    
