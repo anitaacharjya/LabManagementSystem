@@ -12,6 +12,7 @@ import java.util.Map;
 import com.lms.dbconnect.Dbconnect;
 import com.lms.vo.ExaminationDetails;
 import com.lms.vo.PreAnalysis;
+import java.sql.Statement;
 
 public class PreAnalysisDaoImp {
 	
@@ -266,37 +267,78 @@ public class PreAnalysisDaoImp {
 	 
 	        //save reciept
 	        
-	        public void saveUser(PreAnalysis user) {
-	            String sql = "INSERT INTO TBL_RECEIPT (name, age, gender, address, phone_number, email, date, bill_no, patient_id, reffered_by,payment_mode,adv_amount,discount,void) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
-	            try (
-	            	Connection conn = dbconnect.getConn();
-	                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+		 public synchronized boolean saveUser(PreAnalysis user,String[] examNames, String[] examPrices, String[] examCodes) {
+			 boolean value=false;
+			    String sql = "INSERT INTO TBL_RECEIPT (name, age, gender, address, phone_number, email, date, bill_no, reffered_by, payment_mode, adv_amount, discount, void,total_bill,discount_amount) " +
+			                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			    
+			    try (
+			        Connection conn = dbconnect.getConn();
+			        PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { // Request generated keys reffered_by
+			         
+			        stmt.setString(1, user.getName());
+			        stmt.setString(2, user.getAge());
+			        stmt.setString(3, user.getGender());
+			        stmt.setString(4, user.getAddress());
+			        stmt.setString(5, user.getPhoneNo());
+			        stmt.setString(6, user.getEmail());
+			        stmt.setString(7, user.getDate());
+			        stmt.setString(8, user.getBillNo());
+			        stmt.setString(9, user.getReferredby());
+			        stmt.setString(10, user.getPaymentMode());
+			        stmt.setString(11, user.getAdvanceamount());
+			        stmt.setString(12, user.getDiscount());
+			        stmt.setString(13, "N"); // Default value for 'void'
+			        stmt.setDouble(14, user.getTotalBill());
+			        stmt.setDouble(15, user.getDiscountAmount());
+			        
 
-	                stmt.setString(1, user.getName());
-	                stmt.setString(2, user.getAge());
-	                stmt.setString(3, user.getGender());
-	                stmt.setString(4, user.getAddress());
-	                stmt.setString(5, user.getPhoneNo());
-	                stmt.setString(6, user.getEmail());
-	                stmt.setString(7, user.getDate());
-	                stmt.setString(8, user.getBillNo());
-	                stmt.setString(9, user.getPatientNo());
-	                stmt.setString(10, user.getReferredby());
-	                stmt.setString(11, user.getPaymentMode());
-	                stmt.setString(12, user.getAdvanceamount());
-	                stmt.setString(13, user.getDiscount());
-	                stmt.setString(14, "N");
+			        int affectedRows = stmt.executeUpdate();
 
-	                stmt.executeUpdate();
+			        // Check if insertion was successful
+			        if (affectedRows > 0) {
+			            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+			                if (generatedKeys.next()) {
+			                    int idRec = generatedKeys.getInt(1);
+			                    String patientId = "P0" + idRec;
+			                    String updateSql = "UPDATE TBL_RECEIPT SET patient_id = ? WHERE ID_REC = ?";
+			                    try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+			                        updateStmt.setString(1, patientId);
+			                        updateStmt.setInt(2, idRec);
+			                        int updatePatientId=updateStmt.executeUpdate(); // Update the patient_id
+			                        System.out.println(" updatePatientId  "+updatePatientId);
+			                        if(updatePatientId>0)
+			                        {
+			                            if (examNames != null && examPrices != null) {
+			                                for (int i = 0; i < examNames.length; i++) {
+			                                    String examName = examNames[i];
+			                                    String examPrice = examPrices[i];
+			                                    String examCode = examCodes[i];
 
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	            
-	            
-	            
-	        
-	    }
+			                                    if (examName != null && !examName.isEmpty()) {
+			                                        ExaminationDetails examDetail = new ExaminationDetails();
+			                                        examDetail.setEx_name(examName);
+			                                        examDetail.setEx_price(examPrice);
+			                                        examDetail.setEx_code(examCode);
+			                                        // Save examination details in the database			        
+			                                        saveExaminationDetails(examDetail,patientId);
+			                                    }
+			                                }
+			                                value=true;
+			                            }	
+			                        }
+			                        
+			                    }
+			                }
+			            }
+			        }
+
+			    } catch (SQLException e) {
+			        e.printStackTrace();
+			    }
+				return value;
+			}
+
 	        
 public int saveExaminationDetails(ExaminationDetails examDetail,String patient_id) {
 	int value = 0;
@@ -347,6 +389,8 @@ public PreAnalysis getRecieptdetails(String patientID) {
             preanalysis.setPaymentMode(rs.getString("payment_mode"));
             preanalysis.setAdvanceamount(rs.getString("adv_amount"));
             preanalysis.setSampleCollectionDate(rs.getString("sample_collection_date"));
+            preanalysis.setTotalBill(rs.getDouble("total_bill"));
+            preanalysis.setDiscountAmount(rs.getDouble("discount_amount"));
             
 
         }

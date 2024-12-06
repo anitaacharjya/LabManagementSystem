@@ -72,14 +72,14 @@
             display: grid;
             grid-template-columns: 2fr 1fr; /* This creates an 8:4 grid ratio */
             gap: 10px;
-            margin-top: 20px;
             padding: 10px;
-            border: 1px solid black;
+            margin-top: 0;
+           
         }
         .left-section {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            font-size: 12px;
         }
         .right-section {
             text-align: right;
@@ -191,19 +191,20 @@ String currentTime = sdf.format(now);
             </table>
         </div>
 
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+
         <!-- Total Section -->
         <div class="grid-container">
             <div class="left-section">
-                <div>Collected By: LAB</div>
-                <div>Received By: </div>
-                <div>Billed By: <% session.getAttribute("username");%></div>
+               <P>Please produce the slip for report. Report not delivered in the morning.</P>
+               <P>Next date report delivery time 5PM .</P>
             </div>
              
             <div class="right-section">
-                <div class="total">Total bill: <%=totalBill %></div>
+                <div class="total">Total bill: <%=preanalysisData.getTotalBill()+" rs" %></div>
                 <%
                 int dueprice=0;
-               String amount = preanalysisData.getAdvanceamount();
+                String amount = preanalysisData.getAdvanceamount();
                 if (amount != null && !amount.trim().isEmpty()) {
                 	dueprice = Integer.parseInt(amount);
                 }
@@ -211,8 +212,9 @@ String currentTime = sdf.format(now);
                 
                 
                 %>
-                <div class="paid">Advance:<%=preanalysisData.getAdvanceamount()%> </div>
-                <div class="due">Due bill: <%=dueprice%></div>
+                <div class="paid">Advance:<%=preanalysisData.getAdvanceamount()+" rs"%> </div>
+                <div class="due">Due bill: <%=dueprice+" rs"%></div>
+                <div class="due">Discount Amount: <%=preanalysisData.getDiscountAmount()+" rs"%></div>
             </div>
            
         </div>

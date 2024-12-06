@@ -15,7 +15,21 @@ public class PreAnalysis {
 	public String sampleCollectionDate;
 	public String advanceamount;
 	public String discount;
+	public double totalBill;
+	public double discountAmount;
 
+	public double getTotalBill() {
+		return totalBill;
+	}
+	public void setTotalBill(double totalBill) {
+		this.totalBill = totalBill;
+	}
+	public double getDiscountAmount() {
+		return discountAmount;
+	}
+	public void setDiscountAmount(double discountAmount) {
+		this.discountAmount = discountAmount;
+	}
 	public String getSampleCollectionDate() {
 		return sampleCollectionDate;
 	}
@@ -100,6 +114,7 @@ public class PreAnalysis {
 	public void setDiscount(String discount) {
 		this.discount = discount;
 	}
+
 	
 	
 	

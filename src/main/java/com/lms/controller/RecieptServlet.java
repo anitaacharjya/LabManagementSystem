@@ -31,51 +31,57 @@ public class RecieptServlet extends HttpServlet { protected void doPost(HttpServ
     String AdvancedAmount = request.getParameter("advamount");
     String Discount = request.getParameter("discount");
     String paymode = request.getParameter("paymentmode");
-
-    // Create a new User object
-    PreAnalysis user = new PreAnalysis();
-    user.setName(name);
-    user.setAge(age);
-    user.setGender(gender);
-    user.setAddress(address);
-    user.setPhoneNo(phoneNumber);
-    user.setEmail(email);
-    user.setDate(date);
-    user.setBillNo(billNo);
-    user.setPatientNo(patientId);
-    user.setReferredby(refferedBy);
-    user.setPaymentMode(paymode);
-    user.setAdvanceamount(AdvancedAmount);
-    user.setDiscount(Discount);
-
-    // Save user details in the database
-    PreAnalysisDaoImp userDao = new PreAnalysisDaoImp();
-    userDao.saveUser(user);
-
-    // Extract examination details
+    
+    
+    
     String[] examNames = request.getParameterValues("examName[]");
     String[] examPrices = request.getParameterValues("examPrice[]");
     String[] examCodes = request.getParameterValues("examCode[]");
-    
-
+    double Totalbill=0;
     if (examNames != null && examPrices != null) {
-        for (int i = 0; i < examNames.length; i++) {
-            String examName = examNames[i];
-            String examPrice = examPrices[i];
-            String examCode = examCodes[i];
+        for (int i = 0; i < examPrices.length; i++) {
+           
+        	String examPrice = examPrices[i];  // This will be a string like "65.0"
+        	double price = Double.parseDouble(examPrice);  // Parse as a double
+        	Totalbill = Totalbill + price;  // Add to the total bill
 
-            if (examName != null && !examName.isEmpty()) {
-                ExaminationDetails examDetail = new ExaminationDetails();
-                examDetail.setEx_name(examName);
-                examDetail.setEx_price(examPrice);
-                examDetail.setEx_code(examCode);
-                // Save examination details in the database
-                PreAnalysisDaoImp examDao = new PreAnalysisDaoImp();
-                examDao.saveExaminationDetails(examDetail,patientId);
-            }
+        	// If you need to convert the total bill to an integer
+        	Totalbill = (int) Totalbill;
         }
+        int percentage=Integer.parseInt(Discount);
+        double percentageAmount = (percentage / 100.0) * Totalbill;
+        double finalbill=Totalbill-percentageAmount;
+        
+        
+        
+        
+        PreAnalysis user = new PreAnalysis();
+        user.setName(name);
+        user.setAge(age);
+        user.setGender(gender);
+        user.setAddress(address);
+        user.setPhoneNo(phoneNumber);
+        user.setEmail(email);
+        user.setDate(date);
+        user.setBillNo(billNo);
+        user.setPatientNo(patientId);
+        user.setReferredby(refferedBy);
+        user.setPaymentMode(paymode);
+        user.setAdvanceamount(AdvancedAmount);
+        user.setDiscount(Discount);
+        user.setTotalBill(finalbill);
+        user.setDiscountAmount(percentageAmount);
+
+        // Save user details in the database
+        PreAnalysisDaoImp userDao = new PreAnalysisDaoImp();
+        boolean value=userDao.saveUser(user,examNames,examPrices,examCodes);
+        
     }
 
+    // Create a new User object
+
+
+    
     // Redirect or send response
     response.sendRedirect("PreAnalysis.jsp");
 }}

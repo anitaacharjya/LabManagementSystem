@@ -67,7 +67,6 @@ public class SampleDaoImpl {
 		            	preReq.setAllergicHistory(rs.getString("allergic_history"));
 		            	preReq.setClinicalHistory(rs.getString("clinical_history"));
 		            	preReq.setOther(rs.getString("other"));
-		            	preReq.setSampleCollectedBy(rs.getString("sample_collected_by"));
 
 		                
 		                // Add the preanalysiser object to the preanalysiser list
@@ -85,6 +84,7 @@ public class SampleDaoImpl {
 		        try {
 		        	Connection conn = dbconnect.getConn();
 		        	PreparedStatement psUpdate=null;
+		        	
                        if(modalFrom.equals("Analysis")) {
                     	String updatesql ="UPDATE examination_details set sample_status=?,SMPL_RECEIVED_TIME=? where id=?";
    		            	psUpdate = conn.prepareStatement(updatesql);

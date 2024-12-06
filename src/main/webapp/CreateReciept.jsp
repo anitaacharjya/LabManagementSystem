@@ -94,7 +94,7 @@
             const codeInput = row.querySelector('input[name="examCode[]"]');
 
             const examName = selectElement.value;
-            alert("examName "+examName);
+            //alert("examName "+examName);
 
             if (examName) {
                 const xhr = new XMLHttpRequest();

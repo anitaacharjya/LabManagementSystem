@@ -172,6 +172,7 @@ String formattedDateTime = now.format(formatter);
     padding: 0.5rem;
     border: 1px solid blue;
 }
+
     </style>
 </head>
 <body class="bg-gray-100 h-full">
@@ -191,8 +192,10 @@ String formattedDateTime = now.format(formatter);
        style="width: 350px;"> -->
        
        <!-- Single Search Bar -->
-			    <input type="text" id="searchInput" placeholder="Search by Name or Patient Number"
-			           class="search-input border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 w-1/3" style="margin-left:20px;width:350px">
+			        <!-- Search Bar -->
+    <input type="text" id="searchInput" placeholder="Search by Name or Patient Number"
+           class="search-input border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400" 
+           style="width:350px; margin-right: auto;">
 			
 			    
          </div>

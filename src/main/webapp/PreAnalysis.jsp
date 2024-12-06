@@ -107,7 +107,7 @@ List<PreAnalysis> preanalysislist = preanalysis.getAllReciept();
 			
 			    <!-- Single Search Bar -->
 			    <input type="text" id="searchInput" placeholder="Search by Name or Patient Number"
-			           class="search-input border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 w-1/3">
+			           class="search-input border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 w-1/3" style="margin-left:20px;width:350px">
 			
 			    <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg ml-auto">
 			        <i class="fas fa-plus mr-2"></i> Create Recipt

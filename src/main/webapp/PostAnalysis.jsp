@@ -189,12 +189,8 @@ String formattedDateTime = now.format(formatter);
     <!-- Search Bar -->
     <input type="text" id="searchInput" placeholder="Search by Name or Patient Number"
            class="search-input border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400" 
-           style="width:350px; margin-right: auto;">
-    
-    <!-- Create Receipt Button -->
-    <a href="CreateReciept.jsp" class="btn-primary flex items-center shadow-lg">
-        <i class="fas fa-plus mr-2"></i> Create Receipt
-    </a>
+           style="width:270px; margin-right: auto;">
+
 </div>
 
                 <!-- User Table -->
