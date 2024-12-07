@@ -24,7 +24,7 @@ public class UserDaoImpl {
         	CommonFunction common= new CommonFunction();
         	Connection conn = dbconnect.getConn();
         	password=common.passwordencryptdecrypted(password, "ENC");
-        	System.out.println(" Password ENCRYPTED "+password);
+        	//System.out.println(" Password ENCRYPTED "+password);
             String sql = "SELECT count(*) as count FROM user WHERE username = ? and password=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);

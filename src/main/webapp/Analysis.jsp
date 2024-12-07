@@ -166,11 +166,27 @@ String formattedDateTime = now.format(formatter);
 		    color: white;
 		    font-weight: bold;
 		}
-	.search-input {
-    border-radius: 0.375rem;
-    padding: 0.5rem;
-    border: 1px solid blue;
-}
+		.search-input {
+	    border-radius: 0.375rem;
+	    padding: 0.5rem;
+	    border: 1px solid blue;
+	}
+        .submit-container {
+           margin-top: 10px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .disabled-checkbox {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
     </style>
 </head>
 <body class="bg-gray-100 h-full">
@@ -226,7 +242,9 @@ String formattedDateTime = now.format(formatter);
                                     <tr class="table-row border-b border-gray-200">
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= count %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getName() %></td>
-                                       <td class="py-3 px-6 text-left whitespace-nowrap">
+                                                                              <td class="py-3 px-6 text-left whitespace-nowrap">
+									   <div class="row" >    
+									        <div class="checkbox-container">
                                         <%
                                         List<String> submitDate= new ArrayList<String>();
                                         List<String> recivedDate= new ArrayList<String>();
@@ -247,30 +265,38 @@ String formattedDateTime = now.format(formatter);
                                         	 
                                         	 submitDate.add(sampleCollectionTime);
                                         	 recivedDate.add(sampleRecivedTime);
+                                        	 String sampleDetails=examName+"->"+examsample;
                                         %>
-                                            <div class="flex justify-between items-center mb-3">
-                                                <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " +examName %></h6>
+                                            
+                                                
                                                <%
                                                if(preList1.getSample_status()!= null){
                                                if(preList1.getSample_status().equals("R") || preList1.getSample_status().equals("STV")){ %> 
-                                                <button
-                                                   class="bg-green-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
-                                                    <i class="fas fa-vial mr-2"></i> Recived
-                                                </button>
+                                                &nbsp;&nbsp;&nbsp;<span class="text-green-600 font-bold">
+									                <%= list + ": " + examName %>
+									            </span>
                                                 <%
                                                 submitFlag=false;
-                                               } else { %>
-                                                    <button onclick="openModal('<%= preList1.getId() %>', '<%= examName %>', '<%= preList1.getEx_code() %>', '<%= formattedDateTime %>')" 
-                                                    class="bg-red-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
-                                                    <i class="fas fa-vial mr-2"></i> Pending
-                                                </button>
-                                                <%}} %>
-                                            </div>
+                                               } else { %><% 
+                                                    if(preList1.getSample_status().equals("C")){%>
+                                                    <label><input type="checkbox" class="sample-checkbox" value="<%= preList1.getId() %>,<%= sampleDetails %>" onchange="toggleSubmitButton(this)">
+                                                    <span class="text-red-600 font-bold"><%= list + ": " + examName %></span>
+                                                  <% }else{%>  
+									                &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-red-600 font-bold"><%= list + ": " + examName %></span>
+                                                <%}
+                                                }
+                                               } %>
+                                            </label></br>
                                             <%
                                             list++;
                                         }
-                                        %>
-                                      
+                                        %> 
+										  </div>
+										  <div class="submit-container hidden">
+									            <button class="submit-btn" onclick="submitSamples(this)">Submit</button>
+									        </div>
+									    </div>
+										
                                     </td>
                                         
                                         <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -622,6 +648,141 @@ String formattedDateTime = now.format(formatter);
 
     
     </script>
+    
+    <script>
+    // Function to check if any checkbox is selected in the specific row
+    function toggleSubmitButton(checkbox) {
+        // Find the closest parent row
+        const row = checkbox.closest('.row');
+        const submitContainer = row.querySelector('.submit-container');
+        const checkboxes = row.querySelectorAll('.sample-checkbox');
+
+        if (!row) {
+            alert('Row not found.');
+        }
+
+        if (!submitContainer) {
+            alert('Submit container not found inside the row.');
+        }
+
+        let isChecked = false;
+
+        // Check if any checkbox is checked
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                isChecked = true;
+            }
+        });
+
+        // Show or hide the submit button for the row
+        if (isChecked) {
+            submitContainer.classList.remove('hidden');
+            disableOtherRows(row, true);
+        } else {
+            submitContainer.classList.add('hidden');
+            disableOtherRows(row, false);
+        }
+    }
+
+    // Function to disable checkboxes in other rows
+    function disableOtherRows(selectedRow, disable) {
+        const allRows = document.querySelectorAll('.row');
+
+        allRows.forEach(row => {
+            if (row !== selectedRow) {
+                const checkboxes = row.querySelectorAll('.sample-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.disabled = disable;
+                    checkbox.classList.toggle('disabled-checkbox', disable);
+                });
+            }
+        });
+    }
+
+    function formatExactISTDateTime(date) {
+        const options = {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',  // Added seconds
+            hour12: true,
+            timeZone: 'Asia/Kolkata'
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        const parts = formatter.formatToParts(date);
+        const day = parts.find(part => part.type === 'day').value;
+        const month = parts.find(part => part.type === 'month').value;
+        const year = parts.find(part => part.type === 'year').value;
+        const hour = parts.find(part => part.type === 'hour').value;
+        const minute = parts.find(part => part.type === 'minute').value;
+        const second = parts.find(part => part.type === 'second').value;
+        const dayPeriod = parts.find(part => part.type === 'dayPeriod').value;
+        var formattedDateTime = day + '-' + month + '-' + year + ' ' + hour + ':' + minute + ':' + second + ' ' + dayPeriod;
+        return formattedDateTime;
+    }
+
+
+    // This function sends XML data to the server
+    function sendXMLData(selectedSamples) {
+        alert("Inside sendXMLData"+selectedSamples);
+
+        var from="Analysis";
+        
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'SubmitSamples?selectedSamples='+selectedSamples+'&from='+from, true);
+        xhr.setRequestHeader('Content-Type', 'application/xml');
+
+        // Define the callback function for when the request is completed
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // Successful response
+                console.log('Response:', xhr.responseText);
+                alert('Samples submitted successfully!');
+            } else {
+                // Error handling
+                console.error('Error:', xhr.statusText);
+                alert('An error occurred while submitting samples.');
+            }
+        };
+
+        // Send the XML data
+        xhr.send();
+    }
+
+    // Function to handle sample submission
+    function submitSamples(button) {
+        const row = button.closest('.row');
+        const selectedSamples = [];
+        const checkboxes = row.querySelectorAll('.sample-checkbox');
+
+        // Collect selected checkboxes' values
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedSamples.push(checkbox.value);
+            }
+        });
+
+        const selectedSamplesValue = [];
+        const idOfItem=[];
+        for (let i = 0; i < selectedSamples.length; i++) {
+            var value = selectedSamples[i].split(",");
+            selectedSamplesValue.push((i + 1) + ". " + value[1]);
+            idOfItem.push(value[0]);
+        }
+        const currentDate = new Date();
+        const formattedISTDateTime = formatExactISTDateTime(currentDate);
+
+        // Display the selected sample values and confirm
+        const userConfirmed = confirm('Please confirm sample collected in ' + formattedISTDateTime + '. \n' + selectedSamplesValue.join('\n'));
+
+        if (userConfirmed) {
+            // After user confirms, send the XML data
+            sendXMLData(idOfItem);
+        }
+    }
+</script>
     
   <script>
     const rowsPerPage = 6;

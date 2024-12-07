@@ -57,7 +57,7 @@ public class SampleDaoImpl {
 		        	Connection conn = dbconnect.getConn();
 		            // SQL query to select all fields from the register table
 		            String sql = "SELECT * FROM TBL_PREREQUISITION where patient_id ='"+patientID+"'";
-		            System.out.println(" Sql "+sql);
+		            //System.out.println(" Sql "+sql);
 		            PreparedStatement ps = conn.prepareStatement(sql);
 		            ResultSet rs = ps.executeQuery();
 	             

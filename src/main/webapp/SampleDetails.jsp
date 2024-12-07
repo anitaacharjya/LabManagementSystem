@@ -270,6 +270,8 @@ String formattedDateTime = now.format(formatter);
 													        String examsample = preanalysis.getSampleType(name);
 													        sampleCollectionTime = examName + " - " + preList1.getSampleCollectionTime();
 													        submitDate.add(sampleCollectionTime);
+													        String sampleDetails=examName+"->"+examsample;
+													       
 													    %>
 									           
 									             
@@ -277,31 +279,40 @@ String formattedDateTime = now.format(formatter);
 									        if (preList1.getSample_status() != null) {
 									            if (preList1.getSample_status().equals("P")) { 
 									        %>
-									            
-									              
-									                 <label><input type="checkbox" class="sample-checkbox" value="<%= preList1.getId() %>-<%= examsample %>" onchange="toggleSubmitButton(this)">
-									                <span class="text-red-600 font-bold">
-										                <%= list + ": " + examName %>
-										            </span>
-									            
-									        <%
-									                submitFlag = false;
+									                 <label><input type="checkbox" class="sample-checkbox" value="<%= preList1.getId() %>,<%= sampleDetails %>" onchange="toggleSubmitButton(this)">
+									                <span class="text-red-600 font-bold"><%= list + ": " + examName %></span>
+									        <%submitFlag = false;
 									            } else { 
-									        %>      
-									        
-									             <span class="text-green-600 font-bold">
+									        %><span class="text-green-600 font-bold">
 									                &nbsp;&nbsp;&nbsp;&nbsp;<%= list + ": " + examName %>
 									            </span>
-																		        <%
+											<%
 									            }
-									        }
+									        }       
 									        %>
 									             </label></br>
-									            <%} %>
+									            <%
+									            list++;
+									            } %>
+									         <div>
+									        <% if (submitFlag == true) { %>
+									        &nbsp; &nbsp;<a href="SubmitSampal.jsp?patientNo=<%= preList.getPatientNo() %>&patientName=<%= preList.getName() %>"
+									            class="bg-blue-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
+									            TRF submit
+									        </a>
+									    <% } else { %>
+									        <!-- <a href="#" class="bg-blue-300 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center" disabled>
+									            TRF submit
+									        </a> -->
+									    <% } %>
+									        </div>
+									            
 									        </div>
 									        <div class="submit-container hidden">
 									            <button class="submit-btn" onclick="submitSamples(this)">Submit</button>
 									        </div>
+									       
+									         
 									    </div>
 									    
 									</td>
@@ -523,23 +534,18 @@ String formattedDateTime = now.format(formatter);
     
 <script>
     // Function to check if any checkbox is selected in the specific row
-    
     function toggleSubmitButton(checkbox) {
-
         // Find the closest parent row
         const row = checkbox.closest('.row');
         const submitContainer = row.querySelector('.submit-container');
         const checkboxes = row.querySelectorAll('.sample-checkbox');
-        
+
         if (!row) {
-        	alert('Row not found.');
-           // return;
+            alert('Row not found.');
         }
 
-       
         if (!submitContainer) {
             alert('Submit container not found inside the row.');
-            //return;
         }
 
         let isChecked = false;
@@ -550,8 +556,7 @@ String formattedDateTime = now.format(formatter);
                 isChecked = true;
             }
         });
-        //alert("AA "+isChecked);
-        //alert("submitContainer "+submitContainer);
+
         // Show or hide the submit button for the row
         if (isChecked) {
             submitContainer.classList.remove('hidden');
@@ -577,7 +582,61 @@ String formattedDateTime = now.format(formatter);
         });
     }
 
-    // Function to collect and submit the selected checkbox values for the specific row
+    function formatExactISTDateTime(date) {
+        const options = {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',  // Added seconds
+            hour12: true,
+            timeZone: 'Asia/Kolkata'
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        const parts = formatter.formatToParts(date);
+        const day = parts.find(part => part.type === 'day').value;
+        const month = parts.find(part => part.type === 'month').value;
+        const year = parts.find(part => part.type === 'year').value;
+        const hour = parts.find(part => part.type === 'hour').value;
+        const minute = parts.find(part => part.type === 'minute').value;
+        const second = parts.find(part => part.type === 'second').value;
+        const dayPeriod = parts.find(part => part.type === 'dayPeriod').value;
+        var formattedDateTime = day + '-' + month + '-' + year + ' ' + hour + ':' + minute + ':' + second + ' ' + dayPeriod;
+        return formattedDateTime;
+    }
+
+    const currentDate = new Date();
+    const formattedISTDateTime = formatExactISTDateTime(currentDate);
+
+    // This function sends XML data to the server
+    function sendXMLData(selectedSamples) {
+        alert("Inside sendXMLData"+selectedSamples);
+
+        var from="SampleDetails";
+        
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'SubmitSamples?selectedSamples='+selectedSamples+'&from='+from, true);
+        xhr.setRequestHeader('Content-Type', 'application/xml');
+
+        // Define the callback function for when the request is completed
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // Successful response
+                console.log('Response:', xhr.responseText);
+                alert('Samples submitted successfully!');
+            } else {
+                // Error handling
+                console.error('Error:', xhr.statusText);
+                alert('An error occurred while submitting samples.');
+            }
+        };
+
+        // Send the XML data
+        xhr.send();
+    }
+
+    // Function to handle sample submission
     function submitSamples(button) {
         const row = button.closest('.row');
         const selectedSamples = [];
@@ -589,20 +648,25 @@ String formattedDateTime = now.format(formatter);
                 selectedSamples.push(checkbox.value);
             }
         });
-        
-        const selectedSamplesValue = [];
-        for (let i = 0; i < selectedSamples.length; i++) {
-          console.log(" i "+selectedSamples[i]);
-            var value=selectedSamples[i].split("-");
-            selectedSamplesValue.push((i + 1)+". "+value[1]);
-            
-        }
-        // Display the selected sample values (replace with actual logic)
-        confirm('Please check sample once again\n' + selectedSamplesValue.join('\n'));
 
-        // Here you can add your actual submission logic (e.g., AJAX call to the server)
+        const selectedSamplesValue = [];
+        const idOfItem=[];
+        for (let i = 0; i < selectedSamples.length; i++) {
+            var value = selectedSamples[i].split(",");
+            selectedSamplesValue.push((i + 1) + ". " + value[1]);
+            idOfItem.push(value[0]);
+        }
+
+        // Display the selected sample values and confirm
+        const userConfirmed = confirm('Please confirm sample collected in ' + formattedISTDateTime + '. \n' + selectedSamplesValue.join('\n'));
+
+        if (userConfirmed) {
+            // After user confirms, send the XML data
+            sendXMLData(idOfItem);
+        }
     }
 </script>
+
     
        <script>
     const rowsPerPage = 6;

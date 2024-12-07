@@ -132,7 +132,7 @@ public class PreAnalysisDaoImp {
 	        	Connection conn = dbconnect.getConn();
 	            // SQL query to select all fields from the register table
 	            String sql = "SELECT * FROM examination_details where patient_id ='"+patientID+"'";
-	            System.out.println(" Sql "+sql);
+	           // System.out.println(" Sql "+sql);
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	            ResultSet rs = ps.executeQuery();
              
@@ -172,7 +172,7 @@ public class PreAnalysisDaoImp {
 	        	Connection conn = dbconnect.getConn();
 	            // SQL query to select all fields from the register table
 	            String sql = "SELECT * FROM TBL_PREREQUISITION where patient_id ='"+patientID+"'";
-	            System.out.println(" Sql "+sql);
+	            //System.out.println(" Sql "+sql);
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	            ResultSet rs = ps.executeQuery();
           
@@ -368,7 +368,7 @@ public PreAnalysis getRecieptdetails(String patientID) {
     	Connection conn = dbconnect.getConn();
         // SQL query to select all fields from the register table
         String sql = "SELECT * FROM TBL_RECEIPT where patient_id ='"+patientID+"'";
-        System.out.println(" getRecieptdetails SQL "+sql);
+        //System.out.println(" getRecieptdetails SQL "+sql);
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
 
