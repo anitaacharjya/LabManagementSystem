@@ -101,6 +101,17 @@
                 border: none;
                 page-break-inside: avoid;
             }
+
+		.a4-container {
+		    background-color: white;
+		    width: 210mm; /* A4 width */
+		    min-height: 297mm; /* A4 height */
+		    padding: 10mm;
+		    margin: auto;
+		    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		    border: 2px solid black; /* Added border */
+		    border-radius: 8px; /* Optional: rounded corners for the border */
+		}
         }
     </style>
 </head>
@@ -114,23 +125,30 @@ SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy, hh:mm a"); // Example: 18
 String currentTime = sdf.format(now);
 %>
 <body>
-    <div class="a4-container">
+    <div class="a4-container" >
         <!-- Header -->
-        <div class="header">
-            <h1>ABC DIAGNOSTIC CENTER </h1>
-            <p>Clinical Pathology Laboratory</p>
-            <h2>RECEIPT</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="header" style="background-color:white; color: black; padding: 10px; border: 1px solid black; font-weight: bold; position: relative;">
+            <!-- Full-Width Image -->
+            <div class="col-sm-12">
+                <img src="Images/Alllogo.jpeg" alt="Left Logo" style="width: 100%; height: auto;">
+            </div>
         </div>
+    </div>
+</div>
 
-        <!-- Receipt Information -->
+
+    
+
+  <div style="border:1px solid black;">
        
-        <div style="border:1px solid black; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px">
+   <div style="border-bottom:1px solid black; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px">
         <div class="info-col"style="margin-left:20px;margin-top:20px;margin-bottom:20px;">
-        <div><span class="info-label">Name:</span> <%=preanalysisData.getName() %></div>
-        <div><span class="info-label">Age:</span> <%=preanalysisData.getAge() %></div>
-        <div><span class="info-label">Bill No.:</span><%=preanalysisData.getBillNo() %></div>
-        <div><span class="info-label">Payee:</span> DIRECT Lab</div>
-        
+	        <div><span class="info-label">Name:</span> <%=preanalysisData.getName() %></div>
+	        <div><span class="info-label">Age:</span> <%=preanalysisData.getAge() %></div>
+	        <div><span class="info-label">Bill No.:</span><%=preanalysisData.getBillNo() %></div>
+	        <div><span class="info-label">Payee:</span> DIRECT Lab</div>
     
     </div>
     <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
@@ -147,10 +165,9 @@ String currentTime = sdf.format(now);
     </div>
    
 </div>
-
         <!-- Examination Table -->
         <div class="table-container">
-            <table style="margin-top:40px;margin-bottom:40px">
+            <table style="margin-top:30px;margin-bottom:30px">
                 <thead>
                     <tr>
                         <th>CODE</th>
@@ -191,17 +208,17 @@ String currentTime = sdf.format(now);
             </table>
         </div>
 
-        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+        <hr style="height:1px;border-width:0;color:gray;background-color:gray">
 
         <!-- Total Section -->
-        <div class="grid-container">
-            <div class="left-section">
+        <div class="" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start;padding-left: 3px;">
+            <div class="left-section" >
                <P>Please produce the slip for report. Report not delivered in the morning.</P>
                <P>Next date report delivery time 5PM .</P>
             </div>
              
-            <div class="right-section">
-                <div class="total">Total bill: <%=preanalysisData.getTotalBill()+" rs" %></div>
+            <div class="right-section" style="border-left:1px solid black; ">
+                <div class="total" style="padding-right: 10px;">Total bill: <%=preanalysisData.getTotalBill()+" rs" %></div>
                 <%
                 int dueprice=0;
                 String amount = preanalysisData.getAdvanceamount();
@@ -212,16 +229,18 @@ String currentTime = sdf.format(now);
                 
                 
                 %>
-                <div class="paid">Advance:<%=preanalysisData.getAdvanceamount()+" rs"%> </div>
-                <div class="due">Due bill: <%=dueprice+" rs"%></div>
-                <div class="due">Discount Amount: <%=preanalysisData.getDiscountAmount()+" rs"%></div>
+                <div class="paid" style="padding-right: 10px;">Advance:<%=preanalysisData.getAdvanceamount()+" rs"%> </div>
+                <div class="due" style="padding-right: 10px;">Discount Amount: <%=preanalysisData.getDiscountAmount()+" rs"%></div>
+                <hr style="height:0.5px;border-width:0;background-color:black">
+                <div class="due" style="padding-right: 10px;">Due bill: <%=dueprice+" rs"%></div>
             </div>
            
         </div>
+   </div>     
          <form action="downloadReceipt" method="post">
     <input type="hidden" name="patientNo" value="<%=patient_id%>">
     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download PDF</button>
-</form>
+    </form>
     </div>
     
     

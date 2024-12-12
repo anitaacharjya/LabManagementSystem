@@ -27,7 +27,7 @@ public class PreAnalysisDaoImp {
 	        try {
 	        	Connection conn = dbconnect.getConn();
 	            // SQL query to select all fields from the register table
-	            String sql = "SELECT * FROM TBL_RECEIPT";
+	            String sql = "SELECT * FROM TBL_RECEIPT where void!='Y'";
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	            ResultSet rs = ps.executeQuery();
 	            // Loop through the result set

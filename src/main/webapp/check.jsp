@@ -1,140 +1,248 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
+<%@ page import="com.lms.vo.PreAnalysis"%>
+<%@ page import="com.lms.vo.ExaminationDetails"%>
+<%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
+<%@ page import="java.util.List"%>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkboxes with Dynamic Submit Buttons</title>
+    <title>Receipt</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        .hidden {
-            display: none;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
         }
-        .row {
-            margin-bottom: 20px;
+        .a4-container {
+            background-color: white;
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            padding: 10mm;
+            margin: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border: 1px solid #ddd;
-            padding: 10px;
         }
-        .checkbox-container {
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .header h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+            margin-top: 5px;
+        }
+        .header p {
+            margin: 0;
+            font-size: 14px;
+        }
+        .info-row {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 10px;
         }
-        .checkbox-container label {
-            margin-right: 10px;
+        .info-label {
+            font-weight: bold;
         }
-        .submit-container {
-            margin-top: 10px;
+        .table-container {
+            margin-top: 20px;
         }
-        .submit-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .disabled-checkbox {
-            opacity: 0.5;
-            pointer-events: none;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f3f4f6;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* This creates an 8:4 grid ratio */
+            gap: 10px;
+            padding: 10px;
+            margin-top: 0;
+           
+        }
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            font-size: 12px;
+        }
+        .right-section {
+            text-align: right;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+        
+        /* Print styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .a4-container {
+                box-shadow: none;
+                border: none;
+                page-break-inside: avoid;
+            }
+
+		.a4-container {
+		    background-color: white;
+		    width: 210mm; /* A4 width */
+		    min-height: 297mm; /* A4 height */
+		    padding: 10mm;
+		    margin: auto;
+		    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		    border: 2px solid black; /* Added border */
+		    border-radius: 8px; /* Optional: rounded corners for the border */
+		}
         }
     </style>
 </head>
+<%
+PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
+String patient_id = request.getParameter("patientNo");
+PreAnalysis preanalysisData=preanalysis.getRecieptdetails(patient_id);  
+Date now = new Date();
+// Format the date according to your desired format
+SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy, hh:mm a"); // Example: 18/01/24, 01:20 PM
+String currentTime = sdf.format(now);
+%>
 <body>
+    <div class="a4-container" >
+        <!-- Header -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="header" style="background-color:white; color: black; padding: 10px; border: 1px solid black; font-weight: bold; position: relative;">
+            <!-- Full-Width Image -->
+            <div class="col-sm-12">
+                <img src="Images/Alllogo.jpeg" alt="Left Logo" style="width: 100%; height: auto;">
+            </div>
+        </div>
+    </div>
+</div>
 
-    <!-- Dynamic Row Structure -->
-    <div class="row" >
-        <h4>Row 1</h4>
-        <div class="checkbox-container">
-            <label><input type="checkbox" class="sample-checkbox" value="1" onchange="toggleSubmitButton(this)"> Pending 1</label>
-            <label><input type="checkbox" class="sample-checkbox" value="2" onchange="toggleSubmitButton(this)"> Pending 2</label>
-            <label><input type="checkbox" class="sample-checkbox" value="3" onchange="toggleSubmitButton(this)"> Pending 3</label>
-            <label><input type="checkbox" class="sample-checkbox" value="4" onchange="toggleSubmitButton(this)"> Pending 4</label>
-            <label><input type="checkbox" class="sample-checkbox" value="5" onchange="toggleSubmitButton(this)"> Pending 5</label>
+
+    
+
+  <div style="border:1px solid black;">
+       
+   <div style="border-bottom:1px solid black; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px">
+        <div class="info-col"style="margin-left:20px;margin-top:20px;margin-bottom:20px;">
+	        <div><span class="info-label">Name:</span> <%=preanalysisData.getName() %></div>
+	        <div><span class="info-label">Age:</span> <%=preanalysisData.getAge() %></div>
+	        <div><span class="info-label">Bill No.:</span><%=preanalysisData.getBillNo() %></div>
+	        <div><span class="info-label">Payee:</span> DIRECT Lab</div>
+    
+    </div>
+    <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
+        <div><span class="info-label">Patient ID:</span> <%=preanalysisData.getPatientNo() %></div>
+        <div><span class="info-label">Sex:</span> <%=preanalysisData.getGender() %></div>
+        <div><span class="info-label">Phone:</span> <%=preanalysisData.getPhoneNo() %></div>
+        <div><span class="info-label">Address:</span> <%=preanalysisData.getAddress() %></div>
+    </div>
+    <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
+        <div><span class="info-label">Bill Date:</span> <%=currentTime %></div>
+        <div><span class="info-label">Referred By:</span> <%=preanalysisData.getReferredby() %></div>
+        <div><span class="info-label">Collected On:</span> 18 Jan 2024</div>
+        <div><span class="info-label">Payment Mode:</span> <%=preanalysisData.getPaymentMode()%></div>
+    </div>
+   
+</div>
+        <!-- Examination Table -->
+        <div class="table-container">
+            <table style="margin-top:30px;margin-bottom:30px">
+                <thead>
+                    <tr>
+                        <th>CODE</th>
+                        <th>EXAMINATION</th>
+                        <th>SAMPLE TYPE</th>
+                        <th>CHARGES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 <%
+                     int list=1;
+                     int totalBill=0;
+                     int avanceamount = 0;
+                     int diascount = 0;
+                     String patientno=preanalysisData.getPatientNo();
+
+                     List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientno);
+                     for (ExaminationDetails preList1 : examList) {
+                    	 String name=preList1.getEx_name();
+                    	 String examName=preanalysis.getExaminationName(name);
+                     %>
+                    <tr>
+                        <td><%=preList1.getEx_code() %></td>
+                        <td><%=examName %></td>
+                        <td>Serum</td>
+                        <td><%=preList1.getEx_price() %></td>
+                        
+                    </tr>
+                    <%
+                    double price=0;
+                    String priceStr = preList1.getEx_price();
+                    if (priceStr != null && !priceStr.trim().isEmpty()) {
+                        price = Double.parseDouble(priceStr.trim());
+                    }
+                    totalBill+=price;
+                    } %>
+                </tbody>
+            </table>
         </div>
-        <div class="submit-container hidden">
-            <button class="submit-btn" onclick="submitSamples(this)">Submit</button>
+
+        <hr style="height:1px;border-width:0;color:gray;background-color:gray">
+
+        <!-- Total Section -->
+        <div class="" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start;padding-left: 3px;">
+            <div class="left-section" >
+               <P>Please produce the slip for report. Report not delivered in the morning.</P>
+               <P>Next date report delivery time 5PM .</P>
+            </div>
+             
+            <div class="right-section" style="border-left:1px solid black; ">
+                <div class="total" style="padding-right: 10px;">Total bill: <%=preanalysisData.getTotalBill()+" rs" %></div>
+                <%
+                int dueprice=0;
+                String amount = preanalysisData.getAdvanceamount();
+                if (amount != null && !amount.trim().isEmpty()) {
+                	dueprice = Integer.parseInt(amount);
+                }
+                dueprice=totalBill-dueprice;
+                
+                
+                %>
+                <div class="paid" style="padding-right: 10px;">Advance:<%=preanalysisData.getAdvanceamount()+" rs"%> </div>
+                <div class="due" style="padding-right: 10px;">Discount Amount: <%=preanalysisData.getDiscountAmount()+" rs"%></div>
+                <hr style="height:0.5px;border-width:0;background-color:black">
+                <div class="due" style="padding-right: 10px;">Due bill: <%=dueprice+" rs"%></div>
+            </div>
+           
         </div>
+   </div>     
+         <form action="downloadReceipt" method="post">
+    <input type="hidden" name="patientNo" value="<%=patient_id%>">
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download PDF</button>
+    </form>
     </div>
     
     
-
-    <div class="row" >
-        <h4>Row 2</h4>
-        <div class="checkbox-container">
-            <label><input type="checkbox" class="sample-checkbox" value="6" onchange="toggleSubmitButton(this)"> Pending 6</label>
-            <label><input type="checkbox" class="sample-checkbox" value="7" onchange="toggleSubmitButton(this)"> Pending 7</label>
-            <label><input type="checkbox" class="sample-checkbox" value="8" onchange="toggleSubmitButton(this)"> Pending 8</label>
-            <label><input type="checkbox" class="sample-checkbox" value="9" onchange="toggleSubmitButton(this)"> Pending 9</label>
-            <label><input type="checkbox" class="sample-checkbox" value="10" onchange="toggleSubmitButton(this)"> Pending 10</label>
-        </div>
-        <div class="submit-container hidden">
-            <button class="submit-btn" onclick="submitSamples(this)">Submit Row</button>
-        </div>
-    </div>
-
-    <!-- Additional rows can be added here dynamically -->
-
-    <script>
-        // Function to check if any checkbox is selected in the specific row
-        function toggleSubmitButton(checkbox) {
-        	alert("A");
-            const row = checkbox.closest('.row');
-            const submitContainer = row.querySelector('.submit-container');
-            const checkboxes = row.querySelectorAll('.sample-checkbox');
-            
-            let isChecked = false;
-
-            // Check if any checkbox is checked
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    isChecked = true;
-                }
-            });
-
-            // Show or hide the submit button for the row
-            if (isChecked) {
-                submitContainer.classList.remove('hidden');
-                disableOtherRows(row, true);
-            } else {
-                submitContainer.classList.add('hidden');
-                disableOtherRows(row, false);
-            }
-        }
-
-        // Function to disable checkboxes in other rows
-        function disableOtherRows(selectedRow, disable) {
-            const allRows = document.querySelectorAll('.row');
-            
-            allRows.forEach(row => {
-                if (row !== selectedRow) {
-                    const checkboxes = row.querySelectorAll('.sample-checkbox');
-                    checkboxes.forEach(checkbox => {
-                        checkbox.disabled = disable;
-                        checkbox.classList.toggle('disabled-checkbox', disable);
-                    });
-                }
-            });
-        }
-
-        // Function to collect and submit the selected checkbox values for the specific row
-        function submitSamples(button) {
-            const row = button.closest('.row');
-            const selectedSamples = [];
-            const checkboxes = row.querySelectorAll('.sample-checkbox');
-
-            // Collect selected checkboxes' values
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    selectedSamples.push(checkbox.value);
-                }
-            });
-
-            // Display the selected sample values (replace with actual logic)
-            alert('Submitting selected samples from this row: ' + selectedSamples.join(', '));
-
-            // Here you can add your actual submission logic (e.g., AJAX call to the server)
-        }
-    </script>
-
 </body>
 </html>
