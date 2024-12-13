@@ -11,6 +11,11 @@
     <title>Receipt</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+       @page {
+            size: A4;
+             margin: 10mm;
+        }
+             
         body {
             font-family: Arial, sans-serif;
             margin: 0;

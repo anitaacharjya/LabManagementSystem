@@ -186,14 +186,19 @@ String currentTime = sdf.format(now);
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>ABC DIAGNOSTIC CENTRE (POLYCLINIC)</h1>
-            <p>Address: Thana Road, Jhargram, WestBengal</p>
-            <h2>TEST REQUISITION FORM</h2>
+       <div class="container-fluid">
+    <div class="row">
+        <div class="header" style="background-color:white; color: black; padding: 10px; border: 1px solid black; font-weight: bold; position: relative;">
+            <!-- Full-Width Image -->
+            <div class="col-sm-12">
+                <img src="Images/Alllogo.jpeg" alt="Left Logo" style="width: 100%; height: auto;">
+            </div>
         </div>
+    </div>
+</div>
 
        <div class="info-section">
-    <table cellpadding="6" cellspacing="0" style="width: 100%; border-collapse: collapse; ">
+    <table cellpadding="6" cellspacing="0" style="width: 100%; border-collapse: collapse; border: 1px solid black; ">
         <tr>
             <td style="border-right: none;"><strong>Patient’s Name:</strong></td>
             <td style="border-left: none;"><%=preanalysisData.getName() %></td>
@@ -230,29 +235,35 @@ String currentTime = sdf.format(now);
             
             
         </tr>
+        <tr>
+    <td colspan="10">
+        <hr style="border: 0.5px solid black; margin: 3px 0; width: 100%;">
+    </td>
+</tr>
+        
+        <tr>
+            <td style="border-right: none;"><strong>Clinical History:- </strong> <%=prereq.getClinicalHistory() %></td>
+ 
+        </tr>
+         <tr>
+            <td style="border-right: none;"><strong>Addiction if any:- </strong><%=prereq.getAddiction() %> </td>
+ 
+        </tr>
+         <tr>
+            <td style="border-right: none;"><strong>Allergic history:- </strong><%=prereq.getAllergicHistory() %> </td>
+ 
+        </tr>
+         <tr>
+            <td style="border-right: none;"><strong>Any Other:- </strong><%=prereq.getOther() %>  </td>
+ 
+        </tr>
     </table>
 </div>
 	
-  <div>
-    <div>
-    <p><strong>Clinical History:- </strong> <%=prereq.getClinicalHistory() %></p>
-    </div>
-    <div>
-    <p><strong>Addiction if any:- </strong><%=prereq.getAddiction() %> </p>
-    </div>
-    <div>
-    <p><strong>Allergic history:- </strong><%=prereq.getAllergicHistory() %>  </p>
-    </div>
-    <div>
-    <p><strong>Any Other:- </strong><%=prereq.getOther() %>  </p>
-    </div>
-    <div>
-      <br>
-    </div>
-  </div>
+
 
        <div class="test-parameters">
-        <div class="divider" ></div>
+        <div class="" ></div>
             <h3>Tests/Investigation</h3>
             <table>
                 <thead>
