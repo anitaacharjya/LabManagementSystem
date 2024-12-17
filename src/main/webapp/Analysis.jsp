@@ -26,6 +26,8 @@ String formattedDateTime = now.format(formatter);
     <title>Analysis</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
     <style>
     .mb-8 {
     margin-bottom: 1rem;
@@ -325,9 +327,30 @@ String formattedDateTime = now.format(formatter);
 	                                    %>
 	                                    <td class="py-3 px-6 text-left whitespace-nowrap">
 	                                        <% for (Map.Entry<String, String> entry : trfDetails.entrySet()) { %>
-	                                            <%= trfMap + ":" + entry.getKey() + " - " + entry.getValue() %><br>
+	                                            <%
+	                                            if (!entry.getKey().equals("Document")) {
+%>
+	 	                                            <%= trfMap + ":" + entry.getKey() + " - " + entry.getValue() %>
+	 	                                            <%
+	                                            }else{
+	                                            	if(entry.getKey().equals("Document") && entry.getValue()!=null){
+	                                            		String path="/LabManagementSystem/Document/"+entry.getValue() ;
+	                                            %>
+	                                            <%= trfMap + ":" + entry.getKey() + " - " %>
+												           <a href="<%=path%>" target="_blank" rel="noopener noreferrer" title="Open Document">
+												    <i class="fa fa-files-o" style="color:red"></i>
+												</a>
+	                                            <%
+	                                            	}else{
+	                                            		continue;
+	                                            	}
+	                                            	}
+	                                            
+	                                            %><br>
 	                                            <% trfMap++; %>
 	                                        <% } %>
+	                                       
+	                                        
 	                                    </td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>

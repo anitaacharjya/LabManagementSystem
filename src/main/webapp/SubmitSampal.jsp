@@ -43,7 +43,7 @@
             <div class="text-center mb-10">
                 <h4 class="text-3xl font-semibold text-gray-800">Add details for Test Requisition form</h4>         
             </div>
-            <form action="RequisitionServlet" method="post">
+            <form action="RequisitionServlet" method="post" enctype="multipart/form-data">
                 <div class="grid grid-cols-1 gap-2">         
                     <div>
                         <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Name</label>
@@ -82,6 +82,14 @@
                         <textarea type="text" id="other" name="other" required
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
                     </div>
+                    
+                   <div>
+					    <label for="documentUpload" class="block text-sm font-medium text-gray-700">Upload Supporting Document</label>
+					    <input type="file" id="documentUpload" name="supportingDocument" accept=".pdf,.doc,.docx,.jpg,.png"
+					        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+					        onchange="validateFileSize(this)">
+					    <p id="fileError" class="text-red-500 text-sm mt-1 hidden">File size must be less than 300 KB.</p>
+					</div>
                 </div>
                 <div class="mt-8 flex justify-between">
                     <button type="submit"
@@ -96,5 +104,18 @@
             </form>
         </div>
     </div>
+    <script>
+            function validateFileSize(input) {
+                const fileError = document.getElementById('fileError');
+                const file = input.files[0]; // Get the selected file
+
+                if (file && file.size > 300 * 1024) { // 300 KB = 300 * 1024 bytes
+                    fileError.classList.remove('hidden'); // Show error message
+                    input.value = ''; // Clear the file input
+                } else {
+                    fileError.classList.add('hidden'); // Hide error message
+                }
+            }
+</script>
 </body>
 </html>

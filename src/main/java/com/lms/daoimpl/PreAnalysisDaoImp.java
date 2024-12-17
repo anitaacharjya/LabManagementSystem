@@ -183,6 +183,7 @@ public class PreAnalysisDaoImp {
 	            	trmMap.put("Allergic History", rs.getString("allergic_history"));
 	            	trmMap.put("Addiction", rs.getString("addiction"));
 	            	trmMap.put("Clinical History", rs.getString("clinical_history"));
+	            	trmMap.put("Document", rs.getString("file_path"));
 	      
 	            	
 	            }

@@ -9,10 +9,19 @@ public class Prerequisition {
 	    private String patientNo;
 	    private String patientName;
 	    private String sampleCollectedBy;
+	    private String filePath;
 
 	    // Getters and Setters
 
-	    public String getSampleCollectedBy() {
+	    public String getFilePath() {
+			return filePath;
+		}
+
+		public void setFilePath(String filePath) {
+			this.filePath = filePath;
+		}
+
+		public String getSampleCollectedBy() {
 			return sampleCollectedBy;
 		}
 

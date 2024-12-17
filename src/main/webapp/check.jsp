@@ -1,248 +1,121 @@
-<%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
-<%@ page import="com.lms.vo.PreAnalysis"%>
-<%@ page import="com.lms.vo.ExaminationDetails"%>
-<%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
-<%@ page import="java.util.List"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.lms.daoimpl.CommonFunction"%>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
-<html>
+<html class="h-full">
 <head>
     <meta charset="UTF-8">
-    <title>Receipt</title>
+    <title>Submit sample</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f3f4f6;
-        }
-        .a4-container {
-            background-color: white;
-            width: 210mm; /* A4 width */
-            min-height: 297mm; /* A4 height */
-            padding: 10mm;
-            margin: auto;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .header h1 {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 0;
-        }
-        .header h2 {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 0;
-            margin-top: 5px;
-        }
-        .header p {
-            margin: 0;
-            font-size: 14px;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .info-label {
-            font-weight: bold;
-        }
-        .table-container {
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f3f4f6;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: 2fr 1fr; /* This creates an 8:4 grid ratio */
-            gap: 10px;
-            padding: 10px;
-            margin-top: 0;
-           
-        }
-        .left-section {
-            display: flex;
-            flex-direction: column;
-            font-size: 12px;
-        }
-        .right-section {
-            text-align: right;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 14px;
-        }
-        
-        /* Print styles */
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            .a4-container {
-                box-shadow: none;
-                border: none;
-                page-break-inside: avoid;
-            }
-
-		.a4-container {
-		    background-color: white;
-		    width: 210mm; /* A4 width */
-		    min-height: 297mm; /* A4 height */
-		    padding: 10mm;
-		    margin: auto;
-		    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-		    border: 2px solid black; /* Added border */
-		    border-radius: 8px; /* Optional: rounded corners for the border */
-		}
-        }
-    </style>
+     <style>
+    /* Style for readonly input */
+	    input[readonly] {
+	        background-color: #e2e8f0; /* Example: light gray background */
+	        color: #4a5568; /* Example: dark gray text color */
+	    }
+	</style>
 </head>
-<%
-PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
-String patient_id = request.getParameter("patientNo");
-PreAnalysis preanalysisData=preanalysis.getRecieptdetails(patient_id);  
-Date now = new Date();
-// Format the date according to your desired format
-SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy, hh:mm a"); // Example: 18/01/24, 01:20 PM
-String currentTime = sdf.format(now);
+<body class="bg-gray-100 h-full flex">
+    <!-- Sidebar -->
+    <%@include file="Components/Navbar.jsp" %>
+    <%
+    
+
+         CommonFunction commonfun = new CommonFunction();
+         int examCode=commonfun.getMaxid("TBL_EXAMINATION", "ID_EXAMINATION");
+         examCode=examCode+1;
+         String patientName=request.getParameter("patientName");
+         String patientno=request.getParameter("patientNo");
+    %>
+      <%
+    // Get the current date and time
+    LocalDateTime now = LocalDateTime.now();
+
+    // Format the date and time as "dd-MM-yyyy HH:mm:ss"
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    String formattedDateTime = now.format(formatter);
 %>
-<body>
-    <div class="a4-container" >
-        <!-- Header -->
-<div class="container-fluid">
-    <div class="row">
-        <div class="header" style="background-color:white; color: black; padding: 10px; border: 1px solid black; font-weight: bold; position: relative;">
-            <!-- Full-Width Image -->
-            <div class="col-sm-12">
-                <img src="Images/Alllogo.jpeg" alt="Left Logo" style="width: 100%; height: auto;">
+
+    <!-- Main Content -->
+    <div class="flex-1 p-10 flex justify-center items-center">
+        <div class="container mx-auto bg-white p-10 rounded-lg shadow-lg w-full max-w-3xl">
+            <div class="text-center mb-10">
+                <h4 class="text-3xl font-semibold text-gray-800">Add details for Test Requisition form</h4>         
             </div>
+            <form action="RequisitionServlet" method="post" enctype="multipart/form-data">
+                <div class="grid grid-cols-1 gap-2">         
+                    <div>
+                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" id="clinicalHistory" name="name" value="<%=patientName %>"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
+                            <input type="hidden" id="clinicalHistory" name="id" value="<%=patientno %>"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
+                    </div>
+                    <div>
+                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Sampale Submit Time</label>
+                        <input type="text" id="clinicalHistory" name="dateTime" value="<%=formattedDateTime %>"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
+                    </div>
+                    <div>
+                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Sample Collected By:</label>
+                        <input type="text" id="sampleCollectedBy" name="sampleCollectedBy" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Clinical History</label>
+                        <input type="text" id="clinicalHistory" name="clinicalHistory" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                     <div>
+                        <label for="addiction" class="block text-sm font-medium text-gray-700">Addiction if any</label>
+                        <input type="text" id="addiction" name="addiction" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                     <div>
+                        <label for="allergi" class="block text-sm font-medium text-gray-700">Allergic history:</label>
+                        <input type="text" id="allergi" name="allergi" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                     <div>
+                        <label for="other" class="block text-sm font-medium text-gray-700">Any Other</label>
+                        <textarea type="text" id="other" name="other" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+                    </div>
+                    
+                   <div>
+					    <label for="documentUpload" class="block text-sm font-medium text-gray-700">Upload Supporting Document</label>
+					    <input type="file" id="documentUpload" name="supportingDocument" accept=".pdf,.doc,.docx,.jpg,.png"
+					        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+					        onchange="validateFileSize(this)">
+					    <p id="fileError" class="text-red-500 text-sm mt-1 hidden">File size must be less than 300 KB.</p>
+					</div>
+                </div>
+                <div class="mt-8 flex justify-between">
+                    <button type="submit"
+                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
+                        Add
+                    </button>
+                    <a href="home.jsp"
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
+                        Home
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
-</div>
+    <script>
+            function validateFileSize(input) {
+                const fileError = document.getElementById('fileError');
+                const file = input.files[0]; // Get the selected file
 
-
-    
-
-  <div style="border:1px solid black;">
-       
-   <div style="border-bottom:1px solid black; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px">
-        <div class="info-col"style="margin-left:20px;margin-top:20px;margin-bottom:20px;">
-	        <div><span class="info-label">Name:</span> <%=preanalysisData.getName() %></div>
-	        <div><span class="info-label">Age:</span> <%=preanalysisData.getAge() %></div>
-	        <div><span class="info-label">Bill No.:</span><%=preanalysisData.getBillNo() %></div>
-	        <div><span class="info-label">Payee:</span> DIRECT Lab</div>
-    
-    </div>
-    <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
-        <div><span class="info-label">Patient ID:</span> <%=preanalysisData.getPatientNo() %></div>
-        <div><span class="info-label">Sex:</span> <%=preanalysisData.getGender() %></div>
-        <div><span class="info-label">Phone:</span> <%=preanalysisData.getPhoneNo() %></div>
-        <div><span class="info-label">Address:</span> <%=preanalysisData.getAddress() %></div>
-    </div>
-    <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
-        <div><span class="info-label">Bill Date:</span> <%=currentTime %></div>
-        <div><span class="info-label">Referred By:</span> <%=preanalysisData.getReferredby() %></div>
-        <div><span class="info-label">Collected On:</span> 18 Jan 2024</div>
-        <div><span class="info-label">Payment Mode:</span> <%=preanalysisData.getPaymentMode()%></div>
-    </div>
-   
-</div>
-        <!-- Examination Table -->
-        <div class="table-container">
-            <table style="margin-top:30px;margin-bottom:30px">
-                <thead>
-                    <tr>
-                        <th>CODE</th>
-                        <th>EXAMINATION</th>
-                        <th>SAMPLE TYPE</th>
-                        <th>CHARGES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                 <%
-                     int list=1;
-                     int totalBill=0;
-                     int avanceamount = 0;
-                     int diascount = 0;
-                     String patientno=preanalysisData.getPatientNo();
-
-                     List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientno);
-                     for (ExaminationDetails preList1 : examList) {
-                    	 String name=preList1.getEx_name();
-                    	 String examName=preanalysis.getExaminationName(name);
-                     %>
-                    <tr>
-                        <td><%=preList1.getEx_code() %></td>
-                        <td><%=examName %></td>
-                        <td>Serum</td>
-                        <td><%=preList1.getEx_price() %></td>
-                        
-                    </tr>
-                    <%
-                    double price=0;
-                    String priceStr = preList1.getEx_price();
-                    if (priceStr != null && !priceStr.trim().isEmpty()) {
-                        price = Double.parseDouble(priceStr.trim());
-                    }
-                    totalBill+=price;
-                    } %>
-                </tbody>
-            </table>
-        </div>
-
-        <hr style="height:1px;border-width:0;color:gray;background-color:gray">
-
-        <!-- Total Section -->
-        <div class="" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start;padding-left: 3px;">
-            <div class="left-section" >
-               <P>Please produce the slip for report. Report not delivered in the morning.</P>
-               <P>Next date report delivery time 5PM .</P>
-            </div>
-             
-            <div class="right-section" style="border-left:1px solid black; ">
-                <div class="total" style="padding-right: 10px;">Total bill: <%=preanalysisData.getTotalBill()+" rs" %></div>
-                <%
-                int dueprice=0;
-                String amount = preanalysisData.getAdvanceamount();
-                if (amount != null && !amount.trim().isEmpty()) {
-                	dueprice = Integer.parseInt(amount);
+                if (file && file.size > 300 * 1024) { // 300 KB = 300 * 1024 bytes
+                    fileError.classList.remove('hidden'); // Show error message
+                    input.value = ''; // Clear the file input
+                } else {
+                    fileError.classList.add('hidden'); // Hide error message
                 }
-                dueprice=totalBill-dueprice;
-                
-                
-                %>
-                <div class="paid" style="padding-right: 10px;">Advance:<%=preanalysisData.getAdvanceamount()+" rs"%> </div>
-                <div class="due" style="padding-right: 10px;">Discount Amount: <%=preanalysisData.getDiscountAmount()+" rs"%></div>
-                <hr style="height:0.5px;border-width:0;background-color:black">
-                <div class="due" style="padding-right: 10px;">Due bill: <%=dueprice+" rs"%></div>
-            </div>
-           
-        </div>
-   </div>     
-         <form action="downloadReceipt" method="post">
-    <input type="hidden" name="patientNo" value="<%=patient_id%>">
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download PDF</button>
-    </form>
-    </div>
-    
-    
+            }
+</script>
 </body>
 </html>

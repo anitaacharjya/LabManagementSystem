@@ -23,16 +23,17 @@ public class SampleDaoImpl {
 	            
 
 	        	Connection conn = dbconnect.getConn();
-	            String query = "INSERT INTO TBL_PREREQUISITION (patient_id, name, clinical_history,addiction, allergic_history, other,sample_collected_by) VALUES (?, ?, ?, ?, ?, ?,?)";
+	            String query = "INSERT INTO TBL_PREREQUISITION (patient_id, name, clinical_history,addiction, allergic_history, other,sample_collected_by,file_path) VALUES (?, ?, ?, ?, ?, ?,?,?)";
 	            PreparedStatement ps = conn.prepareStatement(query);
-	            // Set parameters
-	            ps.setString(1, examVO.getPatientNo());
+	           // Set parameters
+	           ps.setString(1, examVO.getPatientNo());
 	           ps.setString(2,examVO.getPatientName() );
 	           ps.setString(3,examVO.getClinicalHistory() );
 	           ps.setString(4,examVO.getAddiction() );
 	           ps.setString(5,examVO.getAllergicHistory() );
 	           ps.setString(6,examVO.getOther() );
 	           ps.setString(7,examVO.getSampleCollectedBy() );
+	           ps.setString(8,examVO.getFilePath() );
 	           
 
 	            // Execute query
