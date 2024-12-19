@@ -1,121 +1,145 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.lms.daoimpl.CommonFunction"%>
-<%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<!DOCTYPE html>
-<html class="h-full">
-<head>
-    <meta charset="UTF-8">
-    <title>Submit sample</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-     <style>
-    /* Style for readonly input */
-	    input[readonly] {
-	        background-color: #e2e8f0; /* Example: light gray background */
-	        color: #4a5568; /* Example: dark gray text color */
-	    }
-	</style>
-</head>
-<body class="bg-gray-100 h-full flex">
-    <!-- Sidebar -->
-    <%@include file="Components/Navbar.jsp" %>
-    <%
-    
+package com.lms.controller;
 
-         CommonFunction commonfun = new CommonFunction();
-         int examCode=commonfun.getMaxid("TBL_EXAMINATION", "ID_EXAMINATION");
-         examCode=examCode+1;
-         String patientName=request.getParameter("patientName");
-         String patientno=request.getParameter("patientNo");
-    %>
-      <%
-    // Get the current date and time
-    LocalDateTime now = LocalDateTime.now();
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.SolidBorder;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.HorizontalAlignment;
+import com.itextpdf.layout.property.UnitValue;
+import com.itextpdf.layout.element.Cell;
+import com.lms.daoimpl.PreAnalysisDaoImp;
+import com.lms.vo.PreAnalysis;
+import com.lms.vo.ExaminationDetails;
 
-    // Format the date and time as "dd-MM-yyyy HH:mm:ss"
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-    String formattedDateTime = now.format(formatter);
-%>
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
-    <!-- Main Content -->
-    <div class="flex-1 p-10 flex justify-center items-center">
-        <div class="container mx-auto bg-white p-10 rounded-lg shadow-lg w-full max-w-3xl">
-            <div class="text-center mb-10">
-                <h4 class="text-3xl font-semibold text-gray-800">Add details for Test Requisition form</h4>         
-            </div>
-            <form action="RequisitionServlet" method="post" enctype="multipart/form-data">
-                <div class="grid grid-cols-1 gap-2">         
-                    <div>
-                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Name</label>
-                        <input type="text" id="clinicalHistory" name="name" value="<%=patientName %>"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
-                            <input type="hidden" id="clinicalHistory" name="id" value="<%=patientno %>"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
-                    </div>
-                    <div>
-                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Sampale Submit Time</label>
-                        <input type="text" id="clinicalHistory" name="dateTime" value="<%=formattedDateTime %>"
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" readonly>
-                    </div>
-                    <div>
-                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Sample Collected By:</label>
-                        <input type="text" id="sampleCollectedBy" name="sampleCollectedBy" required
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
-                    <div>
-                        <label for="clinicalHistory" class="block text-sm font-medium text-gray-700">Clinical History</label>
-                        <input type="text" id="clinicalHistory" name="clinicalHistory" required
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
-                     <div>
-                        <label for="addiction" class="block text-sm font-medium text-gray-700">Addiction if any</label>
-                        <input type="text" id="addiction" name="addiction" required
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
-                     <div>
-                        <label for="allergi" class="block text-sm font-medium text-gray-700">Allergic history:</label>
-                        <input type="text" id="allergi" name="allergi" required
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
-                     <div>
-                        <label for="other" class="block text-sm font-medium text-gray-700">Any Other</label>
-                        <textarea type="text" id="other" name="other" required
-                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
-                    </div>
-                    
-                   <div>
-					    <label for="documentUpload" class="block text-sm font-medium text-gray-700">Upload Supporting Document</label>
-					    <input type="file" id="documentUpload" name="supportingDocument" accept=".pdf,.doc,.docx,.jpg,.png"
-					        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-					        onchange="validateFileSize(this)">
-					    <p id="fileError" class="text-red-500 text-sm mt-1 hidden">File size must be less than 300 KB.</p>
-					</div>
-                </div>
-                <div class="mt-8 flex justify-between">
-                    <button type="submit"
-                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
-                        Add
-                    </button>
-                    <a href="home.jsp"
-                        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300">
-                        Home
-                    </a>
-                </div>
-            </form>
-        </div>
-    </div>
-    <script>
-            function validateFileSize(input) {
-                const fileError = document.getElementById('fileError');
-                const file = input.files[0]; // Get the selected file
+@WebServlet("/downloadReceipt")
+public class DownloadReceiptServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String patientNo = request.getParameter("patientNo");
 
-                if (file && file.size > 300 * 1024) { // 300 KB = 300 * 1024 bytes
-                    fileError.classList.remove('hidden'); // Show error message
-                    input.value = ''; // Clear the file input
-                } else {
-                    fileError.classList.add('hidden'); // Hide error message
-                }
-            }
-</script>
-</body>
-</html>
+        PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
+        PreAnalysis preanalysisData = preanalysis.getRecieptdetails(patientNo);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PdfWriter writer = new PdfWriter(baos);
+        PdfDocument pdfDoc = new PdfDocument(writer);
+        Document document = new Document(pdfDoc);
+
+        // Add the header
+        document.add(new Paragraph("ABC DIAGNOSTIC CENTER").setBold().setFontSize(18).setTextAlignment(com.itextpdf.layout.property.TextAlignment.CENTER));
+        document.add(new Paragraph("Clinical Pathology Laboratory").setTextAlignment(com.itextpdf.layout.property.TextAlignment.CENTER));
+        document.add(new Paragraph("RECEIPT").setBold().setFontSize(14).setTextAlignment(com.itextpdf.layout.property.TextAlignment.CENTER));
+        document.add(new Paragraph("\n"));
+
+        // Create a table with one column for the upper section (patient information in a box)
+        float[] columnWidths = {4, 4, 4};  // Adjust the values based on your layout needs
+
+        Table upperSectionTable = new Table(columnWidths);
+        upperSectionTable.setWidth(UnitValue.createPercentValue(100));  // Table takes up full width
+     // Apply outer border to the table
+        upperSectionTable.setBorder(new SolidBorder(1));  // 1-point solid border
+
+        // Add cells without internal borders
+        addCellWithoutBorder(upperSectionTable, "Name: " + preanalysisData.getName());
+        addCellWithoutBorder(upperSectionTable, "Age: " + preanalysisData.getAge());
+        addCellWithoutBorder(upperSectionTable, "Bill No.: " + preanalysisData.getBillNo());
+        addCellWithoutBorder(upperSectionTable, "Payee: DIRECT Lab");
+        addCellWithoutBorder(upperSectionTable, "Patient ID: " + preanalysisData.getPatientNo());
+        addCellWithoutBorder(upperSectionTable, "Sex: " + preanalysisData.getGender());
+        addCellWithoutBorder(upperSectionTable, "Phone: " + preanalysisData.getPhoneNo());
+        addCellWithoutBorder(upperSectionTable, "Address: " + preanalysisData.getAddress());
+        addCellWithoutBorder(upperSectionTable, "Bill Date: " + new SimpleDateFormat("dd/MM/yy, hh:mm a").format(new Date()));
+        addCellWithoutBorder(upperSectionTable, "Referred By: " + preanalysisData.getReferredby());
+        addCellWithoutBorder(upperSectionTable, "Collected On: 18 Jan 2024");
+        addCellWithoutBorder(upperSectionTable, "Payment Mode: " + preanalysisData.getPaymentMode());
+
+        document.add(upperSectionTable);
+        // Add some spacing
+        document.add(new Paragraph("\n"));
+
+        // Add examination details table with four columns
+        float[] columnWidths1 = {2, 4, 2, 2};
+        Table examinationTable = new Table(columnWidths1);
+        examinationTable.setWidth(UnitValue.createPercentValue(100));
+        examinationTable.addHeaderCell("CODE");
+        examinationTable.addHeaderCell("EXAMINATION");
+        examinationTable.addHeaderCell("SAMPLE TYPE");
+        examinationTable.addHeaderCell("CHARGES");
+
+        List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientNo);
+        double totalBill = 0;
+        for (ExaminationDetails preList1 : examList) {
+        	 String name=preList1.getEx_name();
+        	 String examName=preanalysis.getExaminationName(name);
+            examinationTable.addCell(preList1.getEx_code());
+            examinationTable.addCell(examName);
+            examinationTable.addCell("Serum");
+            examinationTable.addCell(preList1.getEx_price());
+            totalBill += Double.parseDouble(preList1.getEx_price());
+        }
+
+        document.add(examinationTable);
+
+        // Add some spacing
+        document.add(new Paragraph("\n"));
+
+        // Add the total and additional info section
+        Table lowerSectionTable = new Table(new float[]{12, 3});  // Two columns for the total and info sections
+        lowerSectionTable.setWidth(UnitValue.createPercentValue(100));  // Full width
+        lowerSectionTable.setBorder(new SolidBorder(1));  // Outer border
+
+     // Financial details section
+        lowerSectionTable.addCell(createCell("Collected By: LAB",false, HorizontalAlignment.LEFT));
+        lowerSectionTable.addCell(createCell("Total: " + totalBill,false, HorizontalAlignment.RIGHT));
+        lowerSectionTable.addCell(createCell("Received By: SOMENATH DAS",false, HorizontalAlignment.LEFT));
+        lowerSectionTable.addCell(createCell("Total Paid: 0.00",false, HorizontalAlignment.RIGHT));
+        lowerSectionTable.addCell(createCell("Billed By: SOMENATH DAS",false, HorizontalAlignment.LEFT));
+        lowerSectionTable.addCell(createCell("Due: 1010.00",false, HorizontalAlignment.RIGHT));
+
+       
+
+        document.add(lowerSectionTable);
+
+        // Close the document
+        document.close();
+
+        // Set the response to download the PDF
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=receipt.pdf");
+        response.setContentLength(baos.size());
+        baos.writeTo(response.getOutputStream());
+        response.getOutputStream().flush();
+        
+        
+    }
+ // Method to add cells without internal borders
+    private void addCellWithoutBorder(Table table, String content) {
+        Cell cell = new Cell().add(new Paragraph(content));
+        cell.setBorder(Border.NO_BORDER);
+        table.addCell(cell);
+    }
+    private Cell createCell(String content, boolean hasBorder, HorizontalAlignment alignment) {
+        Cell cell = new Cell().add(new Paragraph(content));
+        if (hasBorder) {
+            cell.setBorder(new SolidBorder(1)); // Apply border to each cell
+        } else {
+            cell.setBorder(Border.NO_BORDER);
+        }
+        cell.setHorizontalAlignment(alignment);
+        
+        return cell;
+    }
+}

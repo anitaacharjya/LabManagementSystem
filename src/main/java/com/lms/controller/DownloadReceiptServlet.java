@@ -14,6 +14,15 @@ import com.lms.daoimpl.PreAnalysisDaoImp;
 import com.lms.vo.PreAnalysis;
 import com.lms.vo.ExaminationDetails;
 
+import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.layout.element.Div;
+import com.itextpdf.layout.element.Image;
+
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,6 +37,8 @@ import java.util.List;
 @WebServlet("/downloadReceipt")
 public class DownloadReceiptServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	String logoPath ="D:/Pallab/allDetails/Alllogo.jpeg"; 
         String patientNo = request.getParameter("patientNo");
 
         PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
@@ -37,13 +48,27 @@ public class DownloadReceiptServlet extends HttpServlet {
         PdfWriter writer = new PdfWriter(baos);
         PdfDocument pdfDoc = new PdfDocument(writer);
         Document document = new Document(pdfDoc);
-
         // Add the header
-        document.add(new Paragraph("ABC DIAGNOSTIC CENTER")
-                .setBold().setFontSize(18).setTextAlignment(com.itextpdf.layout.property.TextAlignment.CENTER));
-        document.add(new Paragraph("Clinical Pathology Laboratory").setTextAlignment(com.itextpdf.layout.property.TextAlignment.CENTER));
-        document.add(new Paragraph("RECEIPT").setBold().setFontSize(14).setTextAlignment(com.itextpdf.layout.property.TextAlignment.CENTER));
-        document.add(new Paragraph("\n"));
+        try {
+        	ImageData logo = ImageDataFactory.create(logoPath);
+        	Image logoImage = new Image(logo);
+        	logoImage.setWidth(100); // Scale the image to fit the width
+        	logoImage.setAutoScale(true);
+
+        	// Create a Div to hold the image and add a border
+        	Div imageContainer = new Div();
+        	imageContainer.add(logoImage);
+        	imageContainer.setBorder(new SolidBorder(0.5f)); // Black border with 2pt thickness
+        	imageContainer.setPadding(5); // Optional: Add padding around the image inside the border
+      
+        	// Add the container to the document
+        	document.add(imageContainer);
+        	document.add(new Paragraph(" ").setFontSize(3));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(" Enception in "+e);
+            document.add(new Paragraph("Error loading image."));
+        }
 
         // Create a table with one column for the upper section (patient information in a box)
         float[] columnWidths = {4, 4, 4};  // Adjust the values based on your layout needs
@@ -51,7 +76,7 @@ public class DownloadReceiptServlet extends HttpServlet {
         Table upperSectionTable = new Table(columnWidths);
         upperSectionTable.setWidth(UnitValue.createPercentValue(100));  // Table takes up full width
      // Apply outer border to the table
-        upperSectionTable.setBorder(new SolidBorder(1));  // 1-point solid border
+        upperSectionTable.setBorder(new SolidBorder(0.5f));  // 1-point solid border
 
         // Add cells without internal borders
         addCellWithoutBorder(upperSectionTable, "Name: " + preanalysisData.getName());
@@ -69,7 +94,7 @@ public class DownloadReceiptServlet extends HttpServlet {
 
         document.add(upperSectionTable);
         // Add some spacing
-        document.add(new Paragraph("\n"));
+        document.add(new Paragraph(" ").setFontSize(3));
 
         // Add examination details table with four columns
         float[] columnWidths1 = {2, 4, 2, 2};
@@ -95,12 +120,12 @@ public class DownloadReceiptServlet extends HttpServlet {
         document.add(examinationTable);
 
         // Add some spacing
-        document.add(new Paragraph("\n"));
+        document.add(new Paragraph(" ").setFontSize(3));
 
         // Add the total and additional info section
         Table lowerSectionTable = new Table(new float[]{12, 3});  // Two columns for the total and info sections
         lowerSectionTable.setWidth(UnitValue.createPercentValue(100));  // Full width
-        lowerSectionTable.setBorder(new SolidBorder(1));  // Outer border
+        lowerSectionTable.setBorder(new SolidBorder(0.5f));  // Outer border
 
      // Financial details section
         lowerSectionTable.addCell(createCell("Collected By: LAB",false, HorizontalAlignment.LEFT));
@@ -116,10 +141,10 @@ public class DownloadReceiptServlet extends HttpServlet {
 
         // Close the document
         document.close();
-
+        String pdfName= preanalysisData.getName()+"-"+preanalysisData.getPatientNo();
         // Set the response to download the PDF
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=receipt.pdf");
+        response.setHeader("Content-Disposition", "attachment; filename="+pdfName+".pdf");
         response.setContentLength(baos.size());
         baos.writeTo(response.getOutputStream());
         response.getOutputStream().flush();
