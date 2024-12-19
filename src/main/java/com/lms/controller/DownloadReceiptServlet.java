@@ -38,7 +38,8 @@ import java.util.List;
 public class DownloadReceiptServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	String logoPath ="D:/Pallab/allDetails/Alllogo.jpeg"; 
+    	//String logoPath ="Images/Alllogo.jpeg"; 
+    	String logoPath = getServletContext().getRealPath("Images/Alllogo.jpeg");
         String patientNo = request.getParameter("patientNo");
 
         PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
@@ -69,14 +70,14 @@ public class DownloadReceiptServlet extends HttpServlet {
             System.out.println(" Enception in "+e);
             document.add(new Paragraph("Error loading image."));
         }
-
+          
         // Create a table with one column for the upper section (patient information in a box)
         float[] columnWidths = {4, 4, 4};  // Adjust the values based on your layout needs
 
         Table upperSectionTable = new Table(columnWidths);
         upperSectionTable.setWidth(UnitValue.createPercentValue(100));  // Table takes up full width
      // Apply outer border to the table
-        upperSectionTable.setBorder(new SolidBorder(0.5f));  // 1-point solid border
+        //upperSectionTable.setBorder(new SolidBorder(0.5f));  // 1-point solid border
 
         // Add cells without internal borders
         addCellWithoutBorder(upperSectionTable, "Name: " + preanalysisData.getName());
@@ -92,14 +93,15 @@ public class DownloadReceiptServlet extends HttpServlet {
         addCellWithoutBorder(upperSectionTable, "Collected On: 18 Jan 2024");
         addCellWithoutBorder(upperSectionTable, "Payment Mode: " + preanalysisData.getPaymentMode());
 
-        document.add(upperSectionTable);
+        //document.add(upperSectionTable);
         // Add some spacing
-        document.add(new Paragraph(" ").setFontSize(3));
+        //document.add(new Paragraph(" ").setFontSize(3));
 
         // Add examination details table with four columns
         float[] columnWidths1 = {2, 4, 2, 2};
         Table examinationTable = new Table(columnWidths1);
         examinationTable.setWidth(UnitValue.createPercentValue(100));
+        
         examinationTable.addHeaderCell("CODE");
         examinationTable.addHeaderCell("EXAMINATION");
         examinationTable.addHeaderCell("SAMPLE TYPE");
@@ -117,10 +119,10 @@ public class DownloadReceiptServlet extends HttpServlet {
             totalBill += Double.parseDouble(preList1.getEx_price());
         }
 
-        document.add(examinationTable);
+        //document.add(examinationTable);
 
         // Add some spacing
-        document.add(new Paragraph(" ").setFontSize(3));
+        //document.add(new Paragraph(" ").setFontSize(3));
 
         // Add the total and additional info section
         Table lowerSectionTable = new Table(new float[]{12, 3});  // Two columns for the total and info sections
@@ -137,7 +139,27 @@ public class DownloadReceiptServlet extends HttpServlet {
 
        
 
-        document.add(lowerSectionTable);
+        //document.add(lowerSectionTable);
+        
+        Table maintable = new Table(1);
+        maintable.setWidth(UnitValue.createPercentValue(100)); 
+        
+        maintable.addCell(upperSectionTable );
+        
+     // Add space after the upperSectionTable (empty cell with height)
+        Cell spaceCell = new Cell();
+        //spaceCell.setBorder(Border.NO_BORDER);  // No border for the empty cell
+        
+        spaceCell.setHeight(20);  // Adjust the height as needed for the gap
+        maintable.addCell(spaceCell);
+        
+        maintable.addCell(examinationTable);
+        
+        
+        maintable.addCell(lowerSectionTable);
+        
+        document.add(maintable);
+        
 
         // Close the document
         document.close();
