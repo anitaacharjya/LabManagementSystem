@@ -85,7 +85,8 @@ public class CommonFunction {
 		        try {
 		        	Connection conn = dbconnect.getConn();
 		           // String sql = "DELETE from "+tableName+" where "+columnName+"='"+id+"'";
-		        	String sql="UPDATE "+tableName+" set "+columnName+"='"+updateValue+"' where "+primaryId+"='"+id+"'";
+		        	//String sql="UPDATE "+tableName+" set "+columnName+"='"+updateValue+"' where "+primaryId+"='"+id+"'";
+		        	String sql="UPDATE "+tableName+" set "+columnName+"='"+updateValue+"' where "+primaryId+" in ('"+id+"')";
 		        	System.out.println(" update sql "+sql);
 		            PreparedStatement ps = conn.prepareStatement(sql);
 		            value = ps.executeUpdate();

@@ -26,6 +26,7 @@ String formattedDateTime = now.format(formatter);
     <title>Post Analysis</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
     .mb-8 {
     margin-bottom: 1rem;
@@ -168,10 +169,25 @@ String formattedDateTime = now.format(formatter);
 		}
 		
 		.search-input {
-    border-radius: 0.375rem;
-    padding: 0.5rem;
-    border: 1px solid blue;
-}
+	    border-radius: 0.375rem;
+	    padding: 0.5rem;
+	    border: 1px solid blue;
+	}
+	 .submit-container {
+           margin-top: 10px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .disabled-checkbox {
+            opacity: 0.5;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-gray-100 h-full">
@@ -235,6 +251,7 @@ String formattedDateTime = now.format(formatter);
                                         String patientno = preList.getPatientNo();
                                         String sampleCollectionTime="";
                                         String sampleRecivedTime="";
+                                        String sampleStatus="";
 
                                         examList = preanalysis.getExaminationDetails(patientno);
                                         
@@ -244,33 +261,43 @@ String formattedDateTime = now.format(formatter);
                                         	 String examsample=preanalysis.getSampleType(name);
                                         	 sampleCollectionTime=examName+" - "+preList1.getSampleCollectionTime();
                                         	 sampleRecivedTime=examName+" - "+preList1.getRecivedDate();
-                                        	 
+                                        	 sampleStatus=preList1.getSample_status();
                                         	 submitDate.add(sampleCollectionTime);
                                         	 recivedDate.add(sampleRecivedTime);
                                         %>
+                                    
                                             <div class="flex justify-between items-center mb-3">
-                                                <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " +examName %></h6>
-                                               <%
-                                               if(preList1.getSample_status()!= null){
-                                               if(preList1.getSample_status().equals("R") || preList1.getSample_status().equals("STV")){ %> 
-                                                <button
-                                                   class="bg-green-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
-                                                    <i class="fas fa-vial mr-2"></i> Recived
-                                                </button>
+                                            <%if(preList1.getTestValue()!=null){ %>
+                                                <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " +examName+" - "+preList1.getTestValue() %></h6>
+                                                
                                                 <%
-                                                submitFlag=false;
-                                               } else { %>
-                                                    <button onclick="openModal('<%= preList1.getId() %>', '<%= examName %>', '<%= preList1.getEx_code() %>', '<%= formattedDateTime %>')" 
-                                                    class="bg-red-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
-                                                    <i class="fas fa-vial mr-2"></i> Pending
+	                                        if(sampleStatus!=null){
+	                                        if(!sampleStatus.equals("REPSUB")){
+	                                        %>
+                                                <button onclick="openModal('<%= preList1.getId() %>', '<%= examName %>', '<%= preList1.getEx_code() %>', '<%= formattedDateTime %>','<%= preList1.getTestValue()%>')" 
+                                                    class="bg-blue-600 text-white font-bold py-1 px-2 shadow-md inline-flex items-center">
+                                                    <i class="fas fa-edit"></i>
                                                 </button>
-                                                <%}} %>
+                                               <%} }%> 
+                                                
+                                               <%}else{ %>
+                                            	   <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " +examName %></h6>
+                                              <%  }%>
+                                             
                                             </div>
                                             <%
                                             list++;
                                         }
                                         %>
-                                      
+                                        <%
+                                        if(sampleStatus!=null){
+                                        if(!sampleStatus.equals("REPSUB")){
+                                        %>
+                                        <a href="SubmitPostAnalysisReport?patientNo=<%= preList.getPatientNo() %>&patientName=<%= preList.getName() %>"
+									            class="bg-blue-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
+									            Submit
+									     </a>
+									     <%} }%>
                                     </td>
                                         
                                         <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -291,17 +318,38 @@ String formattedDateTime = now.format(formatter);
                                         listReviveddate++;
                                         }%>
                                         </td>
-                                        <% 
-                                        
+                                         <% 
                                         Map<String, String> trfDetails = preanalysis.getTRFDetails(patientno);
                                         int trfMap = 1;
                                         
 	                                    %>
 	                                    <td class="py-3 px-6 text-left whitespace-nowrap">
 	                                        <% for (Map.Entry<String, String> entry : trfDetails.entrySet()) { %>
-	                                            <%= trfMap + ":" + entry.getKey() + " - " + entry.getValue() %><br>
+	                                            <%
+	                                            if (!entry.getKey().equals("Document")) {
+%>
+	 	                                            <%= trfMap + ":" + entry.getKey() + " - " + entry.getValue() %>
+	 	                                            <%
+	                                            }else{
+	                                            	if(entry.getKey().equals("Document") && entry.getValue()!=null){
+	                                            		String path="Document/"+entry.getValue() ;
+	                                            		System.out.println(path);
+	                                            %>
+	                                            <%= trfMap + ":" + entry.getKey() + " - " %>
+												           <a href="<%=path%>" target="_blank" rel="noopener noreferrer" title="Open Document">
+												    <i class="fa fa-files-o" style="color:red"></i>
+												</a>
+	                                            <%
+	                                            	}else{
+	                                            		continue;
+	                                            	}
+	                                            	}
+	                                            
+	                                            %><br>
 	                                            <% trfMap++; %>
 	                                        <% } %>
+	                                       
+	                                        
 	                                    </td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getAge() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getGender() %></td>
@@ -311,47 +359,56 @@ String formattedDateTime = now.format(formatter);
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getBillNo() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getPatientNo() %></td>
                                         <td class="py-3 px-6 text-left whitespace-nowrap"><%= preList.getReferredby() %></td>
-                                        <td class="py-3 px-6 text-left whitespace-nowrap"> 
-                                      <% 
-                                            for (ExaminationDetails preList1 : examList) {
-                                        	 String name=preList1.getEx_name();
-                                        	 String examName=preanalysis.getExaminationName(name);
-                                        	 String examsample=preanalysis.getSampleType(name);
-                                        	 sampleCollectionTime=examName+" - "+preList1.getSampleCollectionTime();
-                                        	 sampleRecivedTime=examName+" - "+preList1.getRecivedDate();
-                                        	 
-                                        	 submitDate.add(sampleCollectionTime);
-                                        	 recivedDate.add(sampleRecivedTime);
-                                        %>
-                                            <div class="flex justify-between items-center mb-3">
-                                                <h6 class="flex-1 mr-4 min-w-[150px]"><%= list + ": " +examName %></h6>
-                                               <%
-                                               if(preList1.getSample_status()!= null){
-                                               if(preList1.getSample_status().equals("STV")){ %> 
-                                                <button
-                                                   class="bg-green-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
-                                                    <i class="fas fa-vial mr-2"></i> Done
-                                                </button>
-                                                <%
-                                                submitFlag=false;
-                                               } else { %>
-                                                    <button onclick="openModalTestValue('<%= preList1.getId() %>', '<%= examName %>', '<%= preList1.getEx_code() %>', '<%= formattedDateTime %>')" 
-                                                    class="bg-red-600 text-white font-bold py-1 px-2 rounded-full shadow-md inline-flex items-center">
-                                                    <i class="fas fa-vial mr-2"></i> Pending
-                                                </button>
-                                                <%}} %>
-                                            </div>
-                                            <%
-                                            list++;
-                                        }
-                                        %>
-                                         <div class="flex items-center justify-center action-icons">
-                                                <a href="TestRequisitionForm.jsp?patientNo=<%= preList.getPatientNo() %>" 
-                                                  class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md inline-flex items-center">
-                                                 <i class="fas fa-download mr-2"></i> View TRF Report
-                                                </a>
-                                         </div>
-                                    </td>
+                                          <td class="py-3 px-6 text-left whitespace-nowrap">
+									  
+									    
+									       <div class="row" >
+									        
+									        <div class="checkbox-container">
+									               <%
+													 List<String> submitDate1 = new ArrayList<String>();
+													    int list1 = 1;
+													    boolean submitFlag1 = true;
+													    String patientno1 = preList.getPatientNo();
+													    String sampleCollectionTime1 = "";
+													
+													    examList = preanalysis.getExaminationDetails(patientno);
+													    for (ExaminationDetails preList1 : examList) {
+													        String name = preList1.getEx_name();
+													        String examName = preanalysis.getExaminationName(name);
+													        String examsample = preanalysis.getSampleType(name);
+													        sampleCollectionTime1 = examName + " - " + preList1.getSampleCollectionTime();
+													        submitDate.add(sampleCollectionTime);
+													        String sampleDetails=examName+"->"+examsample;
+													       
+													    %>
+									           
+									             
+									                <%
+									        if (preList1.getSample_status() != null) {
+									            
+									        %>
+									                 <label><input type="checkbox" class="sample-checkbox" value="<%= preList1.getId() %>,<%= sampleDetails %>" onchange="toggleSubmitButton(this)">
+									                <span class="text-red-600 font-bold"><%= list1 + ": " + examName %></span>
+									        
+									       <% }       
+									        %>
+									             </label></br>
+									            <%
+									            list1++;
+									            } %>
+									            
+									            
+									        </div>
+									        
+									        <div class="submit-container hidden">
+									            <button class="submit-btn" onclick="submitSamples(this)">Create Report</button>
+									        </div>
+									       
+									         
+									    </div>
+									    
+									</td>
                                     </tr>
                                     <%
                                         count++;
@@ -376,7 +433,7 @@ String formattedDateTime = now.format(formatter);
                 <h2>Pending Sample Details</h2>
                 <span class="close" onclick="closeModal()"><i class="fa-solid fa-rectangle-xmark" style="color: #e30202;"></i></span>
             </div>
-     <form id="sampleForm" action="TestSampleDetails" method="get">
+     <form id="sampleForm" action="UpdateTestValue" method="get">
     <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Sample Type</label>
                 <input type="text" id="testname" name="testname" class="search-input" readonly>
@@ -386,6 +443,11 @@ String formattedDateTime = now.format(formatter);
                 <label for="name" class="block text-sm font-medium text-gray-700">Recived time</label>
                 <input type="text" id="collectionTime" name="collectionTime" class="search-input" readonly>
      </div>
+      <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Test Value</label>
+                <input type="text" id="testValue" name="testValue" class="search-input" >
+     </div>
+     
     
 
            <%--  <div class="mb-4">
@@ -527,7 +589,7 @@ String formattedDateTime = now.format(formatter);
         this.selectedIndex = 0;
     });
 
-    function openModal(Id, testname, examCoad, collectionTime) {
+    function openModal(Id, testname, examCoad, collectionTime ,testvalue) {
 
     	/* LocalDateTime now1= LocalDateTime.now();
     	// Format the date and time as "dd-MM-yyyy HH:mm:ss"
@@ -535,6 +597,7 @@ String formattedDateTime = now.format(formatter);
     	String formattedDateTime1 = now1.format(formatter1); */
 
         // Populate modal fields with the data
+      //alert("collectionTime "+testvalue);
      var currentdate = new Date();
      var datetime = currentdate.getDate() + "-"
                 + (currentdate.getMonth()+1)  + "-" 
@@ -546,6 +609,7 @@ String formattedDateTime = now.format(formatter);
         document.getElementById('collectionTime').value = datetime;
         document.getElementById('Id').value = Id;
         document.getElementById('examCoad').value = examCoad;
+        document.getElementById('testValue').value = testvalue;
 
         // Show the modal
         document.getElementById('myModal').style.display = 'block';
@@ -627,6 +691,143 @@ String formattedDateTime = now.format(formatter);
 
     
     </script>
+        <script>
+    // Function to check if any checkbox is selected in the specific row
+    function toggleSubmitButton(checkbox) {
+        // Find the closest parent row
+        const row = checkbox.closest('.row');
+        const submitContainer = row.querySelector('.submit-container');
+        const checkboxes = row.querySelectorAll('.sample-checkbox');
+
+        if (!row) {
+            alert('Row not found.');
+        }
+
+        if (!submitContainer) {
+            alert('Submit container not found inside the row.');
+        }
+
+        let isChecked = false;
+
+        // Check if any checkbox is checked
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                isChecked = true;
+            }
+        });
+
+        // Show or hide the submit button for the row
+        if (isChecked) {
+            submitContainer.classList.remove('hidden');
+            disableOtherRows(row, true);
+        } else {
+            submitContainer.classList.add('hidden');
+            disableOtherRows(row, false);
+        }
+    }
+
+    // Function to disable checkboxes in other rows
+    function disableOtherRows(selectedRow, disable) {
+        const allRows = document.querySelectorAll('.row');
+
+        allRows.forEach(row => {
+            if (row !== selectedRow) {
+                const checkboxes = row.querySelectorAll('.sample-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.disabled = disable;
+                    checkbox.classList.toggle('disabled-checkbox', disable);
+                });
+            }
+        });
+    }
+
+    function formatExactISTDateTime(date) {
+        const options = {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',  // Added seconds
+            hour12: true,
+            timeZone: 'Asia/Kolkata'
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        const parts = formatter.formatToParts(date);
+        const day = parts.find(part => part.type === 'day').value;
+        const month = parts.find(part => part.type === 'month').value;
+        const year = parts.find(part => part.type === 'year').value;
+        const hour = parts.find(part => part.type === 'hour').value;
+        const minute = parts.find(part => part.type === 'minute').value;
+        const second = parts.find(part => part.type === 'second').value;
+        const dayPeriod = parts.find(part => part.type === 'dayPeriod').value;
+        var formattedDateTime = day + '-' + month + '-' + year + ' ' + hour + ':' + minute + ':' + second + ' ' + dayPeriod;
+        return formattedDateTime;
+    }
+
+
+    // This function sends XML data to the server
+function sendXMLData(selectedSamples) {
+    alert("Inside sendXMLData for postAnalysis: " + selectedSamples);
+    const xhr = new XMLHttpRequest();
+
+    // Open a POST request to the JSP page, passing parameters in the URL
+    xhr.open('POST', 'PreAnalysis.jsp?selectedSamplesTest=' + encodeURIComponent(selectedSamples), true);
+
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Set content type for form data
+
+    // Define the callback function for when the request is completed
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            // Successful response
+            console.log('Response:', xhr.responseText);
+            alert('Samples submitted successfully!');
+            // Optionally, update part of the page with the response
+            document.getElementById('responseContainer').innerHTML = xhr.responseText;
+        } else {
+            // Error handling
+            console.error('Error:', xhr.statusText);
+            alert('An error occurred while submitting samples.');
+        }
+    };
+
+    // Send the request (no data to send in the body for this case)
+    xhr.send();
+}
+
+
+    // Function to handle sample submission
+    function submitSamples(button) {
+        const row = button.closest('.row');
+        const selectedSamples = [];
+        const checkboxes = row.querySelectorAll('.sample-checkbox');
+
+        // Collect selected checkboxes' values
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedSamples.push(checkbox.value);
+            }
+        });
+
+        const selectedSamplesValue = [];
+        const idOfItem=[];
+        for (let i = 0; i < selectedSamples.length; i++) {
+            var value = selectedSamples[i].split(",");
+            selectedSamplesValue.push((i + 1) + ". " + value[1]);
+            idOfItem.push(value[0]);
+        }
+        const currentDate = new Date();
+        const formattedISTDateTime = formatExactISTDateTime(currentDate);
+
+        // Display the selected sample values and confirm
+        const userConfirmed = confirm('Please confirm report creat' + formattedISTDateTime + '. \n' + selectedSamplesValue.join('\n'));
+
+        if (userConfirmed) {
+            // After user confirms, send the XML data
+        	window.location.href = "Reports.jsp?selectedSamplesTest=" + encodeURIComponent(idOfItem);
+        }
+    }
+</script>
     
   <script>
     const rowsPerPage = 6;

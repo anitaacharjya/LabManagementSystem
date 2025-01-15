@@ -127,10 +127,10 @@ public class DownloadReceiptServlet extends HttpServlet {
         // Add the total and additional info section
         Table lowerSectionTable = new Table(new float[]{12, 3});  // Two columns for the total and info sections
         lowerSectionTable.setWidth(UnitValue.createPercentValue(100));  // Full width
-        lowerSectionTable.setBorder(new SolidBorder(0.5f));  // Outer border
+        //lowerSectionTable.setBorder(new SolidBorder(2f));  // Outer border
 
      // Financial details section
-        lowerSectionTable.addCell(createCell("Collected By: LAB",false, HorizontalAlignment.LEFT));
+        lowerSectionTable.addCell(createCell("Collected By: PALLAB",false, HorizontalAlignment.LEFT));
         lowerSectionTable.addCell(createCell("Total: " + totalBill,false, HorizontalAlignment.RIGHT));
         lowerSectionTable.addCell(createCell("Received By: SOMENATH DAS",false, HorizontalAlignment.LEFT));
         lowerSectionTable.addCell(createCell("Total Paid: 0.00",false, HorizontalAlignment.RIGHT));

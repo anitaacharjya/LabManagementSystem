@@ -15,6 +15,7 @@ public class ExaminationDetails {
 	private String unit;
 	private String sampleCollectionTime;
 	public String recivedDate;
+	public String testValue;
 	
 	public String getRecivedDate() {
 		return recivedDate;
@@ -89,6 +90,18 @@ public class ExaminationDetails {
 	}
 	public void setSampleCollectionTime(String sampleCollectionTime) {
 		this.sampleCollectionTime = sampleCollectionTime;
+	}
+	public String getNormalValue() {
+		return normalValue;
+	}
+	public void setNormalValue(String normalValue) {
+		this.normalValue = normalValue;
+	}
+	public String getTestValue() {
+		return testValue;
+	}
+	public void setTestValue(String testValue) {
+		this.testValue = testValue;
 	}
 	
 	

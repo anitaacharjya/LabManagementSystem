@@ -151,6 +151,7 @@ public class PreAnalysisDaoImp {
 	            	exdetails.setId(rs.getString("id"));
 	            	exdetails.setSampleCollectionTime(rs.getString("SMPL_COLLECTION_TIME"));
 	            	exdetails.setRecivedDate(rs.getString("SMPL_RECEIVED_TIME"));
+	            	exdetails.setTestValue(rs.getString("TEST_VALUE"));
 	            	
 
 	                

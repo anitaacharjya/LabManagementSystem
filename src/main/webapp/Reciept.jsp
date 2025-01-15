@@ -213,7 +213,7 @@ String currentTime = sdf.format(now);
             </table>
         </div>
 
-        <hr style="height:1px;border-width:0;color:gray;background-color:gray">
+        <hr style="height:0.5px;border-width:0;color:black;background-color:black">
 
         <!-- Total Section -->
         <div class="" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start;padding-left: 3px;">
@@ -242,10 +242,10 @@ String currentTime = sdf.format(now);
            
         </div>
    </div>     
-         <form action="downloadReceipt" method="post">
+        <%--  <form action="downloadReceipt" method="post">
     <input type="hidden" name="patientNo" value="<%=patient_id%>">
     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download PDF</button>
-    </form>
+    </form> --%>
     </div>
     
     
