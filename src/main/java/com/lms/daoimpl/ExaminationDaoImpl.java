@@ -44,8 +44,8 @@ public class ExaminationDaoImpl {
 	
 	
 
-  public void addExaminationSubtype(String examName, String subtype,String code,String nornalValue,String unit,String price) throws SQLException {
-        String sql = "INSERT INTO TBL_EXAM_SUBTYPE (EXAM_CODE,EXAM_NAME, SUBTYPE, NORMAL_VALUE,UNIT,PRICE) VALUES (?, ?,?,?,?,?)";
+  public void addExaminationSubtype(String examName, String subtype,String code,String nornalValue,String unit,String price,String method) throws SQLException {
+        String sql = "INSERT INTO TBL_EXAM_SUBTYPE (EXAM_CODE,EXAM_NAME, SUBTYPE, NORMAL_VALUE,UNIT,PRICE,METHOD) VALUES (?, ?,?,?,?,?,?)";
         try  {
         	Connection conn = dbconnect.getConn();
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -55,6 +55,7 @@ public class ExaminationDaoImpl {
             pstmt.setString(4, nornalValue);
             pstmt.setString(5, unit);
             pstmt.setString(6, price);
+            pstmt.setString(7, method);
             pstmt.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();
@@ -166,7 +167,8 @@ public class ExaminationDaoImpl {
 	        	String normalValue=rs.getString("NORMAL_VALUE");
 	        	String unit=rs.getString("UNIT");
 	        	String price=rs.getString("PRICE");
-	        	String finalvalue=subType+","+normalValue+","+unit+","+price;
+	        	String method=rs.getString("METHOD");
+	        	String finalvalue=subType+"~"+normalValue+"~"+unit+"~"+price+"~"+method;
 	        	list.add(finalvalue);
 	        	
 	        }

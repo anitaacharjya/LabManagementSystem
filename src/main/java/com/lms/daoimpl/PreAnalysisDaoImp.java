@@ -165,6 +165,50 @@ public class PreAnalysisDaoImp {
 	        // Return the list of preanalysisers
 	        return examList;
 	    }	
+	 //Report data
+	 public List<ExaminationDetails> getExaminationDetailsForReport(String patientID,int testId) {
+	        List<ExaminationDetails> examList = new ArrayList<>();
+	        ExaminationDetails exdetails=null;
+	        try {
+	        	Connection conn = dbconnect.getConn();
+	            // SQL query to select all fields from the register table
+	            String sql = "SELECT * FROM examination_details where patient_id ='"+patientID+"' and id='"+testId+"'";
+	           //System.out.println(" Sql "+sql);
+	            PreparedStatement ps = conn.prepareStatement(sql);
+	            ResultSet rs = ps.executeQuery();
+          
+	            // Loop through the result set
+	        	//System.out.println("outside ");
+	            while (rs.next()) {
+	            	//System.out.println("inside while "+examList);
+	            	exdetails = new ExaminationDetails();
+	            	exdetails.setEx_price(rs.getString("price"));
+	            	exdetails.setEx_name(rs.getString("exam_name"));
+	            	exdetails.setEx_code(rs.getString("examination_code"));
+	            	exdetails.setSample_status(rs.getString("sample_status"));
+	            	exdetails.setSample_id(rs.getNString("sample_id"));
+	            	exdetails.setPatient_id(rs.getString("patient_id"));
+	            	exdetails.setId(rs.getString("id"));
+	            	exdetails.setSampleCollectionTime(rs.getString("SMPL_COLLECTION_TIME"));
+	            	exdetails.setRecivedDate(rs.getString("SMPL_RECEIVED_TIME"));
+	            	exdetails.setTestCompletionTime(rs.getString("TEST_COMPLETION_TIME"));
+	            	exdetails.setTestValue(rs.getString("TEST_VALUE"));
+	            	
+
+	                
+	                
+	                // Add the preanalysiser object to the preanalysiser list
+	                examList.add(exdetails);
+	                //System.out.println("examList "+examList);
+	            }
+	            rs.close();
+	            ps.close();
+	        } catch (SQLException e) {
+	        	System.out.println("Exception in getExaminationDetails "+e);
+	        }
+	        // Return the list of preanalysisers
+	        return examList;
+	    }
 	 //TRF Detsils
 	 public Map<String,String> getTRFDetails(String patientID) {
 	        Map<String,String> trmMap = new HashMap<>();

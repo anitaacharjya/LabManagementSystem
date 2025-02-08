@@ -124,12 +124,7 @@
     subTypeNameField.placeholder = 'Examination Name';
     subTypeNameField.className = 'border rounded p-2 w-full bg-gray-50';
 
-    // Normal Range input
-    var normalRangeField = document.createElement('input');
-    normalRangeField.type = 'text';
-    normalRangeField.name = 'examNormalRange[]';
-    normalRangeField.placeholder = 'Normal Range';
-    normalRangeField.className = 'border rounded p-2 w-full bg-gray-50';
+   
 
     // Unit input
     var unitField = document.createElement('input');
@@ -144,6 +139,20 @@
     unitPrice.name = 'examPrice[]';
     unitPrice.placeholder = 'Price';
     unitPrice.className = 'border rounded p-2 w-full bg-gray-50';
+    
+ // Method 
+    var unitMethod = document.createElement('input');
+    unitMethod.type = 'text';
+    unitMethod.name = 'examMethod[]';
+    unitMethod.placeholder = 'method';
+    unitMethod.className = 'border rounded p-2 w-full bg-gray-50';
+    
+    // Normal Range input
+    var normalRangeField = document.createElement('textarea');
+    normalRangeField.type = 'text';
+    normalRangeField.name = 'examNormalRange[]';
+    normalRangeField.placeholder = 'Normal Range';
+    normalRangeField.className = 'border rounded p-2 w-full bg-gray-50';
 
     // Remove button
     var removeButton = document.createElement('button');
@@ -156,9 +165,10 @@
 
     // Append the inputs and button to the container
     subtypeContainer.appendChild(subTypeNameField);
-    subtypeContainer.appendChild(normalRangeField);
     subtypeContainer.appendChild(unitField);
     subtypeContainer.appendChild(unitPrice);
+    subtypeContainer.appendChild(unitMethod);
+    subtypeContainer.appendChild(normalRangeField);
     subtypeContainer.appendChild(removeButton);
 
     // Append the container to the subtypeContainer div

@@ -133,7 +133,15 @@
 </head>
 <%
 PreAnalysisDaoImp preanalysis = new PreAnalysisDaoImp();
-String patient_id = "P036";
+String patient_id = request.getParameter("patient_id");
+String testId = request.getParameter("selectedSamplesTest");
+System.out.println("testId "+testId);
+System.out.println("patient_id "+patient_id);
+String[] numbers = testId.split(",");
+int[] intArray = new int[numbers.length];
+for (int i = 0; i < numbers.length; i++) {
+    intArray[i] = Integer.parseInt(numbers[i]);
+}
 PreAnalysis preanalysisData=preanalysis.getRecieptdetails(patient_id);  
 Date now = new Date();
 // Format the date according to your desired format
@@ -160,26 +168,31 @@ String currentTime = sdf.format(now);
 
   <div style="border:1px solid black;">
        
-   <div style="border-bottom:1px solid black; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px">
+   <div style="border-bottom:1px solid black; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px">
         <div class="info-col"style="margin-left:20px;margin-top:20px;margin-bottom:20px;">
 	        <div><span class="info-label">Name:</span> <%=preanalysisData.getName() %></div>
-	        <div><span class="info-label">Age:</span> <%=preanalysisData.getAge() %></div>
-	        <div><span class="info-label">Bill No.:</span><%=preanalysisData.getBillNo() %></div>
-	        <div><span class="info-label">Payee:</span> DIRECT Lab</div>
+	        <div><span class="info-label">Patient ID:</span> <%=preanalysisData.getPatientNo()%></div>
+	        <div><span class="info-label">Age/sex:</span> <%=preanalysisData.getAge() %>/<%=preanalysisData.getGender() %></div>
+	       <%--  <div><span class="info-label">Sex:</span> <%=preanalysisData.getGender() %></div> --%>
+	        <%-- <div><span class="info-label">Bill No:</span><%=preanalysisData.getBillNo() %></div> --%>
+	        <!-- <div><span class="info-label">Payee:</span> DIRECT Lab</div> -->
+	        
     
     </div>
-    <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
-        <div><span class="info-label">Patient ID:</span> <%=preanalysisData.getPatientNo() %></div>
-        <div><span class="info-label">Sex:</span> <%=preanalysisData.getGender() %></div>
+    <div class="info-col"style="margin-top:20px;margin-bottom:20px; text-align: left;">
+        
+        
         <div><span class="info-label">Phone:</span> <%=preanalysisData.getPhoneNo() %></div>
         <div><span class="info-label">Address:</span> <%=preanalysisData.getAddress() %></div>
+        <div><span class="info-label">Reporting Time:</span> <%=currentTime %></div>
+        <div><span class="info-label">Other Info:</span> </div>
     </div>
-    <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
-        <div><span class="info-label">Bill Date:</span> <%=currentTime %></div>
+    <%-- <div class="info-col"style="margin-top:20px;margin-bottom:20px;">
+        
         <div><span class="info-label">Referred By:</span> <%=preanalysisData.getReferredby() %></div>
         <div><span class="info-label">Collected On:</span> 18 Jan 2024</div>
-        <div><span class="info-label">Payment Mode:</span> <%=preanalysisData.getPaymentMode()%></div>
-    </div>
+         <div><span class="info-label">Payment Mode:</span> <%=preanalysisData.getPaymentMode()%></div>
+    </div> --%>
    
 </div>
 
@@ -193,11 +206,13 @@ String currentTime = sdf.format(now);
             <table style="margin-top:20px;margin-bottom:0px">
                 <thead>
                     <tr>
-                        <th>EXAMINATION</th>
-                        <th>CODE</th>
+                        <th>Exam</th>
+                        <th>Result(Unit)</th>
+                        <th>Colletion Time</th>
+                        <th>Tested Time</th>
+                         <th>Normal value</th>
                         
-                        <th>SAMPLE TYPE</th>
-                        <th>CHARGES</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -206,28 +221,34 @@ String currentTime = sdf.format(now);
                      int totalBill=0;
                      int avanceamount = 0;
                      int diascount = 0;
-                     String patientno=preanalysisData.getPatientNo();
-
-                     List<ExaminationDetails> examList = preanalysis.getExaminationDetails(patientno);
-                     for (ExaminationDetails preList1 : examList) {
-                    	 String name=preList1.getEx_name();
-                    	 String examName=preanalysis.getExaminationName(name);
-                     %>
-                    <tr>
-                        <td><%=examName %></td>
-                        <td><%=preList1.getEx_code() %></td>             
-                        <td>Serum</td>
-                        <td><%=preList1.getEx_price() %></td>
-                        
-                    </tr>
-                    <%
-                    double price=0;
-                    String priceStr = preList1.getEx_price();
-                    if (priceStr != null && !priceStr.trim().isEmpty()) {
-                        price = Double.parseDouble(priceStr.trim());
-                    }
-                    totalBill+=price;
-                    } %>
+                     //String patientno=preanalysisData.getPatientNo();
+                     System.out.println(" intArray "+intArray.length);
+                     System.out.println(" patient_id "+patient_id);
+                      for (int i=0;i<intArray.length;i++) {
+                     List<ExaminationDetails> examList = preanalysis.getExaminationDetailsForReport(patient_id,intArray[i]);
+	                     for (ExaminationDetails preList1 : examList) {
+	                    	 System.out.println(" value "+intArray[i]);
+	                    	 String name=preList1.getEx_name();
+	                    	 String examName=preanalysis.getExaminationName(name);
+	                     %>
+	                    <tr>
+	                        <td><%=examName %></td>
+	                        <td><%=preList1.getTestValue() %></td>
+	                        <td><%=preList1.getSampleCollectionTime()%></td>             
+	                        <td><%=preList1.getTestCompletionTime() %></td>
+	                        <td></td>
+	                        
+	                        
+	                    </tr>
+	                    <%
+	                    double price=0;
+	                    String priceStr = preList1.getEx_price();
+	                    if (priceStr != null && !priceStr.trim().isEmpty()) {
+	                        price = Double.parseDouble(priceStr.trim());
+	                    }
+	                    totalBill+=price;
+	                    } 
+                    }%>
                 </tbody>
             </table>
         </div>
@@ -281,6 +302,7 @@ String currentTime = sdf.format(now);
     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Download PDF</button>
     </form> --%>
     <div style="text-align: center; font-weight: bold; font-size: 15px;margin-top:5px;">
+    </br>
     <h4>*** End Of Report ***</h4>
     </div>
     </div>

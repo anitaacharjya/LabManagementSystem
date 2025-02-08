@@ -14,6 +14,7 @@ public class ExaminationDetails {
 	private String normalValue;
 	private String unit;
 	private String sampleCollectionTime;
+	private String testCompletionTime;
 	public String recivedDate;
 	public String testValue;
 	
@@ -102,6 +103,12 @@ public class ExaminationDetails {
 	}
 	public void setTestValue(String testValue) {
 		this.testValue = testValue;
+	}
+	public String getTestCompletionTime() {
+		return testCompletionTime;
+	}
+	public void setTestCompletionTime(String testCompletionTime) {
+		this.testCompletionTime = testCompletionTime;
 	}
 	
 	

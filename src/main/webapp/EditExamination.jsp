@@ -55,11 +55,11 @@
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </div>
 
-                    <div>
+                   <%--  <div>
                         <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
                         <input type="text" id="price" name="price" value="<%= exam.getEx_price() %>" required
                             class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </div>
+                    </div> --%>
 
                     <div>
                         <label for="code" class="block text-sm font-medium text-gray-700">Examination Code</label>
@@ -74,17 +74,20 @@
                     <% 
                          // Assuming subtypes are retrieved in this list
                         for (String subtype : subtypes) {
-                            String[] subtypeData = subtype.split(",");
+                            String[] subtypeData = subtype.split("~");
                             String subtypeName = subtypeData[0];
                             String normalRange = subtypeData[1];
                             String unit = subtypeData[2]; 
                             String price = subtypeData[3];
+                            String method = subtypeData[4];
                     %>
                     <div class="grid grid-cols-4 gap-2 items-center mt-2">
                          <input type="text" name="examSubtypeName[]" value="<%= subtypeName %>" class="border rounded p-2 w-full bg-gray-50" placeholder="SubType Name">
-                        <input type="text" name="examNormalRange[]" value="<%= normalRange %>" class="border rounded p-2 w-full bg-gray-50" placeholder="Normal Range">
+                        
                         <input type="text" name="examUnit[]" value="<%= unit %>" class="border rounded p-2 w-full bg-gray-50" placeholder="Unit">
                         <input type="text" name="examPrice[]" value="<%= price %>" class="border rounded p-2 w-full bg-gray-50" placeholder="Price">
+                        <input type="text" name="examMethod[]" value="<%= method %>" class="border rounded p-2 w-full bg-gray-50" placeholder="Method">
+                        <textarea name="examNormalRange[]" class="border rounded p-2 w-full bg-gray-50" placeholder="Normal Range"><%= normalRange %></textarea>
                         <button type="button" onclick="removeSubtypeField(this)" class="bg-red-500 text-white font-bold py-2 px-4 ml-2 rounded">Remove</button>
                     </div>
                     <% } %>

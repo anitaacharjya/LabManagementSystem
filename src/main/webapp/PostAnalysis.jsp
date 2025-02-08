@@ -362,7 +362,7 @@ String formattedDateTime = now.format(formatter);
                                           <td class="py-3 px-6 text-left whitespace-nowrap">
 									  
 									    
-									       <div class="row" >
+									       <div class="row"  data-patientid="<%= preList.getPatientNo() %>">
 									        
 									        <div class="checkbox-container">
 									               <%
@@ -824,7 +824,9 @@ function sendXMLData(selectedSamples) {
 
         if (userConfirmed) {
             // After user confirms, send the XML data
-        	window.location.href = "Reports.jsp?selectedSamplesTest=" + encodeURIComponent(idOfItem);
+        	//window.location.href = "Reports.jsp?selectedSamplesTest=" + encodeURIComponent(idOfItem);
+        	window.location.href = "Reports.jsp?selectedSamplesTest=" + encodeURIComponent(idOfItem) +
+            "&patient_id=" + encodeURIComponent(row.dataset.patientid);
         }
     }
 </script>
@@ -866,7 +868,7 @@ function sendXMLData(selectedSamples) {
         updatePaginationControls(totalPages);
     }
 
-    // Function to update the pagination controls
+  // Function to update the pagination controls
     function updatePaginationControls(totalPages) {
         const paginationControls = document.getElementById("paginationControls");
         paginationControls.innerHTML = "";
