@@ -1,6 +1,7 @@
 <%@ page import="com.lms.daoimpl.PreAnalysisDaoImp"%>
 <%@ page import="com.lms.vo.PreAnalysis"%>
 <%@ page import="com.lms.vo.ExaminationDetails"%>
+<%@ page import="com.lms.vo.SubExamDetails"%>
 <%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
 <%@ page import="java.util.List"%>
 
@@ -129,6 +130,33 @@
             z-index: 0;
             pointer-events: none; /* Prevent interaction with watermark */
         }
+        
+        /* page number */
+      @page {
+		    size: A4;
+		    margin: 10mm;
+		    counter-increment: page;
+		    counter-reset: total-pages 1;
+		}
+		
+		@media print {
+    .page-number {
+        display: block !important; /* Ensure visibility */
+        position: absolute; /* Prevent shifting */
+        bottom: 10px; /* Adjust position */
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        font-weight: bold;
+        color: black !important; /* Ensure it's visible */
+        background: white;
+        padding: 5px;
+        border: 1px solid black;
+    }
+}
+		
+
+		        
     </style>
 </head>
 <%
@@ -150,6 +178,7 @@ String currentTime = sdf.format(now);
 %>
 <body>
     <div class="a4-container" >
+    <div class="page-number"></div>
     <div class="watermark">CONFIDENTIAL</div>
         <!-- Header -->
 <div class="container-fluid">
@@ -227,15 +256,25 @@ String currentTime = sdf.format(now);
                       for (int i=0;i<intArray.length;i++) {
                      List<ExaminationDetails> examList = preanalysis.getExaminationDetailsForReport(patient_id,intArray[i]);
 	                     for (ExaminationDetails preList1 : examList) {
+	                    	 
 	                    	 System.out.println(" value "+intArray[i]);
 	                    	 String name=preList1.getEx_name();
 	                    	 String examName=preanalysis.getExaminationName(name);
+	                    	 String dateofcollection=preList1.getSampleCollectionTime();
+	                    	 dateofcollection = dateofcollection.split(" ")[0];
+	                    	 String testTime="";
+	                    	 if(preList1.getTestCompletionTime()!=null){
+	                    	 testTime=preList1.getTestCompletionTime();
+	                    	 testTime = testTime.split(" ")[0];
+                             List<SubExamDetails> subexamDetailslist=preanalysis.getSubExamData(preList1.getId());
+                             System.out.println(" loop "+subexamDetailslist);
+	                    	 }	                    	 
 	                     %>
 	                    <tr>
 	                        <td><%=examName %></td>
 	                        <td><%=preList1.getTestValue() %></td>
-	                        <td><%=preList1.getSampleCollectionTime()%></td>             
-	                        <td><%=preList1.getTestCompletionTime() %></td>
+	                        <td><%=dateofcollection%></td>             
+	                        <td><%=testTime%></td>
 	                        <td></td>
 	                        
 	                        
@@ -307,6 +346,36 @@ String currentTime = sdf.format(now);
     </div>
     </div>
     
-    
+<script>
+window.onload = function () {
+    let interval = setInterval(() => {
+        let pages = document.querySelectorAll(".a4-container");
+        let totalPages = pages.length; // Count total pages
+
+        console.log("Total pages detected: " + totalPages); // Debugging
+       // alert("Total pages detected: " + totalPages); // Debugging
+
+        if (totalPages > 0) {
+            clearInterval(interval); // Stop checking once pages are found
+
+            pages.forEach((page, index) => {
+                console.log(`Processing page ${index + 1} of ${totalPages}`); // Debugging
+                //alert(`Processing page ${index + 1} of ${totalPages}`); // Debugging
+                
+                let pageNumber = document.createElement("div");
+                pageNumber.className = "page-number";
+                pageNumber.innerText = `Page ${index + 1}`;
+
+                page.appendChild(pageNumber);
+            });
+        }
+    }, 500); // Check every 500ms until elements are found
+};
+
+
+
+</script>
+
+
 </body>
 </html>

@@ -12,6 +12,8 @@ import java.util.Map;
 import com.lms.dbconnect.Dbconnect;
 import com.lms.vo.ExaminationDetails;
 import com.lms.vo.PreAnalysis;
+import com.lms.vo.SubExamDetails;
+
 import java.sql.Statement;
 
 public class PreAnalysisDaoImp {
@@ -208,6 +210,40 @@ public class PreAnalysisDaoImp {
 	        }
 	        // Return the list of preanalysisers
 	        return examList;
+	    }
+	 //
+	 //SubExamData data
+	 public List<SubExamDetails> getSubExamData(String ID) {
+	        List<SubExamDetails> subExamList = new ArrayList<>();
+	        SubExamDetails subExdetails=null;
+	        try {
+	        	Connection conn = dbconnect.getConn();
+	            // SQL query to select all fields from the register table
+	            String sql = "SELECT * FROM tbl_exam_subtype where id='"+ID+"'";
+	           //System.out.println(" Sql "+sql);
+	            PreparedStatement ps = conn.prepareStatement(sql);
+	            ResultSet rs = ps.executeQuery();
+          
+	            // Loop through the result set
+	        	//System.out.println("outside ");
+	            while (rs.next()) {
+	            	//System.out.println("inside while "+examList);
+	            	subExdetails.setUnit(rs.getString("UNIT"));
+	            	subExdetails.setNormalRange(rs.getString("NORMAL_VALUE"));
+	            	subExdetails.setSample(rs.getString("EXAM_NAME"));
+	            	subExdetails.setMethod(rs.getString("METHOD"));
+
+	                // Add the preanalysiser object to the preanalysiser list
+	            	subExamList.add(subExdetails);
+	                //System.out.println("examList "+examList);
+	            }
+	            rs.close();
+	            ps.close();
+	        } catch (SQLException e) {
+	        	System.out.println("Exception in getExaminationDetails "+e);
+	        }
+	        // Return the list of preanalysisers
+	        return subExamList;
 	    }
 	 //TRF Detsils
 	 public Map<String,String> getTRFDetails(String patientID) {
